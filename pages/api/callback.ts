@@ -1,0 +1,50 @@
+/* eslint-disable camelcase */
+import { NextApiResponse, NextApiRequest } from "next";
+import { URLSearchParams } from "url";
+
+const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI } = process.env;
+const auth = `Basic ${Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString(
+  "base64"
+)}`;
+
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+  const { code } = req.query;
+
+  const bodyData = {
+    grant_type: "authorization_code",
+    code,
+    redirect_uri: REDIRECT_URI,
+  };
+  const urlEncoded = new URLSearchParams(bodyData);
+
+  try {
+    const response = await fetch("https://accounts.spotify.com/api/token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Authorization: auth,
+      },
+      body: urlEncoded,
+    });
+
+    if (!response.ok) {
+      const message = `An error has occured: ${response.status}`;
+      throw new Error(message);
+    }
+
+    const data = await response.json();
+
+    if (response.status === 200) {
+      // const { refresh_token } = data;
+      // const refresh = await fetch(
+      //   `http://localhost:3000/api/refresh_token?refresh_token=${refresh_token}`
+      // );
+      // res.send(refresh);
+      res.send(data);
+    } else {
+      res.json(data);
+    }
+  } catch (err) {
+    console.warn(err);
+  }
+};
