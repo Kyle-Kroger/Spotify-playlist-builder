@@ -8,7 +8,7 @@ const auth = `Basic ${Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString(
 )}`;
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { refresh_token } = req.query;
+  const { SPOTIFY_REFRESH_TOKEN: refresh_token } = req.cookies;
 
   const bodyData = {
     grant_type: "refresh_token",
