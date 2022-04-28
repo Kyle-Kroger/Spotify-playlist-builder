@@ -37,31 +37,41 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     const { access_token, refresh_token, scope } = data;
 
+    const tokenCookieArr = [];
+
     if (access_token) {
-      res.setHeader(
-        "Set-Cookie",
-        cookie.serialize("SPOTIFY_ACCESS_TOKEN", access_token, {
+      const accessTokenCookie = cookie.serialize(
+        "SPOTIFY_ACCESS_TOKEN",
+        access_token,
+        {
           httpOnly: true,
           maxAge: 60 * 60,
           path: "/",
           sameSite: "lax",
           secure: process.env.NODE_ENV === "production",
-        })
+        }
       );
+
+      tokenCookieArr.push(accessTokenCookie);
     }
 
     if (refresh_token) {
-      res.setHeader(
-        "Set-Cookie",
-        cookie.serialize("SPOTIFY_REFRESH_TOKEN", refresh_token, {
+      const refreshTokenCookie = cookie.serialize(
+        "SPOTIFY_REFRESH_TOKEN",
+        refresh_token,
+        {
           httpOnly: true,
           maxAge: 24 * 60 * 60 * 365,
           path: "/",
           sameSite: "lax",
           secure: process.env.NODE_ENV === "production",
-        })
+        }
       );
+
+      tokenCookieArr.push(refreshTokenCookie);
     }
+
+    res.setHeader("Set-Cookie", tokenCookieArr);
 
     if (response.status === 200) {
       res.send(data);
