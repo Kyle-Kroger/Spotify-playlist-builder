@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import { NextApiResponse, NextApiRequest } from "next";
 import { URLSearchParams } from "url";
+import cookie from "cookie";
 
 const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI } = process.env;
 const auth = `Basic ${Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString(
@@ -32,9 +33,25 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       throw new Error(message);
     }
 
-    const data = await response.json();
+    const { access_token } = await response.json();
 
-    res.send(data);
+    if (access_token) {
+      const accessTokenCookie = cookie.serialize(
+        "SPOTIFY_ACCESS_TOKEN",
+        access_token,
+        {
+          httpOnly: true,
+          maxAge: 60 * 60,
+          path: "/",
+          sameSite: "lax",
+          secure: process.env.NODE_ENV === "production",
+        }
+      );
+
+      res.setHeader("Set-Cookie", accessTokenCookie);
+    }
+
+    res.send(access_token);
   } catch (err) {
     console.warn(err);
     res.send({ error: err.message });

@@ -13,7 +13,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   cookies.set("spotify_auth_state", state);
 
   // Scope for authorization
-  const scope = "user-read-private user-read-email";
+  const scope = "user-read-private user-read-email playlist-read-private";
 
   const paramsObject = {
     client_id: CLIENT_ID,

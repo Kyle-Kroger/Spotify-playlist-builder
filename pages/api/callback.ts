@@ -51,7 +51,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           secure: process.env.NODE_ENV === "production",
         }
       );
-
       tokenCookieArr.push(accessTokenCookie);
     }
 
@@ -67,17 +66,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           secure: process.env.NODE_ENV === "production",
         }
       );
-
       tokenCookieArr.push(refreshTokenCookie);
     }
 
     res.setHeader("Set-Cookie", tokenCookieArr);
-
-    if (response.status === 200) {
-      res.send(data);
-    } else {
-      res.json(data);
-    }
+    res.send(data);
   } catch (err) {
     console.warn(err);
   }
