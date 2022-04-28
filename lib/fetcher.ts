@@ -13,3 +13,28 @@ export const fetcher = (url: string, data = undefined) => {
     return res.json();
   });
 };
+
+export const spotifyFetcher = async (
+  url: string,
+  token: string,
+  data = undefined
+) => {
+  const response = await fetch(`https://api.spotify.com/v1${url}`, {
+    method: data ? "POST" : "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const message = `An error has occured: ${response.status} ${response.statusText}`;
+    throw new Error(message);
+  }
+
+  const spotifyData = await response.json();
+
+  return spotifyData;
+};
