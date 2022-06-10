@@ -15,11 +15,11 @@ export const fetcher = (url: string, data = undefined) => {
 };
 
 export const spotifyFetcher = async (
-  url: string,
+  endpoint: string,
   token: string,
   data = undefined
 ) => {
-  const response = await fetch(`https://api.spotify.com/v1${url}`, {
+  const response = await fetch(`https://api.spotify.com/v1${endpoint}`, {
     method: data ? "POST" : "GET",
     headers: {
       Accept: "application/json",

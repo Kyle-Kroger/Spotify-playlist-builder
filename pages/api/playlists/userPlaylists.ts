@@ -7,17 +7,17 @@ import { sliceBaseUrl } from "../../../lib/spotify";
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { SPOTIFY_ACCESS_TOKEN: token } = req.cookies;
   let moreData = true;
-  let url = "/me/playlists";
+  let endpoint = "/me/playlists";
   let playlists = [];
 
   try {
     while (moreData) {
-      const playlistData = await spotifyFetcher(url, token);
+      const playlistData = await spotifyFetcher(endpoint, token);
 
       playlists = [...playlists, ...playlistData.items];
 
       if (playlistData.next) {
-        url = sliceBaseUrl(playlistData.next);
+        endpoint = sliceBaseUrl(playlistData.next);
       } else {
         moreData = false;
       }
