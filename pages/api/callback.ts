@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import { NextApiResponse, NextApiRequest } from "next";
 import { URLSearchParams } from "url";
+import cookie from "cookie";
 
 const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI } = process.env;
 const auth = `Basic ${Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString(
@@ -34,16 +35,42 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     const data = await response.json();
 
-    if (response.status === 200) {
-      // const { refresh_token } = data;
-      // const refresh = await fetch(
-      //   `http://localhost:3000/api/refresh_token?refresh_token=${refresh_token}`
-      // );
-      // res.send(refresh);
-      res.send(data);
-    } else {
-      res.json(data);
+    const { access_token, refresh_token, scope } = data;
+
+    const tokenCookieArr = [];
+
+    if (access_token) {
+      const accessTokenCookie = cookie.serialize(
+        "SPOTIFY_ACCESS_TOKEN",
+        access_token,
+        {
+          httpOnly: true,
+          maxAge: 60 * 60,
+          path: "/",
+          sameSite: "lax",
+          secure: process.env.NODE_ENV === "production",
+        }
+      );
+      tokenCookieArr.push(accessTokenCookie);
     }
+
+    if (refresh_token) {
+      const refreshTokenCookie = cookie.serialize(
+        "SPOTIFY_REFRESH_TOKEN",
+        refresh_token,
+        {
+          httpOnly: true,
+          maxAge: 24 * 60 * 60 * 365,
+          path: "/",
+          sameSite: "lax",
+          secure: process.env.NODE_ENV === "production",
+        }
+      );
+      tokenCookieArr.push(refreshTokenCookie);
+    }
+
+    res.setHeader("Set-Cookie", tokenCookieArr);
+    res.send(data);
   } catch (err) {
     console.warn(err);
   }
