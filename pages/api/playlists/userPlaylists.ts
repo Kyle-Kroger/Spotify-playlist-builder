@@ -1,6 +1,5 @@
 /* eslint-disable no-await-in-loop */
 import { NextApiResponse, NextApiRequest } from "next";
-import cookie from "cookie";
 
 import { spotifyFetcher } from "../../../lib/fetcher";
 import { sliceBaseUrl } from "../../../lib/spotify";
@@ -11,31 +10,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   let { SPOTIFY_ACCESS_TOKEN: token } = req.cookies;
 
   // refresh if needed
-  if (!token) {
-    try {
-      const newAccessToken = await refreshAccessToken(refreshToken);
-
-      if (newAccessToken) {
-        const accessTokenCookie = cookie.serialize(
-          "SPOTIFY_ACCESS_TOKEN",
-          newAccessToken,
-          {
-            httpOnly: true,
-            maxAge: 60 * 60,
-            path: "/",
-            sameSite: "lax",
-            secure: process.env.NODE_ENV === "production",
-          }
-        );
-
-        res.setHeader("Set-Cookie", accessTokenCookie);
-        token = newAccessToken;
-      }
-    } catch (err) {
-      console.warn(err);
-      // probably should redirct to the login page or an error page before login
-    }
-  }
+  token = await refreshAccessToken(token, refreshToken, res);
 
   let moreData = true;
   let endpoint = "/me/playlists";

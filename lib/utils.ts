@@ -1,3 +1,4 @@
+import cookie from "cookie";
 /* eslint-disable camelcase */
 /* eslint-disable no-plusplus */
 /**
@@ -21,7 +22,11 @@ const auth = `Basic ${Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString(
 )}`;
 
 // refresh access token
-export const refreshAccessToken = async (refresh_token) => {
+export const refreshAccessToken = async (token, refresh_token, res) => {
+  if (token) {
+    return token;
+  }
+
   const bodyData = {
     grant_type: "refresh_token",
     refresh_token,
@@ -47,6 +52,21 @@ export const refreshAccessToken = async (refresh_token) => {
     const { access_token } = await response.json();
 
     if (access_token) {
+      if (access_token) {
+        const accessTokenCookie = cookie.serialize(
+          "SPOTIFY_ACCESS_TOKEN",
+          access_token,
+          {
+            httpOnly: true,
+            maxAge: 60 * 60,
+            path: "/",
+            sameSite: "lax",
+            secure: process.env.NODE_ENV === "production",
+          }
+        );
+
+        res.setHeader("Set-Cookie", accessTokenCookie);
+      }
       return access_token;
     }
 
