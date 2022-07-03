@@ -1,6 +1,5 @@
 /* eslint-disable no-await-in-loop */
 import { NextApiResponse, NextApiRequest } from "next";
-import cookie from "cookie";
 
 import { spotifyFetcher } from "../../../lib/fetcher";
 import { sliceBaseUrl } from "../../../lib/spotify";
