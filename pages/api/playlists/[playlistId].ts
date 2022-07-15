@@ -16,7 +16,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const detailQueryParams = `market=es&fields=name,images,owner(display_name)`;
   const detailEndpoint = `/playlists/${playlistId}?${detailQueryParams}`;
 
-  const trackQueryParams = `market=es&fields=items(track(name,duration_ms,href,album(name,href,images),artists(name,href))),next`;
+  const trackQueryParams = `market=es&fields=items(track(name,id,duration_ms,href,album(name,href,images),artists(name,href))),next`;
   let tracksEndpoint = `/playlists/${playlistId}/tracks?${trackQueryParams}`;
 
   let moreData = true;
