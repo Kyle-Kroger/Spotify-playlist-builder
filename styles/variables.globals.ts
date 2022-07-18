@@ -3,6 +3,7 @@ import { css } from "styled-components";
 const variables = css`
   :root {
     /* Colors */
+    --color-grey-600: #242424;
     --color-grey-900: #0d0d0d;
     --color-black: #000000;
 

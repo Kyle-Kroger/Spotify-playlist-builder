@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  background-color: red;
+  background-color: var(--color-grey-600);
   width: var(--sidebar-width);
 `;
 
