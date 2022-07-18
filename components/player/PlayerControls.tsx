@@ -28,12 +28,22 @@ const PlayerBarWrapper = styled.div`
   ${helpers.flexCenter}
 `;
 
-const PlayerBar = styled.div`
+const PlayerBarTrack = styled.div`
+  position: relative;
   width: 40vw;
   background-color: white;
   height: 4px;
   border-radius: 4px;
   margin: 8px;
+`;
+
+const ActiveBar = styled.div`
+  position: absolute;
+  top: 0;
+  width: 20%;
+  background-color: red;
+  border-radius: 4px;
+  height: 4px;
 `;
 
 const CurrentTime = styled.div``;
@@ -53,7 +63,9 @@ const PlayerControls = () => {
 
       <PlayerBarWrapper>
         <CurrentTime>0:45</CurrentTime>
-        <PlayerBar />
+        <PlayerBarTrack>
+          <ActiveBar />
+        </PlayerBarTrack>
         <TotalTime>3:21</TotalTime>
       </PlayerBarWrapper>
     </Wrapper>

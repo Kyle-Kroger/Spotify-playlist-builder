@@ -5,7 +5,7 @@ const variables = css`
     /* Colors */
 
     /* Gradients */
-    --player-gradient: linear-gradient(180deg, #3f3f3f 0%, #272727 100%);
+    --player-gradient: linear-gradient(180deg, #202020 0%, #111111 100%);
 
     --color-primary-100: hsl(226, 47%, 80%);
     --color-primary-200: hsl(225, 40%, 67%);

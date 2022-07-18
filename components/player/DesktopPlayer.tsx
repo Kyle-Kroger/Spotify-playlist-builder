@@ -10,9 +10,9 @@ const Wrapper = styled.div`
 `;
 
 const TrackInfo = styled.div`
+  min-width: 15vw;
   display: flex;
   align-items: center;
-  min-width: 300px;
 `;
 
 const TitleArtistWrapper = styled.div``;
