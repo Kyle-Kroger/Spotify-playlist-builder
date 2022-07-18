@@ -127,6 +127,7 @@ const variables = css`
     --player-height: 100px;
     --content-height: calc(100vh - var(--player-height));
     --desktop-nav-width: 240px;
+    --sidebar-width: 460px;
   }
 `;
 
