@@ -4,6 +4,7 @@ import { DesktopPlayer } from "../components/player";
 const StyledMain = styled.div`
   background: var(--player-gradient);
   height: var(--content-height);
+  display: flex;
 `;
 
 const Wrapper = styled.div`

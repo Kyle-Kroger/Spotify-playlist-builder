@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { IconContext } from "react-icons";
 import { FaPlayCircle, FaPauseCircle } from "react-icons/fa";
 import {
   BiShuffle,
@@ -16,6 +17,11 @@ const Wrapper = styled.div`
 
 const ControlsWrapper = styled.div`
   ${helpers.flexCenter}
+  margin-bottom: 4px;
+
+  * {
+    margin: 0 var(--spacing-xs);
+  }
 `;
 
 const PlayerBarWrapper = styled.div`
@@ -38,11 +44,11 @@ const PlayerControls = () => {
   return (
     <Wrapper>
       <ControlsWrapper>
-        <BiShuffle fontSize="28px" />
-        <BiSkipPrevious fontSize="48px" />
-        <FaPauseCircle fontSize="48px" />
-        <BiSkipNext fontSize="48px" />
-        <BiRepeat fontSize="28px" />
+        <BiShuffle fontSize="24px" />
+        <BiSkipPrevious fontSize="42px" />
+        <FaPauseCircle fontSize="40px" />
+        <BiSkipNext fontSize="42px" />
+        <BiRepeat fontSize="24px" />
       </ControlsWrapper>
 
       <PlayerBarWrapper>
