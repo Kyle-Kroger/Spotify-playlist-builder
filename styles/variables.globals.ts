@@ -3,6 +3,10 @@ import { css } from "styled-components";
 const variables = css`
   :root {
     /* Colors */
+    --color-grey-900: #0d0d0d;
+    --color-black: #000000;
+
+    --color-text-subdued: #a7a7a7;
 
     /* Gradients */
     --player-gradient: linear-gradient(180deg, #202020 0%, #111111 100%);
@@ -49,7 +53,6 @@ const variables = css`
     --color-grey-300: hsl(240, 5%, 50%);
     --color-grey-500: hsl(240, 8%, 30%);
     --color-grey-700: hsl(240, 10%, 12%);
-    --color-grey-900: hsl(240, 10%, 8%);
 
     --sidebar-color: var(--color-grey-900);
     --sidebar-text-color: hsl(0, 0%, 84%);
@@ -123,7 +126,7 @@ const variables = css`
     /* Sizing */
     --player-height: 100px;
     --content-height: calc(100vh - var(--player-height));
-    --sidebar-width: 230px;
+    --desktop-nav-width: 240px;
   }
 `;
 

@@ -1,5 +1,7 @@
 import styled from "styled-components";
+import { DesktopNav } from "../components/layout";
 import { DesktopPlayer } from "../components/player";
+import { useUserPlaylists } from "../lib/hooks";
 
 const StyledMain = styled.div`
   background: var(--player-gradient);
@@ -12,9 +14,12 @@ const Wrapper = styled.div`
 `;
 
 const Home = () => {
+  const { playlists, isLoading, isError } = useUserPlaylists();
   return (
     <Wrapper>
-      <StyledMain></StyledMain>
+      <StyledMain>
+        <DesktopNav playlists={playlists} />
+      </StyledMain>
       <DesktopPlayer />
     </Wrapper>
   );
