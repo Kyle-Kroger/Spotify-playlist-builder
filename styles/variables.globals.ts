@@ -3,6 +3,10 @@ import { css } from "styled-components";
 const variables = css`
   :root {
     /* Colors */
+
+    /* Gradients */
+    --player-gradient: linear-gradient(180deg, #3f3f3f 0%, #272727 100%);
+
     --color-primary-100: hsl(226, 47%, 80%);
     --color-primary-200: hsl(225, 40%, 67%);
     --color-primary-300: hsl(224, 35%, 55%);
@@ -117,8 +121,9 @@ const variables = css`
     /* Images */
 
     /* Sizing */
+    --player-height: 100px;
+    --content-height: calc(100vh - var(--player-height));
     --sidebar-width: 230px;
-    --content-max-width: 1400px;
   }
 `;
 

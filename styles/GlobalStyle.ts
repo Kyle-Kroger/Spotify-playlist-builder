@@ -15,8 +15,12 @@ const GlobalStyle = createGlobalStyle`
     
   }
 
+  h3 {
+    font-size: var(--fz-lg);
+  }
+
   body {
-    color: orange;
+    color: white;
   }
 `;
 
