@@ -38,7 +38,7 @@ const PlaylistWrapper = styled.ul`
   flex: 1;
   background: var(--color-grey-900);
   overflow: auto;
-  padding: var(--spacing-lg);
+  padding: var(--spacing-md);
   font-size: 15px;
   font-weight: 600;
   color: var(--color-text-subdued);
@@ -70,7 +70,6 @@ const Playlist = styled.li`
 
 const DesktopNav = (props) => {
   const { playlists } = props;
-  console.log(playlists);
   return (
     <Wrapper>
       <StyledNav>
