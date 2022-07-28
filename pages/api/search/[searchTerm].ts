@@ -13,8 +13,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // refresh if needed
   token = await refreshAccessToken(token, refreshToken, res);
 
-  // need to make sure that the searchType is track, artist, or album
-
   offset = !offset ? "0" : offset;
   const searchQueryParams = `q=${searchTerm}&type=${type}&market=es&offset=${offset}&limit=50`;
   const searchEndpoint = `/search?${searchQueryParams}`;
@@ -22,10 +20,59 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   let searchResults = {};
 
   try {
-    const data = await spotifyFetcher(searchEndpoint, token);
-    searchResults = data;
+    // need to make sure that type is track, artist, or album
+    if (type !== "track" && type !== "artist" && type !== "album") {
+      throw new Error("Please enter a type of either track, artist or album");
+    }
 
-    // send different stuff back depending if it was a track, artist, album
+    const data = await spotifyFetcher(searchEndpoint, token);
+    const key = `${type}s`;
+    let items = [];
+
+    if (key === "tracks") {
+      items = data[key].items.map((item) => {
+        return {
+          name: item.name,
+          duration: item.duration_ms,
+          id: item.id,
+          isPlayable: item.is_playable,
+          type: item.type,
+          artists: item.artists,
+          albumId: item.album.id,
+          albumName: item.album.name,
+          albumImages: item.album.images,
+        };
+      });
+    }
+
+    if (key === "artists") {
+      items = data[key].items.map((item) => {
+        return {
+          name: item.name,
+          id: item.id,
+          type: item.type,
+          images: item.images,
+        };
+      });
+    }
+
+    if (key === "albums") {
+      items = data[key].items.map((item) => {
+        return {
+          name: item.name,
+          artists: item.artists,
+          id: item.id,
+          type: item.type,
+          images: item.images,
+        };
+      });
+    }
+
+    searchResults = {
+      items,
+      next: data[key].next,
+      prev: data[key].previous,
+    };
   } catch (err) {
     console.log(err);
   }
