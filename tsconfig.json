@@ -20,7 +20,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "styles/variables.globals.ts"
+    "styles/variables.globals.ts",
+    "pages/_document.js"
   ],
   "exclude": ["node_modules"]
 }

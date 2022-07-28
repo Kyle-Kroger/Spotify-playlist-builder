@@ -13,10 +13,15 @@ const GlobalStyle = createGlobalStyle`
       box-sizing: border-box;
     }
     
+    font-family: 'Manrope', sans-serif;
+  }
+
+  h3 {
+    font-size: var(--fz-lg);
   }
 
   body {
-    color: orange;
+    color: white;
   }
 `;
 
