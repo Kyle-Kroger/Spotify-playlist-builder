@@ -4,6 +4,7 @@ const variables = css`
   :root {
     /* Colors */
     --color-grey-600: #242424;
+    --color-grey-800: #1d1c1c;
     --color-grey-900: #0d0d0d;
     --color-black: #000000;
 
