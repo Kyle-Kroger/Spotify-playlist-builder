@@ -1,7 +1,9 @@
 import styled from "styled-components";
+import { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { StyledButton } from "../ui";
 import { TrackList } from "../musicInfo";
+import { useSearch } from "../../lib/hooks";
 
 const Wrapper = styled.div`
   display: flex;
@@ -82,10 +84,33 @@ const FooterWrapper = styled.footer`
 `;
 
 const Search = () => {
+  const [currentSearch, setCurrentSearch] = useState("dreamcatcher");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [offset, setOffset] = useState("0");
+
+  const { searchData, isLoading, isError } = useSearch(
+    `${searchTerm}?type=track&offset=${offset}`
+  );
+
+  const handleUpdateSearchData = () => {
+    setSearchTerm(currentSearch);
+  };
+
+  const handleSearchBarChange = (e) => {
+    setCurrentSearch(e.target.value);
+  };
+
+  console.log(searchData);
   return (
     <Wrapper>
       <SearchBarWrapper>
-        <SearchBar placeholder="Search..." />
+        <SearchBar
+          type="text"
+          placeholder="Search..."
+          value={currentSearch}
+          onChange={handleSearchBarChange}
+          onBlur={handleUpdateSearchData}
+        />
         <CloseIcon size="24px" />
       </SearchBarWrapper>
       <HeaderButtonWrapper>
@@ -94,8 +119,8 @@ const Search = () => {
         <StyledButton state="outline">Album</StyledButton>
       </HeaderButtonWrapper>
       <SearchListWrapper>
-        <PositionedTrackList className="" />
-        <FooterWrapper>Footer</FooterWrapper>
+        <PositionedTrackList className="" items={searchData.items} />
+        <FooterWrapper>Footer!!!</FooterWrapper>
       </SearchListWrapper>
     </Wrapper>
   );

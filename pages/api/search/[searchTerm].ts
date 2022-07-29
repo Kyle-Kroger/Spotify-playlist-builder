@@ -76,6 +76,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   } catch (err) {
     console.log(err);
   }
-  console.log(req.query);
   res.send(searchResults);
 };

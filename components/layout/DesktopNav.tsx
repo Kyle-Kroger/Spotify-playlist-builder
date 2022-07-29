@@ -91,7 +91,9 @@ const DesktopNav = (props) => {
       </StyledNav>
       <PlaylistWrapper>
         {playlists.map((playlist) => (
-          <Playlist id={playlist.id}>{playlist.name}</Playlist>
+          <Playlist id={playlist.id} key={playlist.id}>
+            {playlist.name}
+          </Playlist>
         ))}
       </PlaylistWrapper>
     </Wrapper>

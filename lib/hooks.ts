@@ -10,3 +10,13 @@ export const useUserPlaylists = () => {
     isError: error,
   };
 };
+
+export const useSearch = (SearchTerm) => {
+  const { data, error } = useSWR(`/search/${SearchTerm}`, fetcher);
+
+  return {
+    searchData: data || [],
+    isLoading: !data && !error,
+    isError: error,
+  };
+};
