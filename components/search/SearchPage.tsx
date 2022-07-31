@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { StyledButton } from "../ui";
-import { ArtistList, TrackList } from "../musicInfo";
+import { ArtistList, ArtistPage, TrackList } from "../musicInfo";
 import { useSearch } from "../../lib/hooks";
 import { helpers } from "../../styles";
 
@@ -66,6 +66,10 @@ const PositionedArtistList = styled(ArtistList)`
   flex: 1;
 `;
 
+const PositionedArtistPage = styled(ArtistPage)`
+  flex: 1;
+`;
+
 const FooterWrapper = styled.footer`
   min-height: 80px;
 `;
@@ -82,15 +86,20 @@ const Search = () => {
   const [currSearchType, setCurrSearchType] = useState(SEARCH_TYPE.SONG);
   const [offset, setOffset] = useState("0");
 
+  const [showArtist, setShowArtist] = useState(false);
+  const [artistId, setArtistId] = useState("");
+
   const { searchData, isLoading, isError } = useSearch(
-    `${searchTerm}?type=${currSearchType}&offset=${offset}`
+    `${
+      searchTerm !== "" ? searchTerm : " "
+    }?type=${currSearchType}&offset=${offset}`
   );
 
   useEffect(() => {
-    const timeOutId = setTimeout(
-      () => setSearchTerm(encodeURIComponent(currentSearch)),
-      1000
-    );
+    const timeOutId = setTimeout(() => {
+      setShowArtist(false);
+      setSearchTerm(encodeURIComponent(currentSearch));
+    }, 1000);
     return () => clearTimeout(timeOutId);
   }, [currentSearch]);
 
@@ -99,7 +108,13 @@ const Search = () => {
   };
 
   const handleSearchTypeClick = (searchType) => {
+    setShowArtist(false);
     setCurrSearchType(searchType);
+  };
+
+  const handleArtistClicked = (id) => {
+    setShowArtist(true);
+    setArtistId(id);
   };
 
   return (
@@ -137,8 +152,15 @@ const Search = () => {
         {currSearchType === SEARCH_TYPE.SONG && !isLoading && (
           <PositionedTrackList className="" items={searchData.items} />
         )}
-        {currSearchType === SEARCH_TYPE.ARTIST && !isLoading && (
-          <PositionedArtistList className="" items={searchData.items} />
+        {currSearchType === SEARCH_TYPE.ARTIST && !isLoading && !showArtist && (
+          <PositionedArtistList
+            className=""
+            items={searchData.items}
+            onArtistClicked={handleArtistClicked}
+          />
+        )}
+        {currSearchType === SEARCH_TYPE.ARTIST && !isLoading && showArtist && (
+          <PositionedArtistPage className="" id={artistId} />
         )}
         {isLoading && <div>Loading...</div>}
         <FooterWrapper>Footer!!!</FooterWrapper>

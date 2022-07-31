@@ -14,6 +14,7 @@ const ImageWrapper = styled.figure`
   aspect-ratio: 1/1;
   overflow: hidden;
   margin-bottom: var(--spacing-sm);
+  cursor: pointer;
 `;
 
 const ArtistImage = styled.img`
@@ -32,13 +33,17 @@ const ImagePlaceholder = styled.div`
 
 const ArtistText = styled.h3`
   text-align: center;
+  cursor: pointer;
 `;
 
 const Artist = (props) => {
-  const { name, imageSrc } = props;
+  const { name, imageSrc, id, onArtistClicked } = props;
+  const handleClick = () => {
+    onArtistClicked(id);
+  };
   return (
     <Wrapper>
-      <ImageWrapper>
+      <ImageWrapper onClick={handleClick}>
         {imageSrc !== "" && <ArtistImage src={imageSrc} />}
         {imageSrc === "" && (
           <ImagePlaceholder>

@@ -20,3 +20,13 @@ export const useSearch = (SearchTerm) => {
     isError: error,
   };
 };
+
+export const useArtistId = (artistId) => {
+  const { data, error } = useSWR(`/artists/${artistId}`, fetcher);
+
+  return {
+    artist: data || [],
+    isLoading: !data && !error,
+    isError: error,
+  };
+};
