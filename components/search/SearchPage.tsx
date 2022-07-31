@@ -1,9 +1,10 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { StyledButton } from "../ui";
 import { TrackList } from "../musicInfo";
 import { useSearch } from "../../lib/hooks";
+import { helpers } from "../../styles";
 
 const Wrapper = styled.div`
   display: flex;
@@ -54,25 +55,7 @@ const SearchListWrapper = styled.div`
   flex: 1;
   padding: var(--spacing-sm);
 
-  /* width */
-  ::-webkit-scrollbar {
-    width: 10px;
-  }
-
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background: var(--color-grey-900);
-  }
-
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: var(--color-text-subdued);
-  }
-
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #555;
-  }
+  ${helpers.spotifySearchBar}
 `;
 
 const PositionedTrackList = styled(TrackList)`
@@ -83,43 +66,74 @@ const FooterWrapper = styled.footer`
   min-height: 80px;
 `;
 
+const SEARCH_TYPE = {
+  SONG: "song",
+  ARTIST: "artist",
+  ALBUM: "album",
+};
+
 const Search = () => {
-  const [currentSearch, setCurrentSearch] = useState("dreamcatcher");
+  const [currentSearch, setCurrentSearch] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [currSearchType, setCurrSearchType] = useState(SEARCH_TYPE.SONG);
   const [offset, setOffset] = useState("0");
 
   const { searchData, isLoading, isError } = useSearch(
     `${searchTerm}?type=track&offset=${offset}`
   );
 
-  const handleUpdateSearchData = () => {
-    setSearchTerm(currentSearch);
-  };
+  useEffect(() => {
+    const timeOutId = setTimeout(
+      () => setSearchTerm(encodeURIComponent(currentSearch)),
+      1000
+    );
+    return () => clearTimeout(timeOutId);
+  }, [currentSearch]);
 
   const handleSearchBarChange = (e) => {
     setCurrentSearch(e.target.value);
   };
 
-  console.log(searchData);
+  const handleSearchTypeClick = (searchType) => {
+    setCurrSearchType(searchType);
+  };
+
   return (
     <Wrapper>
       <SearchBarWrapper>
         <SearchBar
           type="text"
-          placeholder="Search..."
+          placeholder="Search Spotify..."
           value={currentSearch}
           onChange={handleSearchBarChange}
-          onBlur={handleUpdateSearchData}
         />
         <CloseIcon size="24px" />
       </SearchBarWrapper>
       <HeaderButtonWrapper>
-        <StyledButton state="filled">Song</StyledButton>
-        <StyledButton state="outline">Artist</StyledButton>
-        <StyledButton state="outline">Album</StyledButton>
+        <StyledButton
+          state={currSearchType === SEARCH_TYPE.SONG ? "filled" : "outline"}
+          onClick={() => handleSearchTypeClick(SEARCH_TYPE.SONG)}
+        >
+          Song
+        </StyledButton>
+        <StyledButton
+          state={currSearchType === SEARCH_TYPE.ARTIST ? "filled" : "outline"}
+          onClick={() => handleSearchTypeClick(SEARCH_TYPE.ARTIST)}
+        >
+          Artist
+        </StyledButton>
+        <StyledButton
+          state={currSearchType === SEARCH_TYPE.ALBUM ? "filled" : "outline"}
+          onClick={() => handleSearchTypeClick(SEARCH_TYPE.ALBUM)}
+        >
+          Album
+        </StyledButton>
       </HeaderButtonWrapper>
       <SearchListWrapper>
-        <PositionedTrackList className="" items={searchData.items} />
+        {currSearchType === SEARCH_TYPE.SONG && !isLoading && (
+          <PositionedTrackList className="" items={searchData.items} />
+        )}
+        {isLoading && <div>Loading...</div>}
         <FooterWrapper>Footer!!!</FooterWrapper>
       </SearchListWrapper>
     </Wrapper>

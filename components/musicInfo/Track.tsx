@@ -8,7 +8,7 @@ const Wrapper = styled.div`
 `;
 
 const ImageWrapper = styled.figure`
-  background-color: green;
+  background-color: black;
   width: 50px;
   height: 50px;
 `;

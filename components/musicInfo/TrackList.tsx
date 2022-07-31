@@ -13,6 +13,7 @@ const TrackList = ({ className, items }) => {
         <Track
           key={item.id}
           name={item.name}
+          // Need to update artists to use all artists
           artists={item.artists[0].name}
           albumImage={item.albumImages[1].url}
         />

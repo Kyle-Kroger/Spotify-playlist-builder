@@ -5,6 +5,7 @@ const StandardButton = styled.button`
   font-size: var(--fz-sm);
   color: white;
   padding: 6px var(--spacing-md);
+  cursor: pointer;
 `;
 
 const OutlineButton = styled(StandardButton)`
@@ -17,16 +18,28 @@ const FilledButton = styled(StandardButton)`
   background-color: var(--color-spotify-green);
 `;
 
-const StyledButton = ({ state, children }) => {
+const StyledButton = ({ state, onClick, children }) => {
   if (state === "outline") {
-    return <OutlineButton type="button">{children}</OutlineButton>;
+    return (
+      <OutlineButton type="button" onClick={onClick}>
+        {children}
+      </OutlineButton>
+    );
   }
 
   if (state === "filled") {
-    return <FilledButton type="button">{children}</FilledButton>;
+    return (
+      <FilledButton type="button" onClick={onClick}>
+        {children}
+      </FilledButton>
+    );
   }
 
-  return <StandardButton type="button">{children}</StandardButton>;
+  return (
+    <StandardButton type="button" onClick={onClick}>
+      {children}
+    </StandardButton>
+  );
 };
 
 export default StyledButton;

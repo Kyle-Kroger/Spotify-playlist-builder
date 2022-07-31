@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 import { BsSearch, BsTag } from "react-icons/bs";
 import { CgPlayListAdd } from "react-icons/cg";
+import { helpers } from "../../styles";
 
 const Wrapper = styled.div`
   display: flex;
@@ -43,25 +44,7 @@ const PlaylistWrapper = styled.ul`
   font-weight: 600;
   color: var(--color-text-subdued);
 
-  /* width */
-  ::-webkit-scrollbar {
-    width: 10px;
-  }
-
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background: var(--color-grey-900);
-  }
-
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: var(--color-text-subdued);
-  }
-
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #555;
-  }
+  ${helpers.spotifySearchBar}
 `;
 
 const Playlist = styled.li`
