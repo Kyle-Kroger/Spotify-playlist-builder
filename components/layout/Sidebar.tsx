@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { QUERIES } from "../../styles";
+import { SearchPage } from "../search";
 
 const Wrapper = styled.div`
   background-color: var(--color-grey-600);
@@ -11,7 +12,10 @@ const Wrapper = styled.div`
 `;
 
 const Sidebar = ({ className }) => {
-  return <Wrapper className={className}>Sidebar</Wrapper>;
+  const isSearching = true;
+  return (
+    <Wrapper className={className}>{isSearching && <SearchPage />}</Wrapper>
+  );
 };
 
 export default Sidebar;

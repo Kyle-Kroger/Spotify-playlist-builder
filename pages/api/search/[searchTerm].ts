@@ -25,6 +25,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       throw new Error("Please enter a type of either track, artist or album");
     }
 
+    if (searchTerm === " ") {
+      throw new Error("Please enter in a search term");
+    }
+
     const data = await spotifyFetcher(searchEndpoint, token);
     const key = `${type}s`;
     let items = [];
@@ -74,8 +78,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       prev: data[key].previous,
     };
   } catch (err) {
-    console.log(err);
+    console.warn(err.message);
   }
-
   res.send(searchResults);
 };

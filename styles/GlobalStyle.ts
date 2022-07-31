@@ -18,6 +18,7 @@ const GlobalStyle = createGlobalStyle`
 
   h3 {
     font-size: var(--fz-lg);
+    font-weight: 600;
   }
 
   body {

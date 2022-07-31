@@ -4,8 +4,12 @@ const variables = css`
   :root {
     /* Colors */
     --color-grey-600: #242424;
+    --color-grey-800: #1d1c1c;
     --color-grey-900: #0d0d0d;
     --color-black: #000000;
+
+    --color-spotify-green: #1db954;
+    --color-spotify-outline: #2dd468;
 
     --color-text-subdued: #a7a7a7;
 

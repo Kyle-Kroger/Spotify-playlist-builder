@@ -10,3 +10,23 @@ export const useUserPlaylists = () => {
     isError: error,
   };
 };
+
+export const useSearch = (SearchTerm) => {
+  const { data, error } = useSWR(`/search/${SearchTerm}`, fetcher);
+
+  return {
+    searchData: data || [],
+    isLoading: !data && !error,
+    isError: error,
+  };
+};
+
+export const useArtistId = (artistId) => {
+  const { data, error } = useSWR(`/artists/${artistId}`, fetcher);
+
+  return {
+    artist: data || [],
+    isLoading: !data && !error,
+    isError: error,
+  };
+};
