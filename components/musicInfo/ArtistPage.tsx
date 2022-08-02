@@ -27,6 +27,9 @@ const ArtistPage = (props) => {
           imageSrc={image.url}
           onArtistClicked={handleArtistClicked}
         />
+        // open on spotify button
+        // show artist popular tracks or albums button
+        // component of tracklist or album list based on button above
       )}
     </Wrapper>
   );

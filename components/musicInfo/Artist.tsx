@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { StyledImage } from "../ui";
 
 const Wrapper = styled.div`
   display: flex;
@@ -6,29 +7,6 @@ const Wrapper = styled.div`
   width: 50%;
   padding: var(--spacing-md);
   align-items: center;
-`;
-
-const ImageWrapper = styled.figure`
-  border-radius: 50%;
-  width: 90%;
-  aspect-ratio: 1/1;
-  overflow: hidden;
-  margin-bottom: var(--spacing-sm);
-  cursor: pointer;
-`;
-
-const ArtistImage = styled.img`
-  width: 100%;
-  height: 100%;
-`;
-
-const ImagePlaceholder = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  background-color: var(--color-black);
 `;
 
 const ArtistText = styled.h3`
@@ -43,14 +21,13 @@ const Artist = (props) => {
   };
   return (
     <Wrapper>
-      <ImageWrapper onClick={handleClick}>
-        {imageSrc !== "" && <ArtistImage src={imageSrc} />}
-        {imageSrc === "" && (
-          <ImagePlaceholder>
-            <h3>No Image</h3>
-          </ImagePlaceholder>
-        )}
-      </ImageWrapper>
+      <StyledImage
+        src={imageSrc}
+        alt="name"
+        isRound
+        width="90%"
+        handleClick={handleClick}
+      />
       <ArtistText>{name}</ArtistText>
     </Wrapper>
   );
