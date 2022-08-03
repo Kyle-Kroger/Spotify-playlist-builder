@@ -15,6 +15,7 @@ module.exports = {
     sourceType: "module",
   },
   rules: {
+    "react/require-default-props": 0,
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
     "react/jsx-props-no-spreading": "off",

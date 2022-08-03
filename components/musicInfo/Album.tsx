@@ -9,7 +9,7 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-const ArtistText = styled.h3`
+const AlbumText = styled.div`
   padding-top: var(--spacing-sm);
   // margin auto centers the text in the remaining space
   margin-top: auto;
@@ -18,23 +18,18 @@ const ArtistText = styled.h3`
   cursor: pointer;
 `;
 
-const Artist = (props) => {
-  const { name, imageSrc, id, onArtistClicked } = props;
-  const handleClick = () => {
-    onArtistClicked(id);
-  };
+const Album = (props) => {
+  const { name, id, artists, showArtistName, imageSrc } = props;
+
   return (
     <Wrapper>
-      <StyledImage
-        src={imageSrc}
-        alt="name"
-        isRound
-        width="90%"
-        handleClick={handleClick}
-      />
-      <ArtistText>{name}</ArtistText>
+      <StyledImage src={imageSrc} alt={name} width="90%" />
+      <AlbumText>
+        <h3>{name}</h3>
+        {showArtistName && <p>{artists}</p>}
+      </AlbumText>
     </Wrapper>
   );
 };
 
-export default Artist;
+export default Album;

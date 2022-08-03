@@ -1,10 +1,14 @@
 import styled from "styled-components";
 import { combineArtists } from "../../lib/spotify";
-import Track from "./Track";
+import Album from "./Album";
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+`;
 
-const TrackList = ({ className, items }) => {
+const AlbumList = ({ showArtistName, items, className }) => {
   if (!items) {
     items = [];
   }
@@ -13,11 +17,13 @@ const TrackList = ({ className, items }) => {
       {items.map((item) => {
         const artists = combineArtists(item.artists);
         return (
-          <Track
+          <Album
             key={item.id}
+            id={item.id}
             name={item.name}
             artists={artists}
-            albumImage={item.albumImages[1].url}
+            showArtistName={showArtistName}
+            imageSrc={item.images[0].url}
           />
         );
       })}
@@ -25,4 +31,4 @@ const TrackList = ({ className, items }) => {
   );
 };
 
-export default TrackList;
+export default AlbumList;
