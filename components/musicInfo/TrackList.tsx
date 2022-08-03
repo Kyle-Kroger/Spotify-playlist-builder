@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { combineArtists } from "../../lib/spotify";
 import Track from "./Track";
 
 const Wrapper = styled.div``;
@@ -9,15 +10,17 @@ const TrackList = ({ className, items }) => {
   }
   return (
     <Wrapper className={className}>
-      {items.map((item) => (
-        <Track
-          key={item.id}
-          name={item.name}
-          // Need to update artists to use all artists
-          artists={item.artists[0].name}
-          albumImage={item.albumImages[1].url}
-        />
-      ))}
+      {items.map((item) => {
+        const artists = combineArtists(item.artists);
+        return (
+          <Track
+            key={item.id}
+            name={item.name}
+            artists={artists}
+            albumImage={item.albumImages[1].url}
+          />
+        );
+      })}
     </Wrapper>
   );
 };

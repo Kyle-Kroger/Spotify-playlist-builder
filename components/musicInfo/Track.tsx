@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { BsPlusCircle } from "react-icons/bs";
+import { StyledImage } from "../ui";
 
 const Wrapper = styled.div`
   display: flex;
@@ -36,9 +37,7 @@ const Track = (props) => {
   const { name, artists, albumImage } = props;
   return (
     <Wrapper>
-      <ImageWrapper>
-        <AlbumIcon src={albumImage} alt={artists} />
-      </ImageWrapper>
+      <StyledImage src={albumImage} alt={artists} width="50px" height="50px" />
       <TextWrapper>
         <TrackTitle>{name}</TrackTitle>
         <ArtistName>{artists}</ArtistName>

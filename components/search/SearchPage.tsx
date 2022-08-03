@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { StyledButton } from "../ui";
-import { ArtistList, ArtistPage, TrackList } from "../musicInfo";
+import { AlbumList, ArtistList, ArtistPage, TrackList } from "../musicInfo";
 import { useSearch } from "../../lib/hooks";
 import { helpers } from "../../styles";
 
@@ -54,6 +54,7 @@ const SearchListWrapper = styled.div`
   overflow: auto;
   flex: 1;
   padding: var(--spacing-sm);
+  padding-bottom: 0;
 
   ${helpers.spotifySearchBar}
 `;
@@ -70,8 +71,24 @@ const PositionedArtistPage = styled(ArtistPage)`
   flex: 1;
 `;
 
+const PositionedAlbumList = styled(AlbumList)`
+  flex: 1;
+`;
+
+const Loading = styled.div`
+  flex: 1;
+`;
+
 const FooterWrapper = styled.footer`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   min-height: 80px;
+  // border-top: 1px solid white;
+  background-color: var(--color-grey-800);
+  margin-left: -12px;
+  margin-right: -12px;
+  padding: var(--spacing-lg);
 `;
 
 const SEARCH_TYPE = {
@@ -86,8 +103,11 @@ const Search = () => {
   const [currSearchType, setCurrSearchType] = useState(SEARCH_TYPE.SONG);
   const [offset, setOffset] = useState("0");
 
-  const [showArtist, setShowArtist] = useState(false);
+  const [showSubPage, setShowSubPage] = useState(false);
   const [artistId, setArtistId] = useState("");
+  const [albumId, setAlbumId] = useState("");
+
+  const searchListTopRef = useRef(null);
 
   const { searchData, isLoading, isError } = useSearch(
     `${
@@ -97,7 +117,8 @@ const Search = () => {
 
   useEffect(() => {
     const timeOutId = setTimeout(() => {
-      setShowArtist(false);
+      setShowSubPage(false);
+      setOffset("0");
       setSearchTerm(encodeURIComponent(currentSearch));
     }, 1000);
     return () => clearTimeout(timeOutId);
@@ -108,12 +129,13 @@ const Search = () => {
   };
 
   const handleSearchTypeClick = (searchType) => {
-    setShowArtist(false);
+    setShowSubPage(false);
+    setOffset("0");
     setCurrSearchType(searchType);
   };
 
   const handleArtistClicked = (id) => {
-    setShowArtist(true);
+    setShowSubPage(true);
     setArtistId(id);
   };
 
@@ -149,21 +171,52 @@ const Search = () => {
         </StyledButton>
       </HeaderButtonWrapper>
       <SearchListWrapper>
+        <div ref={searchListTopRef} />
         {currSearchType === SEARCH_TYPE.SONG && !isLoading && (
           <PositionedTrackList className="" items={searchData.items} />
         )}
-        {currSearchType === SEARCH_TYPE.ARTIST && !isLoading && !showArtist && (
-          <PositionedArtistList
-            className=""
-            items={searchData.items}
-            onArtistClicked={handleArtistClicked}
-          />
-        )}
-        {currSearchType === SEARCH_TYPE.ARTIST && !isLoading && showArtist && (
+        {currSearchType === SEARCH_TYPE.ARTIST &&
+          !isLoading &&
+          !showSubPage && (
+            <PositionedArtistList
+              className=""
+              items={searchData.items}
+              onArtistClicked={handleArtistClicked}
+            />
+          )}
+        {currSearchType === SEARCH_TYPE.ARTIST && !isLoading && showSubPage && (
           <PositionedArtistPage className="" id={artistId} />
         )}
-        {isLoading && <div>Loading...</div>}
-        <FooterWrapper>Footer!!!</FooterWrapper>
+        {currSearchType === SEARCH_TYPE.ALBUM && !isLoading && !showSubPage && (
+          <PositionedAlbumList
+            className=""
+            items={searchData.items}
+            showArtistName
+          />
+        )}
+        {isLoading && <Loading>Loading...</Loading>}
+        <FooterWrapper>
+          <StyledButton
+            state={searchData.prev ? "filled" : "outline"}
+            isDisabled={!searchData.prev}
+            onClick={() => {
+              setOffset((prev) => (+prev - 50).toString());
+              searchListTopRef.current.scrollIntoView();
+            }}
+          >
+            Last Page
+          </StyledButton>
+          <StyledButton
+            state={searchData.next ? "filled" : "outline"}
+            isDisabled={!searchData.next}
+            onClick={() => {
+              setOffset((prev) => (+prev + 50).toString());
+              searchListTopRef.current.scrollIntoView();
+            }}
+          >
+            Next Page
+          </StyledButton>
+        </FooterWrapper>
       </SearchListWrapper>
     </Wrapper>
   );

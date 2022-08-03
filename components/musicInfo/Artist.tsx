@@ -10,6 +10,10 @@ const Wrapper = styled.div`
 `;
 
 const ArtistText = styled.h3`
+  padding-top: var(--spacing-sm);
+  // margin auto centers the text in the remaining space
+  margin-top: auto;
+  margin-bottom: auto;
   text-align: center;
   cursor: pointer;
 `;

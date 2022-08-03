@@ -10,7 +10,6 @@ const ImageWrapper = styled.figure<{
   height: ${(p) => (p.height ? p.height : "auto")};
   aspect-ratio: 1/1;
   overflow: hidden;
-  margin-bottom: var(--spacing-sm);
   cursor: pointer;
 `;
 
@@ -28,7 +27,7 @@ const ImagePlaceholder = styled.div`
   background-color: var(--color-black);
 `;
 const StyledImage = (props) => {
-  const { src, alt, width, height, isRound, handleClick } = props;
+  const { src, alt, width, height, isRound, handleClick, className } = props;
 
   return (
     <ImageWrapper
@@ -36,6 +35,7 @@ const StyledImage = (props) => {
       width={width}
       height={height}
       isRound={isRound}
+      className={className}
     >
       {src !== "" && <StyledImg src={src} alt={alt} />}
       {src === "" && (

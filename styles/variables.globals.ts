@@ -3,6 +3,7 @@ import { css } from "styled-components";
 const variables = css`
   :root {
     /* Colors */
+    --color-grey-300: #797979;
     --color-grey-600: #242424;
     --color-grey-800: #1d1c1c;
     --color-grey-900: #0d0d0d;
@@ -55,7 +56,6 @@ const variables = css`
     --color-tertiary-900: hsl(198, 83%, 12%);
 
     --color-grey-100: hsl(240, 0%, 84%);
-    --color-grey-300: hsl(240, 5%, 50%);
     --color-grey-500: hsl(240, 8%, 30%);
     --color-grey-700: hsl(240, 10%, 12%);
 
