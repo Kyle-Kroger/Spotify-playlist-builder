@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useState, useEffect, useRef } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { StyledButton } from "../ui";
-import { AlbumList, ArtistList, ArtistPage, TrackList } from "../musicInfo";
+import { ArtistPage, MusicItemList, TrackList } from "../musicInfo";
 import { useSearch } from "../../lib/hooks";
 import { helpers } from "../../styles";
 
@@ -63,15 +63,11 @@ const PositionedTrackList = styled(TrackList)`
   flex: 1;
 `;
 
-const PositionedArtistList = styled(ArtistList)`
-  flex: 1;
-`;
-
 const PositionedArtistPage = styled(ArtistPage)`
   flex: 1;
 `;
 
-const PositionedAlbumList = styled(AlbumList)`
+const PositionedMusicList = styled(MusicItemList)`
   flex: 1;
 `;
 
@@ -139,6 +135,11 @@ const Search = () => {
     setArtistId(id);
   };
 
+  const handleAlbumClicked = (id) => {
+    setShowSubPage(true);
+    setAlbumId(id);
+  };
+
   return (
     <Wrapper>
       <SearchBarWrapper>
@@ -178,40 +179,46 @@ const Search = () => {
         {currSearchType === SEARCH_TYPE.ARTIST &&
           !isLoading &&
           !showSubPage && (
-            <PositionedArtistList
+            <PositionedMusicList
               className=""
               items={searchData.items}
-              onArtistClicked={handleArtistClicked}
+              isRound
+              onClick={handleArtistClicked}
             />
           )}
         {currSearchType === SEARCH_TYPE.ARTIST && !isLoading && showSubPage && (
           <PositionedArtistPage className="" id={artistId} />
         )}
         {currSearchType === SEARCH_TYPE.ALBUM && !isLoading && !showSubPage && (
-          <PositionedAlbumList
+          <PositionedMusicList
             className=""
             items={searchData.items}
-            showArtistName
+            hasSubtitle
+            onClick={handleAlbumClicked}
           />
         )}
         {isLoading && <Loading>Loading...</Loading>}
         <FooterWrapper>
           <StyledButton
-            state={searchData.prev ? "filled" : "outline"}
-            isDisabled={!searchData.prev}
+            state={searchData.prev && !showSubPage ? "filled" : "outline"}
+            isDisabled={!searchData.prev || showSubPage}
             onClick={() => {
               setOffset((prev) => (+prev - 50).toString());
-              searchListTopRef.current.scrollIntoView();
+              searchListTopRef.current.scrollIntoView({
+                behavior: "smooth",
+              });
             }}
           >
             Last Page
           </StyledButton>
           <StyledButton
-            state={searchData.next ? "filled" : "outline"}
-            isDisabled={!searchData.next}
+            state={searchData.next && !showSubPage ? "filled" : "outline"}
+            isDisabled={!searchData.next || showSubPage}
             onClick={() => {
               setOffset((prev) => (+prev + 50).toString());
-              searchListTopRef.current.scrollIntoView();
+              searchListTopRef.current.scrollIntoView({
+                behavior: "smooth",
+              });
             }}
           >
             Next Page

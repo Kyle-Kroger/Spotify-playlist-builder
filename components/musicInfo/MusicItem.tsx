@@ -1,4 +1,3 @@
-// unneeded
 import styled from "styled-components";
 import { StyledImage } from "../ui";
 
@@ -10,7 +9,7 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-const ArtistText = styled.h3`
+const Text = styled.h3`
   padding-top: var(--spacing-sm);
   // margin auto centers the text in the remaining space
   margin-top: auto;
@@ -19,23 +18,26 @@ const ArtistText = styled.h3`
   cursor: pointer;
 `;
 
-const Artist = (props) => {
-  const { name, imageSrc, id, onArtistClicked } = props;
+const MusicItem = (props) => {
+  const { title, subtitle = "", isRound, imageSrc, id, onClick } = props;
   const handleClick = () => {
-    onArtistClicked(id);
+    onClick(id);
   };
   return (
     <Wrapper>
       <StyledImage
         src={imageSrc}
-        alt="name"
-        isRound
+        alt={title}
+        isRound={isRound}
         width="90%"
         handleClick={handleClick}
       />
-      <ArtistText>{name}</ArtistText>
+      <Text>
+        <h3>{title}</h3>
+        {subtitle !== "" && <p>{subtitle}</p>}
+      </Text>
     </Wrapper>
   );
 };
 
-export default Artist;
+export default MusicItem;
