@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useArtistId } from "../../lib/hooks";
 import Artist from "./Artist";
+import MusicItem from "./MusicItem";
 import MusicItemList from "./MusicItemList";
 
 const Wrapper = styled.div`
@@ -27,11 +28,13 @@ const ArtistPage = (props) => {
     <Wrapper className={className}>
       {!isLoading && (
         <>
-          <Artist
+          <MusicItem
             key={id}
-            name={artist.name}
+            title={artist.name}
             imageSrc={image.url}
-            onArtistClicked={handleArtistClicked}
+            isRound
+            width="70%"
+            onClick={handleArtistClicked}
           />
           <MusicItemList
             items={artist.albums}

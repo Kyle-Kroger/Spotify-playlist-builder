@@ -28,7 +28,6 @@ module.exports = {
     ],
     "import/prefer-default-export": "off",
     "no-param-reassign": "off",
-    "no-unused-vars": "warn",
     "import/extensions": [
       "error",
       "ignorePackages",
@@ -42,6 +41,8 @@ module.exports = {
     "prefer-arrow-callback": "off",
     "no-shadow": "off",
     "@typescript-eslint/no-shadow": "error",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": ["warn"],
     "react/jsx-filename-extension": "off",
     "react/function-component-definition": [
       "error",

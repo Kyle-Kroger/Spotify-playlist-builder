@@ -157,7 +157,11 @@ const Search = () => {
           value={currentSearch}
           onChange={handleSearchBarChange}
         />
-        <CloseIcon size="24px" />
+        <CloseIcon
+          size="24px"
+          style={{ cursor: "pointer" }}
+          onClick={() => setCurrentSearch("")}
+        />
       </SearchBarWrapper>
       <HeaderButtonWrapper>
         <StyledButton

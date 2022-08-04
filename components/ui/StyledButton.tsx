@@ -19,7 +19,6 @@ const OutlineButton = styled(StandardButton)`
 `;
 
 const FilledButton = styled(StandardButton)`
-  // color: ${(p) => (p.isDisabled ? "var(--color-grey-300)" : "Black")};
   font-weight: 600;
   border: 2px solid var(--color-spotify-outline);
   background-color: var(--color-spotify-green);
