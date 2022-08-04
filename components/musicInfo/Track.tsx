@@ -8,20 +8,13 @@ const Wrapper = styled.div`
   margin-bottom: var(--spacing-sm);
 `;
 
-const ImageWrapper = styled.figure`
-  background-color: black;
-  width: 50px;
-  height: 50px;
-`;
-
-const AlbumIcon = styled.img`
-  width: 100%;
-  height: 100%;
-`;
-
 const TextWrapper = styled.div`
   flex: 1;
   padding: 0 var(--spacing-md);
+
+  p {
+    margin-top: 4px;
+  }
 `;
 
 const TrackTitle = styled.h3``;
@@ -33,11 +26,38 @@ const AddIcon = styled(BsPlusCircle)`
   font-size: 32px;
 `;
 
+const IndexWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 50px;
+`;
+
+const Index = styled.p`
+  font-size: 24px;
+`;
+
 const Track = (props) => {
-  const { name, artists, albumImage } = props;
+  const { index, id, name, artists, image, showImage = false, onClick } = props;
   return (
     <Wrapper>
-      <StyledImage src={albumImage} alt={artists} width="50px" height="50px" />
+      {showImage && (
+        <StyledImage
+          src={image}
+          alt={artists}
+          width="50px"
+          height="50px"
+          handleClick={() => {
+            onClick(id);
+          }}
+        />
+      )}
+      {!showImage && (
+        <IndexWrapper>
+          <Index>{+index + 1}</Index>
+        </IndexWrapper>
+      )}
       <TextWrapper>
         <TrackTitle>{name}</TrackTitle>
         <ArtistName>{artists}</ArtistName>

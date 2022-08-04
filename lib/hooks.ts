@@ -21,11 +21,21 @@ export const useSearch = (SearchTerm) => {
   };
 };
 
-export const useArtistId = (artistId) => {
-  const { data, error } = useSWR(`/artists/${artistId}`, fetcher);
+export const useArtistId = (id) => {
+  const { data, error } = useSWR(`/artists/${id}`, fetcher);
 
   return {
     artist: data || [],
+    isLoading: !data && !error,
+    isError: error,
+  };
+};
+
+export const useAlbumId = (id) => {
+  const { data, error } = useSWR(`/albums/${id}`, fetcher);
+
+  return {
+    album: data || [],
     isLoading: !data && !error,
     isError: error,
   };

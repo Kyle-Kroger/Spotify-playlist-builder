@@ -2,10 +2,10 @@
 import styled from "styled-components";
 import { StyledImage } from "../ui";
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ width: string }>`
   display: flex;
   flex-direction: column;
-  width: 50%;
+  width: ${(p) => p.width};
   padding: var(--spacing-md);
   align-items: center;
 `;
@@ -20,10 +20,10 @@ const AlbumText = styled.div`
 `;
 
 const Album = (props) => {
-  const { name, id, artists, showArtistName, imageSrc } = props;
+  const { name, id, artists, showArtistName, imageSrc, width = "50%" } = props;
 
   return (
-    <Wrapper>
+    <Wrapper width={width}>
       <StyledImage src={imageSrc} alt={name} width="90%" />
       <AlbumText>
         <h3>{name}</h3>

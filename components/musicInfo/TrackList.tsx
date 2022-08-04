@@ -4,20 +4,24 @@ import Track from "./Track";
 
 const Wrapper = styled.div``;
 
-const TrackList = ({ className, items }) => {
+const TrackList = ({ className, items, showImage = false, onClick }) => {
   if (!items) {
     items = [];
   }
   return (
     <Wrapper className={className}>
-      {items.map((item) => {
+      {items.map((item, i) => {
         const artists = combineArtists(item.artists);
         return (
           <Track
             key={item.id}
+            index={i}
+            id={item.albumId}
             name={item.name}
             artists={artists}
-            albumImage={item.albumImages[1].url}
+            image={item.images[0].url}
+            showImage={showImage}
+            onClick={onClick}
           />
         );
       })}

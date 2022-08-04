@@ -17,7 +17,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   h3 {
-    font-size: var(--fz-lg);
+    font-size: var(--fz-md);
     font-weight: 600;
   }
 

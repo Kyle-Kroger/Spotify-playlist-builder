@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useState, useEffect, useRef } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { StyledButton } from "../ui";
-import { ArtistPage, MusicItemList, TrackList } from "../musicInfo";
+import { AlbumPage, ArtistPage, MusicItemList, TrackList } from "../musicInfo";
 import { useSearch } from "../../lib/hooks";
 import { helpers } from "../../styles";
 
@@ -67,6 +67,10 @@ const PositionedArtistPage = styled(ArtistPage)`
   flex: 1;
 `;
 
+const PositionedAlbumPage = styled(AlbumPage)`
+  flex: 1;
+`;
+
 const PositionedMusicList = styled(MusicItemList)`
   flex: 1;
 `;
@@ -128,6 +132,9 @@ const Search = () => {
     setShowSubPage(false);
     setOffset("0");
     setCurrSearchType(searchType);
+    searchListTopRef.current.scrollIntoView({
+      behavior: "smooth",
+    });
   };
 
   const handleArtistClicked = (id) => {
@@ -138,6 +145,7 @@ const Search = () => {
   const handleAlbumClicked = (id) => {
     setShowSubPage(true);
     setAlbumId(id);
+    setCurrSearchType(SEARCH_TYPE.ALBUM);
   };
 
   return (
@@ -174,7 +182,12 @@ const Search = () => {
       <SearchListWrapper>
         <div ref={searchListTopRef} />
         {currSearchType === SEARCH_TYPE.SONG && !isLoading && (
-          <PositionedTrackList className="" items={searchData.items} />
+          <PositionedTrackList
+            className=""
+            items={searchData.items}
+            showImage
+            onClick={handleAlbumClicked}
+          />
         )}
         {currSearchType === SEARCH_TYPE.ARTIST &&
           !isLoading &&
@@ -187,7 +200,11 @@ const Search = () => {
             />
           )}
         {currSearchType === SEARCH_TYPE.ARTIST && !isLoading && showSubPage && (
-          <PositionedArtistPage className="" id={artistId} />
+          <PositionedArtistPage
+            className=""
+            id={artistId}
+            onAlbumClick={handleAlbumClicked}
+          />
         )}
         {currSearchType === SEARCH_TYPE.ALBUM && !isLoading && !showSubPage && (
           <PositionedMusicList
@@ -196,6 +213,9 @@ const Search = () => {
             hasSubtitle
             onClick={handleAlbumClicked}
           />
+        )}
+        {currSearchType === SEARCH_TYPE.ALBUM && !isLoading && showSubPage && (
+          <PositionedAlbumPage className="" id={albumId} />
         )}
         {isLoading && <Loading>Loading...</Loading>}
         <FooterWrapper>
