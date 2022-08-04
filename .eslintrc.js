@@ -40,6 +40,8 @@ module.exports = {
     "consistent-return": "off",
     "arrow-body-style": "off",
     "prefer-arrow-callback": "off",
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": "error",
     "react/jsx-filename-extension": "off",
     "react/function-component-definition": [
       "error",

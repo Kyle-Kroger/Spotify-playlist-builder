@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { SIDEBAR_PAGE, usePageStateStore } from "../../lib/store";
 import { QUERIES } from "../../styles";
 import { SearchPage } from "../search";
 
@@ -12,9 +13,11 @@ const Wrapper = styled.div`
 `;
 
 const Sidebar = ({ className }) => {
-  const isSearching = true;
+  const currentPage = usePageStateStore((state) => state.currentPage);
   return (
-    <Wrapper className={className}>{isSearching && <SearchPage />}</Wrapper>
+    <Wrapper className={className}>
+      {currentPage === SIDEBAR_PAGE.SEARCH && <SearchPage />}
+    </Wrapper>
   );
 };
 

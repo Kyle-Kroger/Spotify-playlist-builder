@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { BsSearch, BsTag } from "react-icons/bs";
 import { CgPlayListAdd } from "react-icons/cg";
 import { helpers } from "../../styles";
+import { usePageStateStore, SIDEBAR_PAGE } from "../../lib/store";
 
 const Wrapper = styled.div`
   display: flex;
@@ -29,6 +30,7 @@ const NavLink = styled.li`
   display: flex;
   align-items: center;
   margin-bottom: var(--spacing-md);
+  cursor: pointer;
 `;
 
 const NavText = styled.span`
@@ -53,20 +55,25 @@ const Playlist = styled.li`
 
 const DesktopNav = (props) => {
   const { playlists } = props;
+  const setCurrentPage = usePageStateStore((state) => state.setCurrentPage);
+
   return (
     <Wrapper>
       <StyledNav>
-        <LogoHeading>Playlist Builder</LogoHeading>
+        {/* REMOVE THIS onCLICK! FOR TESTING ONLY */}
+        <LogoHeading onClick={() => setCurrentPage(SIDEBAR_PAGE.NONE)}>
+          Playlist Builder
+        </LogoHeading>
         <NavLinkList>
-          <NavLink>
+          <NavLink onClick={() => setCurrentPage(SIDEBAR_PAGE.SEARCH)}>
             <BsSearch size="28px" />
             <NavText>Search</NavText>
           </NavLink>
-          <NavLink>
+          <NavLink onClick={() => setCurrentPage(SIDEBAR_PAGE.PLAYLIST)}>
             <CgPlayListAdd size="28px" />
             <NavText>Playlists</NavText>
           </NavLink>
-          <NavLink>
+          <NavLink onClick={() => setCurrentPage(SIDEBAR_PAGE.TAGGING)}>
             <BsTag size="28px" />
             <NavText>Edit Tags</NavText>
           </NavLink>
