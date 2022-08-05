@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useArtistId } from "../../lib/hooks";
-import Artist from "./Artist";
+import { StyledButton } from "../ui";
 import MusicItem from "./MusicItem";
 import MusicItemList from "./MusicItemList";
 
@@ -8,6 +8,21 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+const MusicItemWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-grey-700);
+  margin-bottom: var(--spacing-sm);
+  // border-radius: var(--radius-small);
+  border: 2px solid var(--color-spotify-green);
+`;
+
+const PositionedButton = styled(StyledButton)`
+  margin: var(--spacing-lg) 0;
 `;
 
 const ArtistPage = (props) => {
@@ -28,14 +43,21 @@ const ArtistPage = (props) => {
     <Wrapper className={className}>
       {!isLoading && (
         <>
-          <MusicItem
-            key={id}
-            title={artist.name}
-            imageSrc={image.url}
-            isRound
-            width="70%"
-            onClick={handleArtistClicked}
-          />
+          <MusicItemWrapper>
+            <MusicItem
+              key={id}
+              title={artist.name}
+              imageSrc={image.url}
+              isRound
+              isHeading
+              width="85%"
+              onClick={handleArtistClicked}
+            />
+            <PositionedButton state="filled" onClick={() => {}} className="">
+              Open on Spotify
+            </PositionedButton>
+          </MusicItemWrapper>
+
           <MusicItemList
             items={artist.albums}
             className=""

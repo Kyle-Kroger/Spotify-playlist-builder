@@ -16,9 +16,15 @@ const Text = styled.div`
   margin-bottom: auto;
   text-align: center;
   cursor: pointer;
+`;
 
-  p {
-    margin-top: var(--spacing-xs);
+const ItemHeading = styled.div`
+  padding-bottom: var(--spacing-md);
+  text-align: center;
+  cursor: pointer;
+
+  h4 {
+    padding-top: var(--spacing-sm);
   }
 `;
 
@@ -30,22 +36,40 @@ const MusicItem = (props) => {
     imageSrc,
     id,
     width = "50%",
+    isHeading,
     onClick,
   } = props;
   const handleClick = () => {
     onClick(id);
   };
+  if (isHeading) {
+    return (
+      <Wrapper width={width}>
+        <ItemHeading>
+          <h2>{title}</h2>
+          {subtitle !== "" && <h4>{subtitle}</h4>}
+        </ItemHeading>
+        <StyledImage
+          src={imageSrc}
+          alt={title}
+          isRound={isRound}
+          width={width}
+          handleClick={handleClick}
+        />
+      </Wrapper>
+    );
+  }
   return (
     <Wrapper width={width}>
       <StyledImage
         src={imageSrc}
         alt={title}
         isRound={isRound}
-        width="90%"
+        width="95%"
         handleClick={handleClick}
       />
       <Text>
-        <h3>{title}</h3>
+        <h4>{title}</h4>
         {subtitle !== "" && <p>{subtitle}</p>}
       </Text>
     </Wrapper>

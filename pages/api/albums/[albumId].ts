@@ -28,6 +28,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       ...albumData,
       artists: albumInfo.artists,
       href: albumInfo.href,
+      externalUrl: albumInfo.external_urls.spotify,
       id: albumInfo.id,
       images: albumInfo.images,
       name: albumInfo.name,

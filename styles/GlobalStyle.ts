@@ -16,9 +16,19 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Manrope', sans-serif;
   }
 
+  h2 {
+    font-size: var(--fz-xl);
+    font-weight: 800;
+  }
+
   h3 {
     font-size: var(--fz-md);
     font-weight: 600;
+  }
+
+  h4 {
+    font-size: var(--fz-md);
+    font-weight: 500;
   }
 
   body {

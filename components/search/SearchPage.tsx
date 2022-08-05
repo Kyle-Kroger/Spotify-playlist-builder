@@ -167,18 +167,21 @@ const Search = () => {
         <StyledButton
           state={currSearchType === SEARCH_TYPE.SONG ? "filled" : "outline"}
           onClick={() => handleSearchTypeClick(SEARCH_TYPE.SONG)}
+          className=""
         >
           Song
         </StyledButton>
         <StyledButton
           state={currSearchType === SEARCH_TYPE.ARTIST ? "filled" : "outline"}
           onClick={() => handleSearchTypeClick(SEARCH_TYPE.ARTIST)}
+          className=""
         >
           Artist
         </StyledButton>
         <StyledButton
           state={currSearchType === SEARCH_TYPE.ALBUM ? "filled" : "outline"}
           onClick={() => handleSearchTypeClick(SEARCH_TYPE.ALBUM)}
+          className=""
         >
           Album
         </StyledButton>
@@ -226,6 +229,7 @@ const Search = () => {
           <StyledButton
             state={searchData.prev && !showSubPage ? "filled" : "outline"}
             isDisabled={!searchData.prev || showSubPage}
+            className=""
             onClick={() => {
               setOffset((prev) => (+prev - 50).toString());
               searchListTopRef.current.scrollIntoView({
@@ -238,6 +242,7 @@ const Search = () => {
           <StyledButton
             state={searchData.next && !showSubPage ? "filled" : "outline"}
             isDisabled={!searchData.next || showSubPage}
+            className=""
             onClick={() => {
               setOffset((prev) => (+prev + 50).toString());
               searchListTopRef.current.scrollIntoView({
