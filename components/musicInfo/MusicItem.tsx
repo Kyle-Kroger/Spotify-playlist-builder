@@ -16,6 +16,10 @@ const Text = styled.div`
   margin-bottom: auto;
   text-align: center;
   cursor: pointer;
+
+  p {
+    padding-top: var(--spacing-xs);
+  }
 `;
 
 const ItemHeading = styled.div`

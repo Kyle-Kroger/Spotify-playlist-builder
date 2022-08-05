@@ -40,12 +40,13 @@ const CloseIcon = styled(AiOutlineClose)`
   color: var(--sidebar-text-color);
 `;
 
-const HeaderButtonWrapper = styled.div`
+const HeaderButtonWrapper = styled.div<{ showSubPage: boolean }>`
   display: flex;
   justify-content: space-around;
   align-items: center;
   padding: var(--spacing-md) var(--spacing-sm);
-  background-color: var(--color-grey-800);
+  background-color: ${(p) =>
+    p.showSubPage ? "black" : "var(--color-grey-800)"};
 `;
 
 const SearchListWrapper = styled.div`
@@ -53,8 +54,7 @@ const SearchListWrapper = styled.div`
   flex-direction: column;
   overflow: auto;
   flex: 1;
-  padding: var(--spacing-sm);
-  padding-bottom: 0;
+  padding: 0 var(--spacing-sm);
 
   ${helpers.spotifySearchBar}
 `;
@@ -163,7 +163,7 @@ const Search = () => {
           onClick={() => setCurrentSearch("")}
         />
       </SearchBarWrapper>
-      <HeaderButtonWrapper>
+      <HeaderButtonWrapper showSubPage={showSubPage}>
         <StyledButton
           state={currSearchType === SEARCH_TYPE.SONG ? "filled" : "outline"}
           onClick={() => handleSearchTypeClick(SEARCH_TYPE.SONG)}
@@ -187,7 +187,7 @@ const Search = () => {
         </StyledButton>
       </HeaderButtonWrapper>
       <SearchListWrapper>
-        <div ref={searchListTopRef} />
+        <div ref={searchListTopRef} style={{ paddingBottom: "12px" }} />
         {currSearchType === SEARCH_TYPE.SONG && !isLoading && (
           <PositionedTrackList
             className=""
