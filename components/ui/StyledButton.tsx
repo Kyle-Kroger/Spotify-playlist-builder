@@ -19,7 +19,6 @@ const OutlineButton = styled(StandardButton)`
 `;
 
 const FilledButton = styled(StandardButton)`
-  // color: ${(p) => (p.isDisabled ? "var(--color-grey-300)" : "Black")};
   font-weight: 600;
   border: 2px solid var(--color-spotify-outline);
   background-color: var(--color-spotify-green);
@@ -29,6 +28,7 @@ interface Props {
   state: string;
   onClick: any;
   isDisabled?: boolean;
+  className?: any;
   children: any;
 }
 
@@ -36,11 +36,17 @@ const StyledButton = ({
   state,
   onClick,
   isDisabled = false,
+  className = "",
   children,
 }: Props) => {
   if (state === "outline") {
     return (
-      <OutlineButton type="button" onClick={onClick} isDisabled={isDisabled}>
+      <OutlineButton
+        type="button"
+        onClick={onClick}
+        isDisabled={isDisabled}
+        className={className}
+      >
         {children}
       </OutlineButton>
     );
@@ -48,14 +54,24 @@ const StyledButton = ({
 
   if (state === "filled") {
     return (
-      <FilledButton type="button" onClick={onClick} isDisabled={isDisabled}>
+      <FilledButton
+        type="button"
+        onClick={onClick}
+        isDisabled={isDisabled}
+        className={className}
+      >
         {children}
       </FilledButton>
     );
   }
 
   return (
-    <StandardButton type="button" onClick={onClick} isDisabled={isDisabled}>
+    <StandardButton
+      type="button"
+      onClick={onClick}
+      isDisabled={isDisabled}
+      className={className}
+    >
       {children}
     </StandardButton>
   );

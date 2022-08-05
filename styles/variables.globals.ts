@@ -5,6 +5,7 @@ const variables = css`
     /* Colors */
     --color-grey-300: #797979;
     --color-grey-600: #242424;
+    --color-grey-700: #202020;
     --color-grey-800: #1d1c1c;
     --color-grey-900: #0d0d0d;
     --color-black: #000000;
@@ -16,6 +17,7 @@ const variables = css`
 
     /* Gradients */
     --player-gradient: linear-gradient(180deg, #202020 0%, #111111 100%);
+    --page-gradient: linear-gradient(180deg, #000000 0%, #242424 100%);
 
     --color-primary-100: hsl(226, 47%, 80%);
     --color-primary-200: hsl(225, 40%, 67%);
@@ -54,10 +56,6 @@ const variables = css`
     --color-tertiary-700: hsl(199, 46%, 27%);
     --color-tertiary-800: hsl(200, 53%, 20%);
     --color-tertiary-900: hsl(198, 83%, 12%);
-
-    --color-grey-100: hsl(240, 0%, 84%);
-    --color-grey-500: hsl(240, 8%, 30%);
-    --color-grey-700: hsl(240, 10%, 12%);
 
     --sidebar-color: var(--color-grey-900);
     --sidebar-text-color: hsl(0, 0%, 84%);

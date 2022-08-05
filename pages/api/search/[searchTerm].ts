@@ -44,7 +44,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           artists: item.artists,
           albumId: item.album.id,
           albumName: item.album.name,
-          albumImages: item.album.images,
+          images: item.album.images,
         };
       });
     }

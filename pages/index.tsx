@@ -1,9 +1,9 @@
-import { useState } from "react";
 import styled from "styled-components";
 import { DesktopNav, Sidebar } from "../components/layout";
 import { DesktopPlayer } from "../components/player";
 import { PlaylistBuilder } from "../components/playlistBuilder";
 import { useUserPlaylists } from "../lib/hooks";
+import { SIDEBAR_PAGE, usePageStateStore } from "../lib/store";
 import { QUERIES } from "../styles";
 
 const StyledMain = styled.div`
@@ -33,14 +33,18 @@ const PositionedSidebar = styled(Sidebar)`
 
 const Home = () => {
   const { playlists, isLoading, isError } = useUserPlaylists();
-  const [showSidebar, setShowSidebar] = useState(true);
+  const currentPage = usePageStateStore((state) => state.currentPage);
   return (
     <Wrapper>
       <StyledMain>
         <DesktopNav playlists={playlists} />
         <PlaylistBuilder />
-        <SidebarPlaceholder />
-        {showSidebar && <PositionedSidebar className="" />}
+        {currentPage !== SIDEBAR_PAGE.NONE && (
+          <>
+            <SidebarPlaceholder />
+            <PositionedSidebar className="" />
+          </>
+        )}
       </StyledMain>
       <DesktopPlayer />
     </Wrapper>

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useArtistId } from "../../lib/hooks";
-import Artist from "./Artist";
+import MusicHeadingItem from "./MusicHeadingItem";
+import MusicItemList from "./MusicItemList";
 
 const Wrapper = styled.div`
   display: flex;
@@ -9,7 +10,7 @@ const Wrapper = styled.div`
 `;
 
 const ArtistPage = (props) => {
-  const { id, className } = props;
+  const { id, onAlbumClick, className } = props;
   const { artist, isLoading, isError } = useArtistId(id);
   let image = { url: "" };
   if (!isLoading) {
@@ -18,16 +19,30 @@ const ArtistPage = (props) => {
 
   const handleArtistClicked = () => {};
 
+  const handleAlbumClicked = (albumId) => {
+    onAlbumClick(albumId);
+  };
+
   return (
     <Wrapper className={className}>
       {!isLoading && (
-        <Artist
-          key={id}
-          name={artist.name}
-          imageSrc={image.url}
-          onArtistClicked={handleArtistClicked}
-        />
-        // open on spotify button
+        <>
+          <MusicHeadingItem
+            key={id}
+            id={id}
+            title={artist.name}
+            imageSrc={image.url}
+            externalUrl={artist.external_urls.spotify}
+            isRound
+            width="85%"
+            onImageClick={handleArtistClicked}
+          />
+          <MusicItemList
+            items={artist.albums}
+            className=""
+            onClick={handleAlbumClicked}
+          />
+        </>
         // show artist popular tracks or albums button
         // component of tracklist or album list based on button above
       )}

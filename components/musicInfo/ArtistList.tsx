@@ -1,3 +1,4 @@
+// unneeded?
 import styled from "styled-components";
 import Artist from "./Artist";
 

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useState, useEffect, useRef } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { StyledButton } from "../ui";
-import { AlbumList, ArtistList, ArtistPage, TrackList } from "../musicInfo";
+import { AlbumPage, ArtistPage, MusicItemList, TrackList } from "../musicInfo";
 import { useSearch } from "../../lib/hooks";
 import { helpers } from "../../styles";
 
@@ -40,12 +40,13 @@ const CloseIcon = styled(AiOutlineClose)`
   color: var(--sidebar-text-color);
 `;
 
-const HeaderButtonWrapper = styled.div`
+const HeaderButtonWrapper = styled.div<{ showSubPage: boolean }>`
   display: flex;
   justify-content: space-around;
   align-items: center;
   padding: var(--spacing-md) var(--spacing-sm);
-  background-color: var(--color-grey-800);
+  background-color: ${(p) =>
+    p.showSubPage ? "black" : "var(--color-grey-800)"};
 `;
 
 const SearchListWrapper = styled.div`
@@ -53,8 +54,7 @@ const SearchListWrapper = styled.div`
   flex-direction: column;
   overflow: auto;
   flex: 1;
-  padding: var(--spacing-sm);
-  padding-bottom: 0;
+  padding: 0 var(--spacing-sm);
 
   ${helpers.spotifySearchBar}
 `;
@@ -63,15 +63,15 @@ const PositionedTrackList = styled(TrackList)`
   flex: 1;
 `;
 
-const PositionedArtistList = styled(ArtistList)`
-  flex: 1;
-`;
-
 const PositionedArtistPage = styled(ArtistPage)`
   flex: 1;
 `;
 
-const PositionedAlbumList = styled(AlbumList)`
+const PositionedAlbumPage = styled(AlbumPage)`
+  flex: 1;
+`;
+
+const PositionedMusicList = styled(MusicItemList)`
   flex: 1;
 `;
 
@@ -132,11 +132,20 @@ const Search = () => {
     setShowSubPage(false);
     setOffset("0");
     setCurrSearchType(searchType);
+    searchListTopRef.current.scrollIntoView({
+      behavior: "smooth",
+    });
   };
 
   const handleArtistClicked = (id) => {
     setShowSubPage(true);
     setArtistId(id);
+  };
+
+  const handleAlbumClicked = (id) => {
+    setShowSubPage(true);
+    setAlbumId(id);
+    setCurrSearchType(SEARCH_TYPE.ALBUM);
   };
 
   return (
@@ -148,70 +157,97 @@ const Search = () => {
           value={currentSearch}
           onChange={handleSearchBarChange}
         />
-        <CloseIcon size="24px" />
+        <CloseIcon
+          size="24px"
+          style={{ cursor: "pointer" }}
+          onClick={() => setCurrentSearch("")}
+        />
       </SearchBarWrapper>
-      <HeaderButtonWrapper>
+      <HeaderButtonWrapper showSubPage={showSubPage}>
         <StyledButton
           state={currSearchType === SEARCH_TYPE.SONG ? "filled" : "outline"}
           onClick={() => handleSearchTypeClick(SEARCH_TYPE.SONG)}
+          className=""
         >
           Song
         </StyledButton>
         <StyledButton
           state={currSearchType === SEARCH_TYPE.ARTIST ? "filled" : "outline"}
           onClick={() => handleSearchTypeClick(SEARCH_TYPE.ARTIST)}
+          className=""
         >
           Artist
         </StyledButton>
         <StyledButton
           state={currSearchType === SEARCH_TYPE.ALBUM ? "filled" : "outline"}
           onClick={() => handleSearchTypeClick(SEARCH_TYPE.ALBUM)}
+          className=""
         >
           Album
         </StyledButton>
       </HeaderButtonWrapper>
       <SearchListWrapper>
-        <div ref={searchListTopRef} />
+        <div ref={searchListTopRef} style={{ paddingBottom: "12px" }} />
         {currSearchType === SEARCH_TYPE.SONG && !isLoading && (
-          <PositionedTrackList className="" items={searchData.items} />
+          <PositionedTrackList
+            className=""
+            items={searchData.items}
+            showImage
+            onClick={handleAlbumClicked}
+          />
         )}
         {currSearchType === SEARCH_TYPE.ARTIST &&
           !isLoading &&
           !showSubPage && (
-            <PositionedArtistList
+            <PositionedMusicList
               className=""
               items={searchData.items}
-              onArtistClicked={handleArtistClicked}
+              isRound
+              onClick={handleArtistClicked}
             />
           )}
         {currSearchType === SEARCH_TYPE.ARTIST && !isLoading && showSubPage && (
-          <PositionedArtistPage className="" id={artistId} />
+          <PositionedArtistPage
+            className=""
+            id={artistId}
+            onAlbumClick={handleAlbumClicked}
+          />
         )}
         {currSearchType === SEARCH_TYPE.ALBUM && !isLoading && !showSubPage && (
-          <PositionedAlbumList
+          <PositionedMusicList
             className=""
             items={searchData.items}
-            showArtistName
+            hasSubtitle
+            onClick={handleAlbumClicked}
           />
+        )}
+        {currSearchType === SEARCH_TYPE.ALBUM && !isLoading && showSubPage && (
+          <PositionedAlbumPage className="" id={albumId} />
         )}
         {isLoading && <Loading>Loading...</Loading>}
         <FooterWrapper>
           <StyledButton
-            state={searchData.prev ? "filled" : "outline"}
-            isDisabled={!searchData.prev}
+            state={searchData.prev && !showSubPage ? "filled" : "outline"}
+            isDisabled={!searchData.prev || showSubPage}
+            className=""
             onClick={() => {
               setOffset((prev) => (+prev - 50).toString());
-              searchListTopRef.current.scrollIntoView();
+              searchListTopRef.current.scrollIntoView({
+                behavior: "smooth",
+              });
             }}
           >
             Last Page
           </StyledButton>
           <StyledButton
-            state={searchData.next ? "filled" : "outline"}
-            isDisabled={!searchData.next}
+            state={searchData.next && !showSubPage ? "filled" : "outline"}
+            isDisabled={!searchData.next || showSubPage}
+            className=""
             onClick={() => {
               setOffset((prev) => (+prev + 50).toString());
-              searchListTopRef.current.scrollIntoView();
+              searchListTopRef.current.scrollIntoView({
+                behavior: "smooth",
+              });
             }}
           >
             Next Page
