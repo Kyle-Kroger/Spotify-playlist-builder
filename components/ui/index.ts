@@ -1,3 +1,4 @@
 export { default as StyledButton } from "./StyledButton";
 export { default as StyledImage } from "./StyledImage";
 export { default as DropdownMenu } from "./DropdownMenu";
+export { default as DropdownItem } from "./DropdownItem";

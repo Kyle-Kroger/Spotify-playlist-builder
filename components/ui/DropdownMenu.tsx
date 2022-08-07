@@ -2,9 +2,19 @@ import { motion } from "framer-motion";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  padding: var(--spacing-sm);
+  // padding: var(--spacing-md);
   background-color: var(--color-grey-800);
-  width: 300px;
+  min-width: 150px;
+  border-radius: var(--radius-small);
+  // prevent borders of list items from spilling over
+  overflow: hidden;
+`;
+
+const List = styled.ul`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const DropdownMenu = ({ children, className }) => {
@@ -17,7 +27,7 @@ const DropdownMenu = ({ children, className }) => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      {children}
+      <List>{children}</List>
     </Wrapper>
   );
 };

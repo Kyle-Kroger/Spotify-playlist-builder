@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { DropdownMenu, StyledButton } from "../ui";
+import { DropdownItem, DropdownMenu, StyledButton } from "../ui";
 
 const Wrapper = styled.div`
   background-color: var(--color-grey-900);
@@ -36,15 +36,25 @@ const SortWrapper = styled.div`
 
 const PositionedDropdown = styled(DropdownMenu)`
   position: absolute;
-  top: 36px;
+  top: 32px;
   right: 0;
 `;
 
-const PlaylistFilterSort = () => {
+const PlaylistFilterSort = ({ filterBy, onFilter }) => {
   const [showDropdown, setShowDropdown] = useState(false);
+
+  const handleDropdownItemClicked = (sortBy) => {};
+  const handleFilterChange = (e) => {
+    onFilter(e.target.value);
+  };
   return (
     <Wrapper>
-      <FilterBar placeholder="Filter Playlists..." />
+      <FilterBar
+        type="text"
+        placeholder="Filter Playlists..."
+        value={filterBy}
+        onChange={handleFilterChange}
+      />
       <SortWrapper>
         <StyledButton
           state="filled"
@@ -56,7 +66,17 @@ const PlaylistFilterSort = () => {
         </StyledButton>
         <AnimatePresence>
           {showDropdown && (
-            <PositionedDropdown className="">Test</PositionedDropdown>
+            <PositionedDropdown className="">
+              <DropdownItem onClick={handleDropdownItemClicked}>
+                Alphabetical
+              </DropdownItem>
+              <DropdownItem onClick={handleDropdownItemClicked}>
+                Recently added
+              </DropdownItem>
+              <DropdownItem onClick={handleDropdownItemClicked}>
+                Creator
+              </DropdownItem>
+            </PositionedDropdown>
           )}
         </AnimatePresence>
       </SortWrapper>
