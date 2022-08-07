@@ -9,3 +9,5 @@ export { default as AlbumPage } from "./AlbumPage";
 export { default as MusicItem } from "./MusicItem";
 export { default as MusicHeadingItem } from "./MusicHeadingItem";
 export { default as MusicItemList } from "./MusicItemList";
+export { default as AllPlaylistPage } from "./AllPlaylistPage";
+export { default as PlaylistFilterSort } from "./PlaylistFilterSort";

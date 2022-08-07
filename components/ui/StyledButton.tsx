@@ -4,7 +4,7 @@ interface ButtonProps {
   isDisabled?: boolean;
 }
 
-const StandardButton = styled.button<ButtonProps>`
+const StandardButton = styled.a<ButtonProps>`
   border-radius: var(--radius-pill);
   font-size: var(--fz-sm);
   color: ${(p) => (p.isDisabled ? "var(--color-grey-300)" : "white")};
