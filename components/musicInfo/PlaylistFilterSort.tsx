@@ -1,7 +1,9 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styled from "styled-components";
+import { FiArrowDown, FiArrowUp } from "react-icons/fi";
 import { DropdownItem, DropdownMenu, StyledButton } from "../ui";
+import { SORT_ORDER } from "../../lib/spotify";
 
 const Wrapper = styled.div`
   background-color: var(--color-grey-900);
@@ -40,10 +42,13 @@ const PositionedDropdown = styled(DropdownMenu)`
   right: 0;
 `;
 
-const PlaylistFilterSort = ({ filterBy, onFilter }) => {
+const PlaylistFilterSort = ({ filterBy, onFilter, sortOrderASC, onSort }) => {
   const [showDropdown, setShowDropdown] = useState(false);
 
-  const handleDropdownItemClicked = (sortBy) => {};
+  const handleDropdownItemClicked = (sortBy) => {
+    onSort(sortBy);
+    setShowDropdown(false);
+  };
   const handleFilterChange = (e) => {
     onFilter(e.target.value);
   };
@@ -67,14 +72,20 @@ const PlaylistFilterSort = ({ filterBy, onFilter }) => {
         <AnimatePresence>
           {showDropdown && (
             <PositionedDropdown className="">
-              <DropdownItem onClick={handleDropdownItemClicked}>
+              <DropdownItem
+                onClick={() => handleDropdownItemClicked(SORT_ORDER.ALPHA)}
+              >
                 Alphabetical
               </DropdownItem>
-              <DropdownItem onClick={handleDropdownItemClicked}>
-                Recently added
-              </DropdownItem>
-              <DropdownItem onClick={handleDropdownItemClicked}>
+              <DropdownItem
+                onClick={() => handleDropdownItemClicked(SORT_ORDER.CREATOR)}
+              >
                 Creator
+              </DropdownItem>
+              <DropdownItem
+                onClick={() => handleDropdownItemClicked(SORT_ORDER.DEFAULT)}
+              >
+                Default
               </DropdownItem>
             </PositionedDropdown>
           )}

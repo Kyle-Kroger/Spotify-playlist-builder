@@ -20,7 +20,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     while (moreData) {
       const playlistData = await spotifyFetcher(endpoint, token);
 
-      playlists = [...playlists, ...playlistData.items];
+      // I need some of the properties to not be nested in other objects
+      const items = playlistData.items.map((list) => {
+        return {
+          ...list,
+          creator: list.owner.display_name,
+        };
+      });
+
+      playlists = [...playlists, ...items];
 
       if (playlistData.next) {
         endpoint = sliceBaseUrl(playlistData.next);

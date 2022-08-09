@@ -1,9 +1,10 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useUserPlaylists } from "../../lib/hooks";
 import { helpers } from "../../styles";
 import MusicItemList from "./MusicItemList";
 import PlaylistFilterSort from "./PlaylistFilterSort";
+import { sortPlaylist, SORT_ORDER } from "../../lib/spotify";
 
 const Wrapper = styled.div`
   display: flex;
@@ -24,14 +25,25 @@ const PlaylistWrapper = styled.div`
 
 const AllPlaylistPage = () => {
   const { playlists, isLoading, isError } = useUserPlaylists();
+
   const [playlistId, setPlaylistId] = useState("");
   const [showPlaylistSubpage, setShowPlaylistSubpage] = useState(false);
+
   // First value you is the active value in the bar
   // Second value is what accually used for filtering
   // Two values so that filtering only happens when the second changes not on every keystroke
   const [filterbarValue, setFilterbarValue] = useState("");
   const [filterBy, setFilterBy] = useState("");
+  const [sortBy, setSortBy] = useState(SORT_ORDER.DEFAULT);
+  const [isSortingASC, setIsSortingASC] = useState(true);
   const [filteredList, setFilteredList] = useState([]);
+
+  const memoSortPlaylist = useCallback(
+    (filterSorted) => {
+      sortPlaylist(sortBy, isSortingASC, filterSorted);
+    },
+    [sortBy, isSortingASC]
+  );
 
   useEffect(() => {
     const timeOutId = setTimeout(() => {
@@ -40,23 +52,34 @@ const AllPlaylistPage = () => {
     return () => clearTimeout(timeOutId);
   }, [filterbarValue]);
 
-  // If the filter isn't in a useEffect we get an infinite loop
+  // If the filter and sort isn't in a useEffect we get an infinite loop
   useEffect(() => {
     if (!isLoading) {
+      let filteredSorted = [...playlists];
       if (filterBy.trim() !== "") {
-        setFilteredList(
-          playlists.filter((list) =>
-            list.name.toLowerCase().includes(filterBy.toLowerCase())
-          )
+        filteredSorted = filteredSorted.filter((list) =>
+          list.name.toLowerCase().includes(filterBy.toLowerCase())
         );
-      } else {
-        setFilteredList([...playlists]);
       }
+      if (sortBy !== SORT_ORDER.DEFAULT) {
+        memoSortPlaylist(filteredSorted);
+      }
+
+      setFilteredList(filteredSorted);
     }
-  }, [filterBy, isLoading, playlists]);
+  }, [filterBy, sortBy, isLoading, playlists, memoSortPlaylist]);
 
   const handleFilterChange = (value) => {
     setFilterbarValue(value);
+  };
+
+  const handleSortChange = (value) => {
+    if (value === sortBy) {
+      setIsSortingASC((prev) => !prev);
+    } else {
+      setIsSortingASC(true);
+    }
+    setSortBy(value);
   };
 
   return (
@@ -64,6 +87,8 @@ const AllPlaylistPage = () => {
       <PlaylistFilterSort
         filterBy={filterbarValue}
         onFilter={handleFilterChange}
+        sortOrderASC={isSortingASC}
+        onSort={handleSortChange}
       />
       <PlaylistWrapper>
         {!isLoading && !showPlaylistSubpage && (

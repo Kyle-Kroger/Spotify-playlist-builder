@@ -8,3 +8,21 @@ export const combineArtists = (artists: Array<{ name: string }>) => {
     return `${prev}${prev === "" ? "" : ","} ${curr.name}`;
   }, "");
 };
+
+export enum SORT_ORDER {
+  ALPHA = "name",
+  CREATOR = "creator",
+  DEFAULT = "default",
+  ARTIST = "firstArtist",
+  ALBUM = "albumName",
+  TRACK_TIME = "duration_ms",
+}
+
+export const sortPlaylist = (sortBy, sortOrderASC, list) => {
+  const key = sortBy;
+  list.sort((a, b) =>
+    sortOrderASC
+      ? a[key].localeCompare(b[key])
+      : -1 * a[key].localeCompare(b[key])
+  );
+};
