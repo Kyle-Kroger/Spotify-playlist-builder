@@ -12,6 +12,7 @@ const MusicItemList = ({
   className,
   items,
   hasSubtitle = false,
+  isPlaylist = false,
   isRound = false,
   onClick,
 }) => {
@@ -24,16 +25,26 @@ const MusicItemList = ({
         // Not every item has an image, if on image there is no url property thus crash
         // Give anything that doesn't have an image a url of ""
         const image = item.images[0] ? item.images[0] : { url: "" };
-        let artists = "";
-        if (hasSubtitle) {
-          artists = combineArtists(item.artists);
+        let subtitle = "";
+        if (hasSubtitle && "artists" in item) {
+          subtitle = combineArtists(item.artists);
+        }
+        if (isPlaylist) {
+          subtitle = `${item.owner.display_name}`;
+          // temperary fix for blended playlist images being broken
+          if (
+            image.url ===
+            "https://blend-playlist-covers.spotifycdn.com/v2/blend_LARGE-forest-seafoam-*.jpg"
+          ) {
+            image.url = image.url.replace("-*", "-en");
+          }
         }
         return (
           <MusicItem
             key={item.id}
             id={item.id}
             title={item.name}
-            subtitle={artists}
+            subtitle={subtitle}
             isRound={isRound}
             imageSrc={image.url}
             onClick={onClick}
