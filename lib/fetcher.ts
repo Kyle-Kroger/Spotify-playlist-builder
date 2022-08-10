@@ -1,6 +1,7 @@
-export const fetcher = (url: string, data = undefined) => {
+export const fetcher = (url: string, method = "GET", data = undefined) => {
   return fetch(`${window.location.origin}/api${url}`, {
-    method: data ? "POST" : "GET",
+    // method = method in the parameters if one is not passed in the its a get request
+    method,
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
@@ -17,10 +18,12 @@ export const fetcher = (url: string, data = undefined) => {
 export const spotifyFetcher = async (
   endpoint: string,
   token: string,
+  method: string = "GET",
   data = undefined
 ) => {
   const response = await fetch(`https://api.spotify.com/v1${endpoint}`, {
-    method: data ? "POST" : "GET",
+    // method = method in the parameters if one is not passed in the its a get request
+    method,
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
