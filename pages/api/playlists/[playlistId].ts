@@ -13,10 +13,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // refresh if needed
   token = await refreshAccessToken(token, refreshToken, res);
 
-  const detailQueryParams = `market=es&fields=name,images,owner(display_name)`;
+  const detailQueryParams = `market=es&fields=name,external_urls(spotify),images,owner(display_name)`;
   const detailEndpoint = `/playlists/${playlistId}?${detailQueryParams}`;
 
-  const trackQueryParams = `market=es&fields=items(track(name,id,duration_ms,href,album(name,href,images),artists(name,href))),next`;
+  const trackQueryParams = `market=es&fields=items(track(name,id,uri,duration_ms,href,album(name,href,images),artists(name,href))),next`;
   let tracksEndpoint = `/playlists/${playlistId}/tracks?${trackQueryParams}`;
 
   let moreData = true;
@@ -29,7 +29,22 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     while (moreData) {
       const playlistTracks = await spotifyFetcher(tracksEndpoint, token);
 
-      tracks = [...tracks, ...playlistTracks.items];
+      const items = playlistTracks.items.map((item) => {
+        return {
+          ...item,
+          id: item.track.id,
+          uri: item.track.uri,
+          name: item.track.name,
+          duration: item.track.duration_ms.toString(),
+          images: item.track.album.images,
+          artists: item.track.artists,
+          firstArtist: item.track.artists[0].name,
+          albumId: item.track.album.id,
+          albumName: item.track.album.name,
+        };
+      });
+
+      tracks = [...tracks, ...items];
 
       if (playlistTracks.next) {
         tracksEndpoint = sliceBaseUrl(playlistTracks.next);

@@ -55,7 +55,7 @@ const AllPlaylistPage = () => {
 
   // If the filter and sort isn't in a useEffect we get an infinite loop
   useEffect(() => {
-    if (!isLoading) {
+    if (!isLoading && !showPlaylistSubpage) {
       let filteredSorted = [...playlists];
       if (filterBy.trim() !== "") {
         filteredSorted = filteredSorted.filter((list) =>
@@ -70,7 +70,15 @@ const AllPlaylistPage = () => {
 
       setFilteredList(filteredSorted);
     }
-  }, [filterBy, sortBy, isSortingASC, isLoading, playlists, memoSortPlaylist]);
+  }, [
+    filterBy,
+    sortBy,
+    isSortingASC,
+    isLoading,
+    showPlaylistSubpage,
+    playlists,
+    memoSortPlaylist,
+  ]);
 
   const handleFilterChange = (value) => {
     setFilterbarValue(value);
@@ -90,6 +98,12 @@ const AllPlaylistPage = () => {
     setShowPlaylistSubpage(true);
   };
 
+  const handleBackToAllPlaylists = () => {
+    setSortBy(SORT_ORDER.DEFAULT);
+    setIsSortingASC(true);
+    setShowPlaylistSubpage(false);
+  };
+
   return (
     <Wrapper>
       <PlaylistFilterSort
@@ -98,6 +112,7 @@ const AllPlaylistPage = () => {
         sortBy={sortBy}
         sortOrderASC={isSortingASC}
         onSort={handleSortChange}
+        showSubpage={showPlaylistSubpage}
       />
       <PlaylistWrapper>
         {!isLoading && !showPlaylistSubpage && (
@@ -110,7 +125,13 @@ const AllPlaylistPage = () => {
           />
         )}
         {!isLoading && showPlaylistSubpage && (
-          <PlaylistSubPage id={playlistId} />
+          <PlaylistSubPage
+            id={playlistId}
+            filterBy={filterBy}
+            sortBy={sortBy}
+            sortASC={isSortingASC}
+            onGoBack={handleBackToAllPlaylists}
+          />
         )}
       </PlaylistWrapper>
     </Wrapper>

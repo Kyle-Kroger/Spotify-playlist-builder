@@ -15,7 +15,7 @@ export enum SORT_ORDER {
   DEFAULT = "default",
   ARTIST = "firstArtist",
   ALBUM = "albumName",
-  TRACK_TIME = "duration_ms",
+  TRACK_TIME = "duration",
 }
 
 export const sortPlaylist = (sortBy, sortOrderASC, list) => {
