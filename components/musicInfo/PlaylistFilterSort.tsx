@@ -42,15 +42,33 @@ const PositionedDropdown = styled(DropdownMenu)`
   right: 0;
 `;
 
-const PlaylistFilterSort = ({ filterBy, onFilter, sortOrderASC, onSort }) => {
+const PlaylistFilterSort = ({
+  filterBy,
+  onFilter,
+  sortBy,
+  sortOrderASC,
+  onSort,
+}) => {
   const [showDropdown, setShowDropdown] = useState(false);
 
-  const handleDropdownItemClicked = (sortBy) => {
-    onSort(sortBy);
+  const handleDropdownItemClicked = (sort) => {
+    onSort(sort);
     setShowDropdown(false);
   };
   const handleFilterChange = (e) => {
     onFilter(e.target.value);
+  };
+
+  const sortArrowDisplay = (currentSortBy, listSortBy, orderASC) => {
+    if (currentSortBy === listSortBy) {
+      if (orderASC) {
+        return <FiArrowUp />;
+      }
+
+      return <FiArrowDown />;
+    }
+
+    return "";
   };
   return (
     <Wrapper>
@@ -76,16 +94,19 @@ const PlaylistFilterSort = ({ filterBy, onFilter, sortOrderASC, onSort }) => {
                 onClick={() => handleDropdownItemClicked(SORT_ORDER.ALPHA)}
               >
                 Alphabetical
+                {sortArrowDisplay(sortBy, SORT_ORDER.ALPHA, sortOrderASC)}
               </DropdownItem>
               <DropdownItem
                 onClick={() => handleDropdownItemClicked(SORT_ORDER.CREATOR)}
               >
                 Creator
+                {sortArrowDisplay(sortBy, SORT_ORDER.CREATOR, sortOrderASC)}
               </DropdownItem>
               <DropdownItem
                 onClick={() => handleDropdownItemClicked(SORT_ORDER.DEFAULT)}
               >
                 Default
+                {sortArrowDisplay(sortBy, SORT_ORDER.DEFAULT, sortOrderASC)}
               </DropdownItem>
             </PositionedDropdown>
           )}

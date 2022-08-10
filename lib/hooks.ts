@@ -11,6 +11,16 @@ export const useUserPlaylists = () => {
   };
 };
 
+export const usePlaylistId = (id) => {
+  const { data, error } = useSWR(`/playlists/${id}`, fetcher);
+
+  return {
+    playlistData: data || {},
+    isLoading: !data && !error,
+    isError: error,
+  };
+};
+
 export const useSearch = (SearchTerm) => {
   const { data, error } = useSWR(`/search/${SearchTerm}`, fetcher);
 
