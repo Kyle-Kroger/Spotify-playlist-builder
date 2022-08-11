@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { BsPlusCircle } from "react-icons/bs";
 import { StyledImage } from "../ui";
+import { durationMSToStandard } from "../../lib/spotify";
 
 const Wrapper = styled.div`
   display: flex;
@@ -38,8 +39,23 @@ const Index = styled.p`
   font-size: 24px;
 `;
 
+const Duration = styled.p`
+  padding: 0 var(--spacing-sm);
+`;
+
 const Track = (props) => {
-  const { index, id, name, artists, image, showImage = false, onClick } = props;
+  const {
+    index,
+    id,
+    name,
+    durationMS,
+    artists,
+    image,
+    showImage = false,
+    onClick,
+  } = props;
+  // convert durationMS to to minutes and seconds
+  const standardTime = durationMSToStandard(durationMS);
   return (
     <Wrapper>
       {showImage && (
@@ -62,6 +78,7 @@ const Track = (props) => {
         <TrackTitle>{name}</TrackTitle>
         <ArtistName>{artists}</ArtistName>
       </TextWrapper>
+      <Duration>{standardTime}</Duration>
       <AddIcon />
     </Wrapper>
   );

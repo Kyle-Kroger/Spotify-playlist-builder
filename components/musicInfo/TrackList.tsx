@@ -18,6 +18,7 @@ const TrackList = ({ className, items, showImage = false, onClick }) => {
             index={i}
             id={item.albumId}
             name={item.name}
+            durationMS={item.duration}
             artists={artists}
             image={item.images[0].url}
             showImage={showImage}

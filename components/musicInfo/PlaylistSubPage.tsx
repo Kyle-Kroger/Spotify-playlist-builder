@@ -1,13 +1,30 @@
 import { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
+import { FiArrowLeftCircle } from "react-icons/fi";
 import { usePlaylistId } from "../../lib/hooks";
 import { sortPlaylist, SORT_ORDER } from "../../lib/spotify";
 import MusicHeadingItem from "./MusicHeadingItem";
 import TrackList from "./TrackList";
+import { StyledButton } from "../ui";
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: var(--spacing-md);
+  margin: 0 -12px;
+  align-items: center;
+  background-color: var(--color-black);
+`;
+
+const BackButton = styled(FiArrowLeftCircle)`
+  color: var(--color-spotify-green);
+  font-size: 32px;
+  cursor: pointer;
 `;
 
 const PlaylistSubPage = ({ id, filterBy, sortBy, sortASC, onGoBack }) => {
@@ -51,6 +68,13 @@ const PlaylistSubPage = ({ id, filterBy, sortBy, sortASC, onGoBack }) => {
     <Wrapper>
       {!isLoading && (
         <>
+          {console.log(playlistData)}
+          <ButtonWrapper>
+            <BackButton onClick={onGoBack} />
+            <StyledButton state="filled" onClick={() => {}}>
+              Edit Playlist
+            </StyledButton>
+          </ButtonWrapper>
           <MusicHeadingItem
             id={id}
             title={playlistData.name}
@@ -60,6 +84,7 @@ const PlaylistSubPage = ({ id, filterBy, sortBy, sortASC, onGoBack }) => {
             onImageClick={() => {}}
             width="80%"
           />
+
           <TrackList
             className=""
             items={filteredList}

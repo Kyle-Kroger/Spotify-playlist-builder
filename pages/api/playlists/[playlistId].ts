@@ -16,7 +16,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const detailQueryParams = `market=es&fields=name,external_urls(spotify),images,owner(display_name)`;
   const detailEndpoint = `/playlists/${playlistId}?${detailQueryParams}`;
 
-  const trackQueryParams = `market=es&fields=items(track(name,id,uri,duration_ms,href,album(name,href,images),artists(name,href))),next`;
+  const trackQueryParams = `market=es&fields=items(track(name,id,uri,duration_ms,href,album(name,id,href,images),artists(name,href))),next`;
   let tracksEndpoint = `/playlists/${playlistId}/tracks?${trackQueryParams}`;
 
   let moreData = true;
@@ -29,7 +29,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     while (moreData) {
       const playlistTracks = await spotifyFetcher(tracksEndpoint, token);
 
-      const items = playlistTracks.items.map((item) => {
+      let items = playlistTracks.items.map((item) => {
+        if (item.track === null) {
+          return null;
+        }
         return {
           ...item,
           id: item.track.id,
@@ -43,6 +46,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           albumName: item.track.album.name,
         };
       });
+
+      items = items.filter((item) => item !== null);
 
       tracks = [...tracks, ...items];
 
