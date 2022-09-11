@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { usePlaylistStateStore } from "../../lib/store";
+import PlaylistHeader from "./PlaylistHeader";
 
 const Wrapper = styled.div`
   flex: 1;
@@ -7,11 +9,7 @@ const Wrapper = styled.div`
 const PlaylistBuilder = () => {
   return (
     <Wrapper>
-      Playlist Builder Playlist Builder Playlist Builder Playlist Builder
-      Playlist Builder Playlist Builder Playlist Builder Playlist Builder
-      Playlist Builder Playlist Builder Playlist Builder Playlist Builder
-      Playlist Builder Playlist Builder Playlist Builder Playlist Builder
-      Playlist Builder Playlist Builder Playlist Builder Playlist Builder
+      <PlaylistHeader />
     </Wrapper>
   );
 };

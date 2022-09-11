@@ -31,6 +31,12 @@ const PlaylistSubPage = ({ id, filterBy, sortBy, sortASC, onGoBack }) => {
   const [filteredList, setFilteredList] = useState([]);
   const { playlistData, isLoading, isError } = usePlaylistId(id);
 
+  // fix in case there is no image for the playlist
+  let image = { url: "" };
+  if (!isLoading && !isError) {
+    image = playlistData.images[0] ? playlistData.images[0] : { url: "" };
+  }
+
   // filter and sort
   const memoSortPlaylist = useCallback(
     (filterSorted) => {
@@ -79,7 +85,7 @@ const PlaylistSubPage = ({ id, filterBy, sortBy, sortASC, onGoBack }) => {
             id={id}
             title={playlistData.name}
             subtitle={`${playlistData.owner.display_name} - ${playlistData.tracks.length} songs`}
-            imageSrc={playlistData.images[0].url}
+            imageSrc={image.url}
             externalUrl={playlistData.external_urls.spotify}
             onImageClick={() => {}}
             width="80%"

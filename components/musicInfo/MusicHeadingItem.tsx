@@ -8,9 +8,8 @@ const Wrapper = styled.div`
   justify-content: center;
   background: var(--page-gradient);
   margin-bottom: var(--spacing-sm);
+  width: calc(100% + 24px);
   margin-top: -12px;
-  margin-left: -12px;
-  margin-right: -12px;
 `;
 
 const ItemWrapper = styled.div<{ width: string }>`
@@ -72,6 +71,7 @@ const MusicHeadingItem = ({
           isRound={isRound}
           width={width}
           handleClick={handleImageClick}
+          className=""
         />
       </ItemWrapper>
       <PositionedButton

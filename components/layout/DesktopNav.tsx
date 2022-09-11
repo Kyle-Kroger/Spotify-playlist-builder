@@ -3,7 +3,11 @@ import styled from "styled-components";
 import { BsSearch, BsTag } from "react-icons/bs";
 import { CgPlayListAdd } from "react-icons/cg";
 import { helpers } from "../../styles";
-import { usePageStateStore, SIDEBAR_PAGE } from "../../lib/store";
+import {
+  usePageStateStore,
+  SIDEBAR_PAGE,
+  usePlaylistStateStore,
+} from "../../lib/store";
 
 const Wrapper = styled.div`
   display: flex;
@@ -49,13 +53,22 @@ const PlaylistWrapper = styled.ul`
   ${helpers.spotifySearchBar}
 `;
 
-const Playlist = styled.li`
+const Playlist = styled.li<{ isDisabled: boolean }>`
   padding: var(--spacing-xs) 0;
+  cursor: pointer;
+  pointer-events: ${(p) => (p.isDisabled ? "none" : "all")};
+  transition: color 200ms;
+  color: ${(p) => (p.isDisabled ? "#424242" : "var(--color-text-subdued)")};
+
+  :hover {
+    color: white;
+  }
 `;
 
 const DesktopNav = (props) => {
   const { playlists } = props;
   const setCurrentPage = usePageStateStore((state) => state.setCurrentPage);
+  const setPlaylistId = usePlaylistStateStore((state) => state.setPlaylistId);
 
   return (
     <Wrapper>
@@ -81,7 +94,13 @@ const DesktopNav = (props) => {
       </StyledNav>
       <PlaylistWrapper>
         {playlists.map((playlist) => (
-          <Playlist id={playlist.id} key={playlist.id}>
+          <Playlist
+            id={playlist.id}
+            key={playlist.id}
+            onClick={() => setPlaylistId(playlist.id)}
+            // replace smokey1196 with id of current user
+            isDisabled={playlist.owner.id !== "smokey1196"}
+          >
             {playlist.name}
           </Playlist>
         ))}
