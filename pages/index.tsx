@@ -33,7 +33,6 @@ const PositionedSidebar = styled(Sidebar)`
 
 const Home = () => {
   const { playlists, isLoading, isError } = useUserPlaylists();
-  console.log(playlists);
   const currentPage = usePageStateStore((state) => state.currentPage);
   return (
     <Wrapper>
