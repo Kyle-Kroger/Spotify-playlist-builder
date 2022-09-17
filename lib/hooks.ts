@@ -4,6 +4,16 @@ import { fetcher } from "./fetcher";
 
 // SWR hooks
 
+export const useUser = () => {
+  const { data, error } = useSWR("/user", fetcher);
+
+  return {
+    user: data || {},
+    isLoading: !data && !error,
+    isError: error,
+  };
+};
+
 export const useUserPlaylists = () => {
   const { data, error } = useSWR("/playlists/userPlaylists", fetcher);
 

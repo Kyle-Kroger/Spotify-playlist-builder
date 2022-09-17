@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+import { useEffect, useState } from "react";
 import { BsSearch, BsTag } from "react-icons/bs";
 import { CgPlayListAdd } from "react-icons/cg";
 import { helpers } from "../../styles";
@@ -8,6 +8,7 @@ import {
   SIDEBAR_PAGE,
   usePlaylistStateStore,
 } from "../../lib/store";
+import { useUser } from "../../lib/hooks";
 
 const Wrapper = styled.div`
   display: flex;
@@ -67,8 +68,17 @@ const Playlist = styled.li<{ isDisabled: boolean }>`
 
 const DesktopNav = (props) => {
   const { playlists } = props;
+  const { user, isLoading, isError } = useUser();
   const setCurrentPage = usePageStateStore((state) => state.setCurrentPage);
   const setPlaylistId = usePlaylistStateStore((state) => state.setPlaylistId);
+  const [currentUserId, setCurrentUserId] = useState("");
+
+  useEffect(() => {
+    if (!isLoading && !isError) {
+      console.log(`current user is ${user.id}`);
+      setCurrentUserId(user.id);
+    }
+  }, [isLoading, isError, user]);
 
   return (
     <Wrapper>
@@ -98,8 +108,7 @@ const DesktopNav = (props) => {
             id={playlist.id}
             key={playlist.id}
             onClick={() => setPlaylistId(playlist.id)}
-            // replace smokey1196 with id of current user
-            isDisabled={playlist.owner.id !== "smokey1196"}
+            isDisabled={playlist.owner.id !== currentUserId}
           >
             {playlist.name}
           </Playlist>
