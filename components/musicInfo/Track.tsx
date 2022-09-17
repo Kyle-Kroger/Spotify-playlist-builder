@@ -10,21 +10,28 @@ const Wrapper = styled.div`
 `;
 
 const TextWrapper = styled.div`
+  min-width: 0;
   flex: 1;
   padding: 0 var(--spacing-md);
-
-  p {
-    margin-top: 4px;
-  }
 `;
 
-const TrackTitle = styled.h3``;
+const TrackTitle = styled.h3`
+  margin-bottom: var(--spacing-xs);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
 
-const ArtistName = styled.p``;
+const ArtistName = styled.p`
+  color: var(--color-text-subdued);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
 
 const AddIcon = styled(BsPlusCircle)`
   color: var(--color-spotify-green);
-  font-size: 32px;
+  font-size: 30px;
 `;
 
 const IndexWrapper = styled.div`
@@ -67,6 +74,7 @@ const Track = (props) => {
           handleClick={() => {
             onClick(id);
           }}
+          className=""
         />
       )}
       {!showImage && (

@@ -8,13 +8,14 @@ import PlaylistTrack from "./PlaylistTrack";
 
 const Wrapper = styled.ul``;
 
+const ListItem = styled.li``;
+
 const PlaylistTrackList = () => {
   const playlistId = usePlaylistStateStore((state) => state.currentPlaylistId);
   const { playlistData, isLoading, isError } = usePlaylistId(playlistId);
   const [displayedPlaylist, setDisplayedPlaylist] = useState([]);
 
   useEffect(() => {
-    console.log("test");
     if (!isLoading && !isError && Object.keys(playlistData).length !== 0) {
       setDisplayedPlaylist(playlistData.tracks);
     }
@@ -32,32 +33,30 @@ const PlaylistTrackList = () => {
   };
 
   return (
-    <div>
-      <DragDropContext onDragEnd={handleDragEnd}>
-        <Droppable droppableId="Tracklist">
-          {(provided) => (
-            <ul {...provided.droppableProps} ref={provided.innerRef}>
-              {displayedPlaylist.map((track, i) => {
-                return (
-                  <Draggable key={track.id} draggableId={track.id} index={i}>
-                    {(provided) => (
-                      <li
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        ref={provided.innerRef}
-                      >
-                        <PlaylistTrack track={track} />
-                      </li>
-                    )}
-                  </Draggable>
-                );
-              })}
-              {provided.placeholder}
-            </ul>
-          )}
-        </Droppable>
-      </DragDropContext>
-    </div>
+    <DragDropContext onDragEnd={handleDragEnd}>
+      <Droppable droppableId="Tracklist">
+        {(provided) => (
+          <Wrapper {...provided.droppableProps} ref={provided.innerRef}>
+            {displayedPlaylist.map((track, i) => {
+              return (
+                <Draggable key={track.id} draggableId={track.id} index={i}>
+                  {(provided) => (
+                    <ListItem
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      ref={provided.innerRef}
+                    >
+                      <PlaylistTrack track={track} index={i} />
+                    </ListItem>
+                  )}
+                </Draggable>
+              );
+            })}
+            {provided.placeholder}
+          </Wrapper>
+        )}
+      </Droppable>
+    </DragDropContext>
   );
 };
 

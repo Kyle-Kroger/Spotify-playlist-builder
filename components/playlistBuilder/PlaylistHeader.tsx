@@ -8,7 +8,7 @@ import { StyledImage } from "../ui";
 const Wrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  background: green;
+  background: #0b5c0b;
   padding: var(--spacing-lg);
   justify-content: center;
   align-items: center;

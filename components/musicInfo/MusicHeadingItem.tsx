@@ -9,6 +9,7 @@ const Wrapper = styled.div`
   background: var(--page-gradient);
   margin-bottom: var(--spacing-sm);
   width: calc(100% + 24px);
+  margin-left: -12px;
   margin-top: -12px;
 `;
 

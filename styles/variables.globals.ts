@@ -13,7 +13,7 @@ const variables = css`
     --color-spotify-green: #1db954;
     --color-spotify-outline: #2dd468;
 
-    --color-text-subdued: #a7a7a7;
+    --color-text-subdued: #cfcfcf;
 
     /* Gradients */
     --player-gradient: linear-gradient(180deg, #202020 0%, #111111 100%);
