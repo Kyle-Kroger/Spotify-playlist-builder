@@ -5,6 +5,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { usePlaylistStateStore } from "../../lib/store";
 import { usePlaylistId } from "../../lib/hooks";
 import PlaylistTrack from "./PlaylistTrack";
+import { fetcher } from "../../lib/fetcher";
 
 const Wrapper = styled.ul``;
 
@@ -14,12 +15,29 @@ const PlaylistTrackList = () => {
   const playlistId = usePlaylistStateStore((state) => state.currentPlaylistId);
   const { playlistData, isLoading, isError } = usePlaylistId(playlistId);
   const [displayedPlaylist, setDisplayedPlaylist] = useState([]);
+  const [snapshotId, setSnapshotId] = useState("");
 
   useEffect(() => {
     if (!isLoading && !isError && Object.keys(playlistData).length !== 0) {
+      setSnapshotId(playlistData.snapshot_id);
       setDisplayedPlaylist(playlistData.tracks);
     }
   }, [isLoading, isError, playlistData]);
+
+  const reorderSpotify = async (trackStartIndex, trackEndIndex, snapshotId) => {
+    const bodyData = {
+      trackStartIndex,
+      trackEndIndex,
+      snapshotId,
+    };
+    const response = await fetcher(
+      `/playlists/${playlistId}/reorder`,
+      bodyData,
+      "PUT"
+    );
+
+    setSnapshotId(response.snapshot_id);
+  };
 
   const handleDragEnd = (result) => {
     if (!result.destination) return;
@@ -29,6 +47,7 @@ const PlaylistTrackList = () => {
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
     // update spotify with the moved song
+    reorderSpotify(result.source.index, result.destination.index, snapshotId);
     setDisplayedPlaylist(items);
   };
 

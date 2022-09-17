@@ -13,10 +13,11 @@ const TextWrapper = styled.div`
   min-width: 0;
   flex: 1;
   padding: 0 var(--spacing-md);
+  line-height: normal;
 `;
 
 const TrackTitle = styled.h3`
-  margin-bottom: var(--spacing-xs);
+  margin-bottom: 6px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
