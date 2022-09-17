@@ -1,9 +1,9 @@
 /* eslint-disable no-await-in-loop */
 import { NextApiRequest, NextApiResponse } from "next";
 
-import { spotifyFetcher } from "../../../lib/fetcher";
-import { sliceBaseUrl } from "../../../lib/spotify";
-import { refreshAccessToken } from "../../../lib/utils";
+import { spotifyFetcher } from "../../../../lib/fetcher";
+import { sliceBaseUrl } from "../../../../lib/spotify";
+import { refreshAccessToken } from "../../../../lib/utils";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { playlistId } = req.query;
