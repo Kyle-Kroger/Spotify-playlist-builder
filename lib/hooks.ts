@@ -25,7 +25,9 @@ export const useUserPlaylists = () => {
 };
 
 export const usePlaylistId = (id) => {
-  const { data, error } = useSWR(`/playlists/${id}`, fetcher);
+  const { data, error } = useSWR(`/playlists/${id}`, fetcher, {
+    refreshInterval: 500,
+  });
 
   return {
     playlistData: data || {},

@@ -65,11 +65,16 @@ const RemoveIcon = styled(BsDashCircle)`
   font-size: 30px;
   display: block;
   margin: auto;
+  cursor: pointer;
 `;
 
-const PlaylistTrack = ({ track, index }) => {
+const PlaylistTrack = ({ track, index, handleRemoveTrack }) => {
   const standardTime = durationMSToStandard(track.duration);
   const artists = combineArtists(track.artists);
+
+  const handleRemoveClick = () => {
+    handleRemoveTrack(index, track.uri);
+  };
   return (
     <Wrapper>
       <TrackNumber>{index + 1}</TrackNumber>
@@ -90,7 +95,7 @@ const PlaylistTrack = ({ track, index }) => {
       </TrackTitle>
       <TrackTime>{standardTime}</TrackTime>
       <TrackRemove>
-        <RemoveIcon />
+        <RemoveIcon onClick={handleRemoveClick} />
       </TrackRemove>
     </Wrapper>
     // Here is where the tag list should go

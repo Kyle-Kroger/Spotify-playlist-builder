@@ -17,6 +17,7 @@ const TrackList = ({ className, items, showImage = false, onClick }) => {
             key={item.id}
             index={i}
             id={item.albumId}
+            uri={item.uri}
             name={item.name}
             durationMS={item.duration}
             artists={artists}

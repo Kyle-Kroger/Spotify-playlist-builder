@@ -16,7 +16,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const detailQueryParams = `market=es&fields=name,external_urls(spotify),images,owner(display_name, id),snapshot_id`;
   const detailEndpoint = `/playlists/${playlistId}?${detailQueryParams}`;
 
-  const trackQueryParams = `market=es&fields=items(track(name,id,uri,duration_ms,href,album(name,id,href,images),artists(name,href))),next`;
+  const trackQueryParams = `market=es&fields=items(track(name,id,linked_from,uri,duration_ms,href,album(name,id,href,images),artists(name,href))),next`;
   let tracksEndpoint = `/playlists/${playlistId}/tracks?${trackQueryParams}`;
 
   let moreData = true;
@@ -33,10 +33,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         if (item.track === null) {
           return null;
         }
+        const uri =
+          item.track.linked_from !== undefined
+            ? item.track.linked_from.uri
+            : item.track.uri;
         return {
           ...item,
           id: item.track.id,
-          uri: item.track.uri,
+          uri,
           name: item.track.name,
           duration: item.track.duration_ms.toString(),
           images: item.track.album.images,

@@ -39,6 +39,20 @@ const PlaylistTrackList = () => {
     setSnapshotId(response.snapshot_id);
   };
 
+  const removeSpotify = async (trackUri, snapshotId) => {
+    const bodyData = {
+      trackUri,
+      snapshotId,
+    };
+    const response = await fetcher(
+      `/playlists/${playlistId}/remove`,
+      bodyData,
+      "DELETE"
+    );
+
+    setSnapshotId(response.snapshot_id);
+  };
+
   const handleDragEnd = (result) => {
     if (!result.destination) return;
 
@@ -48,6 +62,15 @@ const PlaylistTrackList = () => {
     items.splice(result.destination.index, 0, reorderedItem);
     // update spotify with the moved song
     reorderSpotify(result.source.index, result.destination.index, snapshotId);
+    setDisplayedPlaylist(items);
+  };
+
+  const handleRemoveTrack = (index, trackUri) => {
+    // create a new array from displayedPlaylist and remove the item at 'index' from it
+    const items = Array.from(displayedPlaylist);
+    items.splice(index, 1);
+
+    removeSpotify(trackUri, snapshotId);
     setDisplayedPlaylist(items);
   };
 
@@ -65,7 +88,11 @@ const PlaylistTrackList = () => {
                       {...provided.dragHandleProps}
                       ref={provided.innerRef}
                     >
-                      <PlaylistTrack track={track} index={i} />
+                      <PlaylistTrack
+                        track={track}
+                        index={i}
+                        handleRemoveTrack={handleRemoveTrack}
+                      />
                     </ListItem>
                   )}
                 </Draggable>

@@ -39,6 +39,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           name: item.name,
           duration: item.duration_ms,
           id: item.id,
+          uri: item.uri,
           isPlayable: item.is_playable,
           type: item.type,
           artists: item.artists,

@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { BsPlusCircle } from "react-icons/bs";
 import { StyledImage } from "../ui";
 import { durationMSToStandard } from "../../lib/spotify";
+import { usePlaylistStateStore } from "../../lib/store";
+import { fetcher } from "../../lib/fetcher";
 
 const Wrapper = styled.div`
   display: flex;
@@ -33,6 +35,7 @@ const ArtistName = styled.p`
 const AddIcon = styled(BsPlusCircle)`
   color: var(--color-spotify-green);
   font-size: 30px;
+  cursor: pointer;
 `;
 
 const IndexWrapper = styled.div`
@@ -55,6 +58,7 @@ const Track = (props) => {
   const {
     index,
     id,
+    uri,
     name,
     durationMS,
     artists,
@@ -62,8 +66,23 @@ const Track = (props) => {
     showImage = false,
     onClick,
   } = props;
+  const currentPlaylistId = usePlaylistStateStore(
+    (state) => state.currentPlaylistId
+  );
   // convert durationMS to to minutes and seconds
   const standardTime = durationMSToStandard(durationMS);
+  const spotifyAdd = async (trackUri) => {
+    const bodyData = { trackUri };
+    fetcher(`/playlists/${currentPlaylistId}/add`, bodyData, "POST");
+  };
+  const handleAddClicked = () => {
+    if (currentPlaylistId !== "") {
+      console.log(currentPlaylistId);
+
+      spotifyAdd(uri);
+      // move playlist to the bottom
+    }
+  };
   return (
     <Wrapper>
       {showImage && (
@@ -88,7 +107,7 @@ const Track = (props) => {
         <ArtistName>{artists}</ArtistName>
       </TextWrapper>
       <Duration>{standardTime}</Duration>
-      <AddIcon />
+      <AddIcon onClick={handleAddClicked} />
     </Wrapper>
   );
 };
