@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable @typescript-eslint/no-shadow */
 import { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -61,7 +62,12 @@ const PlaylistTrackList = () => {
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
     // update spotify with the moved song
-    reorderSpotify(result.source.index, result.destination.index, snapshotId);
+    const startIndex = result.source.index;
+    const endIndex =
+      result.destination.index > result.source.index
+        ? result.destination.index + 1
+        : result.destination.index;
+    reorderSpotify(startIndex, endIndex, snapshotId);
     setDisplayedPlaylist(items);
   };
 
@@ -81,7 +87,11 @@ const PlaylistTrackList = () => {
           <Wrapper {...provided.droppableProps} ref={provided.innerRef}>
             {displayedPlaylist.map((track, i) => {
               return (
-                <Draggable key={track.id} draggableId={track.id} index={i}>
+                <Draggable
+                  key={`${track.id}-${i}`}
+                  draggableId={`${track.id}-${i}`}
+                  index={i}
+                >
                   {(provided) => (
                     <ListItem
                       {...provided.draggableProps}
@@ -99,6 +109,7 @@ const PlaylistTrackList = () => {
               );
             })}
             {provided.placeholder}
+            <div id="playlistBottom"></div>
           </Wrapper>
         )}
       </Droppable>

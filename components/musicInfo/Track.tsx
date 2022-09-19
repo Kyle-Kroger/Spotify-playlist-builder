@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import useSWR, { useSWRConfig } from "swr";
 import { BsPlusCircle } from "react-icons/bs";
 import { StyledImage } from "../ui";
 import { durationMSToStandard } from "../../lib/spotify";
@@ -66,21 +67,36 @@ const Track = (props) => {
     showImage = false,
     onClick,
   } = props;
+  const { mutate } = useSWRConfig();
   const currentPlaylistId = usePlaylistStateStore(
     (state) => state.currentPlaylistId
   );
   // convert durationMS to to minutes and seconds
   const standardTime = durationMSToStandard(durationMS);
   const spotifyAdd = async (trackUri) => {
+    // add the track locally to the current playlist
+
+    // add the track serverside to the playlist
     const bodyData = { trackUri };
-    fetcher(`/playlists/${currentPlaylistId}/add`, bodyData, "POST");
+    const response = await fetcher(
+      `/playlists/${currentPlaylistId}/add`,
+      bodyData,
+      "POST"
+    );
+
+    // tell swr to revalidate to make sure they match up
+    mutate(`/playlists/${currentPlaylistId}`);
+
+    // move playlist to the bottom
+    // this is probably a bad why to go about this but uncertain of a better way currently
+    const playlistBottom = document.querySelector("#playlistBottom");
+    playlistBottom.scrollIntoView({
+      behavior: "smooth",
+    });
   };
   const handleAddClicked = () => {
     if (currentPlaylistId !== "") {
-      console.log(currentPlaylistId);
-
       spotifyAdd(uri);
-      // move playlist to the bottom
     }
   };
   return (
