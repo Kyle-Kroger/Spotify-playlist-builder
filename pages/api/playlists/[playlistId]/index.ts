@@ -38,7 +38,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             ? item.track.linked_from.uri
             : item.track.uri;
         return {
-          ...item,
           id: item.track.id,
           uri,
           name: item.track.name,

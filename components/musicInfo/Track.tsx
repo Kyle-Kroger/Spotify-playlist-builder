@@ -73,6 +73,7 @@ const Track = (props) => {
   );
   // convert durationMS to to minutes and seconds
   const standardTime = durationMSToStandard(durationMS);
+
   const spotifyAdd = async (trackUri) => {
     // add the track locally to the current playlist
 
@@ -94,11 +95,13 @@ const Track = (props) => {
       behavior: "smooth",
     });
   };
+
   const handleAddClicked = () => {
     if (currentPlaylistId !== "") {
       spotifyAdd(uri);
     }
   };
+
   return (
     <Wrapper>
       {showImage && (
