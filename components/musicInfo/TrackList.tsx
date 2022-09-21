@@ -20,9 +20,13 @@ const TrackList = ({ className, items, showImage = false, onClick }) => {
             uri={item.uri}
             name={item.name}
             durationMS={item.duration}
+            artistArray={item.artists}
             artists={artists}
             image={item.images[0].url}
+            images={item.images}
             showImage={showImage}
+            albumId={item.albumId}
+            albumName={item.albumName}
             onClick={onClick}
           />
         );

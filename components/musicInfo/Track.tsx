@@ -5,6 +5,8 @@ import { StyledImage } from "../ui";
 import { durationMSToStandard } from "../../lib/spotify";
 import { usePlaylistStateStore } from "../../lib/store";
 import { fetcher } from "../../lib/fetcher";
+import { usePlaylistId } from "../../lib/hooks";
+import { TrackType } from "../../lib/types";
 
 const Wrapper = styled.div`
   display: flex;
@@ -62,20 +64,53 @@ const Track = (props) => {
     uri,
     name,
     durationMS,
+    artistArray,
     artists,
     image,
+    images,
     showImage = false,
+    albumId,
+    albumName,
     onClick,
   } = props;
-  const { mutate } = useSWRConfig();
+
   const currentPlaylistId = usePlaylistStateStore(
     (state) => state.currentPlaylistId
   );
+  const { mutatePlaylist } = usePlaylistId(currentPlaylistId);
   // convert durationMS to to minutes and seconds
   const standardTime = durationMSToStandard(durationMS);
 
+  // track to add
+  const addTrack: TrackType = {
+    id,
+    uri,
+    name,
+    duration: durationMS,
+    images,
+    artists: artistArray,
+    firstArtist: artists[0].name,
+    albumId,
+    albumName,
+  };
+
   const spotifyAdd = async (trackUri) => {
-    // add the track locally to the current playlist
+    // optimistically update current playlist with track
+    await mutatePlaylist((data) => {
+      return {
+        ...data,
+        tracks: [...data.tracks, addTrack],
+      };
+    }, false);
+
+    setTimeout(() => {
+      // move playlist to the bottom
+      // this is probably a bad why to go about this but uncertain of a better way currently
+      const playlistBottom = document.querySelector("#playlistBottom");
+      playlistBottom.scrollIntoView({
+        behavior: "smooth",
+      });
+    }, 20);
 
     // add the track serverside to the playlist
     const bodyData = { trackUri };
@@ -86,20 +121,14 @@ const Track = (props) => {
     );
 
     // tell swr to revalidate to make sure they match up
-    mutate(`/playlists/${currentPlaylistId}`);
-
-    // move playlist to the bottom
-    // this is probably a bad why to go about this but uncertain of a better way currently
-    const playlistBottom = document.querySelector("#playlistBottom");
-    playlistBottom.scrollIntoView({
-      behavior: "smooth",
-    });
+    await mutatePlaylist();
   };
 
   const handleAddClicked = () => {
     if (currentPlaylistId !== "") {
       spotifyAdd(uri);
     }
+    // tell the user to have an active playlist with a modal?
   };
 
   return (

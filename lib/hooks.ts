@@ -25,7 +25,11 @@ export const useUserPlaylists = () => {
 };
 
 export const usePlaylistId = (id) => {
-  const { data, error } = useSWR(`/playlists/${id}`, fetcher, {
+  const {
+    data,
+    error,
+    mutate: mutatePlaylist,
+  } = useSWR(`/playlists/${id}`, fetcher, {
     refreshInterval: 500,
   });
 
@@ -33,6 +37,7 @@ export const usePlaylistId = (id) => {
     playlistData: data || {},
     isLoading: !data && !error,
     isError: error,
+    mutatePlaylist,
   };
 };
 

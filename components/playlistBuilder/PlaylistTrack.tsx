@@ -58,6 +58,7 @@ const TrackTime = styled.div`
 
 const TrackRemove = styled.div`
   width: 55px;
+  cursor: pointer;
 `;
 
 const RemoveIcon = styled(BsDashCircle)`
@@ -94,8 +95,8 @@ const PlaylistTrack = ({ track, index, handleRemoveTrack }) => {
         </TrackText>
       </TrackTitle>
       <TrackTime>{standardTime}</TrackTime>
-      <TrackRemove>
-        <RemoveIcon onClick={handleRemoveClick} />
+      <TrackRemove onClick={handleRemoveClick}>
+        <RemoveIcon />
       </TrackRemove>
     </Wrapper>
     // Here is where the tag list should go
