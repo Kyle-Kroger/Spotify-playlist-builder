@@ -40,9 +40,10 @@ const PlaylistTrackList = () => {
     setSnapshotId(response.snapshot_id);
   };
 
-  const removeSpotify = async (trackUri, snapshotId) => {
+  const removeSpotify = async (trackUri, index, snapshotId) => {
     const bodyData = {
       trackUri,
+      index,
       snapshotId,
     };
     const response = await fetcher(
@@ -76,7 +77,7 @@ const PlaylistTrackList = () => {
     const items = Array.from(displayedPlaylist);
     items.splice(index, 1);
 
-    removeSpotify(trackUri, snapshotId);
+    removeSpotify(trackUri, index, snapshotId);
     setDisplayedPlaylist(items);
   };
 

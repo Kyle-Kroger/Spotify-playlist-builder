@@ -11,7 +11,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const { playlistId } = req.query;
-  const { trackUri, snapshotId } = req.body;
+  const { trackUri, index, snapshotId } = req.body;
 
   const { SPOTIFY_REFRESH_TOKEN: refreshToken } = req.cookies;
   let { SPOTIFY_ACCESS_TOKEN: token } = req.cookies;
@@ -23,7 +23,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   let response;
 
   try {
-    const data = { tracks: [{ uri: trackUri }], snapshot_id: snapshotId };
+    const data = {
+      tracks: [{ uri: trackUri, positions: [index] }],
+      snapshot_id: snapshotId,
+    };
     // response should be a snapshot id
     response = await spotifyFetcher(endpoint, token, "DELETE", data);
   } catch (err) {

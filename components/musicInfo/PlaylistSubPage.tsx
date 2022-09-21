@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { FiArrowLeftCircle } from "react-icons/fi";
-import { usePlaylistId } from "../../lib/hooks";
+import { usePlaylistId, useUser } from "../../lib/hooks";
 import { sortPlaylist, SORT_ORDER } from "../../lib/spotify";
 import MusicHeadingItem from "./MusicHeadingItem";
 import TrackList from "./TrackList";
 import { StyledButton } from "../ui";
+import { usePlaylistStateStore } from "../../lib/store";
 
 const Wrapper = styled.div`
   display: flex;
@@ -29,7 +30,16 @@ const BackButton = styled(FiArrowLeftCircle)`
 
 const PlaylistSubPage = ({ id, filterBy, sortBy, sortASC, onGoBack }) => {
   const [filteredList, setFilteredList] = useState([]);
+  const { user, isLoading: isLoadingUser, isError: isErrorUser } = useUser();
   const { playlistData, isLoading, isError } = usePlaylistId(id);
+  const setPlaylistId = usePlaylistStateStore((state) => state.setPlaylistId);
+  const [currentUserId, setCurrentUserId] = useState("");
+
+  useEffect(() => {
+    if (!isLoadingUser && !isErrorUser) {
+      setCurrentUserId(user.id);
+    }
+  }, [isLoadingUser, isErrorUser, user]);
 
   // fix in case there is no image for the playlist
   let image = { url: "" };
@@ -74,10 +84,15 @@ const PlaylistSubPage = ({ id, filterBy, sortBy, sortASC, onGoBack }) => {
     <Wrapper>
       {!isLoading && (
         <>
-          {console.log(playlistData)}
           <ButtonWrapper>
             <BackButton onClick={onGoBack} />
-            <StyledButton state="filled" onClick={() => {}}>
+            <StyledButton
+              state="filled"
+              isDisabled={currentUserId !== playlistData.owner.id}
+              onClick={() => {
+                setPlaylistId(id);
+              }}
+            >
               Edit Playlist
             </StyledButton>
           </ButtonWrapper>
