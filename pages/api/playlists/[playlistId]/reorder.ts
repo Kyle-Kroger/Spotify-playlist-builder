@@ -33,8 +33,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     console.warn(err);
     // probably should redirct to the login page or an error page before login
   }
-  // JSON.stringify(
-  //   `reordered track with index ${trackStartIndex} to index ${trackEndIndex} in the the playlist with id: ${playlistId} ${response}`
-  // )
+
   res.send(response);
 };

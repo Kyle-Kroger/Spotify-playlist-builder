@@ -8,7 +8,7 @@ import { StyledImage } from "../ui";
 const Wrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  background: #0b5c0b;
+  background: #106b30;
   padding: var(--spacing-lg);
   justify-content: center;
   align-items: center;
@@ -42,6 +42,11 @@ const PlaylistHeader = () => {
     height: textHeight,
     observedDiv: observedText,
   } = useDynamicSize(isLoading, isError);
+
+  // if no playlist id is found
+  if (!isLoading && !isError && Object.keys(playlistData).length === 0) {
+    return <div>{`no playlist with id ${playlistId} was found`}</div>;
+  }
 
   // Give anything that doesn't have an image a url of ""
   let image = { url: "" };

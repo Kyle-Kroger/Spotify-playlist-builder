@@ -9,6 +9,7 @@ import {
   usePlaylistStateStore,
 } from "../../lib/store";
 import { useUser } from "../../lib/hooks";
+import CreatePlaylistNav from "./CreatePlaylistNav";
 
 const Wrapper = styled.div`
   display: flex;
@@ -23,7 +24,7 @@ const StyledNav = styled.nav`
 `;
 
 const LogoHeading = styled.div`
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-sm);
   text-align: center;
 `;
 
@@ -66,6 +67,13 @@ const Playlist = styled.li<{ isDisabled: boolean }>`
   }
 `;
 
+const Divider = styled.div`
+  width: 100%;
+  min-height: 1px;
+  background-color: var(--color-grey-300);
+  margin-bottom: var(--spacing-md);
+`;
+
 const DesktopNav = (props) => {
   const { playlists } = props;
   const { user, isLoading, isError } = useUser();
@@ -87,6 +95,7 @@ const DesktopNav = (props) => {
         <LogoHeading onClick={() => setCurrentPage(SIDEBAR_PAGE.NONE)}>
           Playlist Builder
         </LogoHeading>
+        <Divider />
         <NavLinkList>
           <NavLink onClick={() => setCurrentPage(SIDEBAR_PAGE.SEARCH)}>
             <BsSearch size="28px" />
@@ -101,6 +110,11 @@ const DesktopNav = (props) => {
             <NavText>Edit Tags</NavText>
           </NavLink>
         </NavLinkList>
+        <Divider />
+        <CreatePlaylistNav
+          userId={currentUserId}
+          setPlaylistId={setPlaylistId}
+        />
       </StyledNav>
       <PlaylistWrapper>
         {playlists.map((playlist) => (

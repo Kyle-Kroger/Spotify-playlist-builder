@@ -8,7 +8,7 @@ import PlaylistTrackList from "./PlaylistTrackList";
 const Wrapper = styled.div`
   flex: 1;
   overflow: auto;
-
+  background-color: var(--color-grey-900);
   ${helpers.spotifySearchBar}
 `;
 

@@ -5,6 +5,7 @@ interface ButtonProps {
 }
 
 const StandardButton = styled.a<ButtonProps>`
+  display: inline-block;
   border-radius: var(--radius-pill);
   font-size: var(--fz-sm);
   color: ${(p) => (p.isDisabled ? "var(--color-grey-300)" : "white")};

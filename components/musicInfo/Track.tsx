@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import useSWR, { useSWRConfig } from "swr";
 import { BsPlusCircle } from "react-icons/bs";
 import { StyledImage } from "../ui";
 import { durationMSToStandard } from "../../lib/spotify";

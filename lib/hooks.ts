@@ -15,12 +15,17 @@ export const useUser = () => {
 };
 
 export const useUserPlaylists = () => {
-  const { data, error } = useSWR("/playlists/userPlaylists", fetcher);
+  const {
+    data,
+    error,
+    mutate: mutateUserPlaylists,
+  } = useSWR("/playlists/userPlaylists", fetcher);
 
   return {
     playlists: data || [],
     isLoading: !data && !error,
     isError: error,
+    mutateUserPlaylists,
   };
 };
 

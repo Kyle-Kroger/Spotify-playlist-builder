@@ -5,7 +5,7 @@ const Wrapper = styled.div`
   display: flex;
   position: sticky;
   top: 0;
-  background-color: #064106;
+  background-color: var(--color-black);
   font-size: var(--fz-lg);
   font-weight: 800;
   padding-right: var(--spacing-xs);

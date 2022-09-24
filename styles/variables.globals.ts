@@ -6,7 +6,8 @@ const variables = css`
     --color-grey-300: #797979;
     --color-grey-600: #242424;
     --color-grey-700: #202020;
-    --color-grey-800: #1d1c1c;
+    --color-grey-800: #161616;
+    --color-grey-850: #121212;
     --color-grey-900: #0d0d0d;
     --color-black: #000000;
 

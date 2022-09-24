@@ -61,9 +61,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       }
     }
     playlistData = { ...playlistData, tracks };
+    res.send(playlistData);
   } catch (err) {
     console.warn(err);
-    // probably should redirct to the login page or an error page before login
   }
-  res.send(playlistData);
 };
