@@ -15,7 +15,7 @@ export enum SORT_ORDER {
   DEFAULT = "default",
   ARTIST = "firstArtist",
   ALBUM = "albumName",
-  TRACK_TIME = "duration_ms",
+  TRACK_TIME = "duration",
 }
 
 export const sortPlaylist = (sortBy, sortOrderASC, list) => {
@@ -25,4 +25,14 @@ export const sortPlaylist = (sortBy, sortOrderASC, list) => {
       ? a[key].localeCompare(b[key])
       : -1 * a[key].localeCompare(b[key])
   );
+};
+
+export const durationMSToStandard = (ms) => {
+  const seconds = +ms / 1000;
+  const min = Math.floor(seconds / 60);
+  const remSeconds = Math.floor(seconds % 60).toLocaleString("en-US", {
+    minimumIntegerDigits: 2,
+    useGrouping: false,
+  });
+  return `${min}:${remSeconds}`;
 };

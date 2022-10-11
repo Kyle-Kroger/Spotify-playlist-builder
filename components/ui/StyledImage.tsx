@@ -26,9 +26,15 @@ const ImagePlaceholder = styled.div`
   height: 100%;
   background-color: var(--color-black);
 `;
-const StyledImage = (props) => {
-  const { src, alt, width, height, isRound, handleClick, className } = props;
-
+const StyledImage = ({
+  src,
+  alt,
+  width = "auto",
+  height = "auto",
+  isRound = false,
+  handleClick = () => {},
+  className,
+}) => {
   return (
     <ImageWrapper
       onClick={() => handleClick()}

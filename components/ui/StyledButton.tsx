@@ -5,6 +5,7 @@ interface ButtonProps {
 }
 
 const StandardButton = styled.a<ButtonProps>`
+  display: inline-block;
   border-radius: var(--radius-pill);
   font-size: var(--fz-sm);
   color: ${(p) => (p.isDisabled ? "var(--color-grey-300)" : "white")};
@@ -20,8 +21,11 @@ const OutlineButton = styled(StandardButton)`
 
 const FilledButton = styled(StandardButton)`
   font-weight: 600;
-  border: 2px solid var(--color-spotify-outline);
-  background-color: var(--color-spotify-green);
+  border: 2px solid
+    ${(p) =>
+      p.isDisabled ? "var(--color-grey-300)" : "var(--color-spotify-outline)"};
+  background-color: ${(p) =>
+    p.isDisabled ? "transparent" : "var(--color-spotify-green)"};
 `;
 
 interface Props {

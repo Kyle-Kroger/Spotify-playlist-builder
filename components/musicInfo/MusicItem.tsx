@@ -59,6 +59,7 @@ const MusicItem = (props) => {
           isRound={isRound}
           width={width}
           handleClick={handleClick}
+          className=""
         />
       </Wrapper>
     );
@@ -71,6 +72,7 @@ const MusicItem = (props) => {
         isRound={isRound}
         width="95%"
         handleClick={handleClick}
+        className=""
       />
       <Text>
         <h4>{title}</h4>

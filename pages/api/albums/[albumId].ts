@@ -39,7 +39,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     while (moreData) {
       const albumTracks = await spotifyFetcher(albumTracksEndpoint, token);
 
-      tracks = [...tracks, ...albumTracks.items];
+      const items = albumTracks.items.map((item) => {
+        return { ...item, duration: item.duration_ms };
+      });
+
+      tracks = [...tracks, ...items];
 
       if (albumTracks.next) {
         albumTracksEndpoint = sliceBaseUrl(albumTracks.next);

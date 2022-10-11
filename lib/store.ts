@@ -16,3 +16,13 @@ export const usePageStateStore = create<PageState>()((set) => ({
   currentPage: SIDEBAR_PAGE.SEARCH,
   setCurrentPage: (newPage) => set({ currentPage: newPage }),
 }));
+
+interface PlaylistState {
+  currentPlaylistId: string;
+  setPlaylistId: (newPage: string) => void;
+}
+
+export const usePlaylistStateStore = create<PlaylistState>()((set) => ({
+  currentPlaylistId: "",
+  setPlaylistId: (playlistId) => set({ currentPlaylistId: playlistId }),
+}));

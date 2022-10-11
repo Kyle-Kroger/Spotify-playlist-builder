@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
 const ListItem = styled.li`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
   padding: var(--spacing-sm);
   text-align: center;
   width: 100%;

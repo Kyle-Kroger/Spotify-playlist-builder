@@ -42,15 +42,34 @@ const PositionedDropdown = styled(DropdownMenu)`
   right: 0;
 `;
 
-const PlaylistFilterSort = ({ filterBy, onFilter, sortOrderASC, onSort }) => {
+const PlaylistFilterSort = ({
+  filterBy,
+  onFilter,
+  sortBy,
+  sortOrderASC,
+  onSort,
+  showSubpage,
+}) => {
   const [showDropdown, setShowDropdown] = useState(false);
 
-  const handleDropdownItemClicked = (sortBy) => {
-    onSort(sortBy);
+  const handleDropdownItemClicked = (sort) => {
+    onSort(sort);
     setShowDropdown(false);
   };
   const handleFilterChange = (e) => {
     onFilter(e.target.value);
+  };
+
+  const sortArrowDisplay = (currentSortBy, listSortBy, orderASC) => {
+    if (currentSortBy === listSortBy) {
+      if (orderASC) {
+        return <FiArrowUp />;
+      }
+
+      return <FiArrowDown />;
+    }
+
+    return "";
   };
   return (
     <Wrapper>
@@ -72,21 +91,74 @@ const PlaylistFilterSort = ({ filterBy, onFilter, sortOrderASC, onSort }) => {
         <AnimatePresence>
           {showDropdown && (
             <PositionedDropdown className="">
-              <DropdownItem
-                onClick={() => handleDropdownItemClicked(SORT_ORDER.ALPHA)}
-              >
-                Alphabetical
-              </DropdownItem>
-              <DropdownItem
-                onClick={() => handleDropdownItemClicked(SORT_ORDER.CREATOR)}
-              >
-                Creator
-              </DropdownItem>
-              <DropdownItem
-                onClick={() => handleDropdownItemClicked(SORT_ORDER.DEFAULT)}
-              >
-                Default
-              </DropdownItem>
+              {!showSubpage && (
+                <>
+                  <DropdownItem
+                    onClick={() => handleDropdownItemClicked(SORT_ORDER.ALPHA)}
+                  >
+                    Alphabetical
+                    {sortArrowDisplay(sortBy, SORT_ORDER.ALPHA, sortOrderASC)}
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={() =>
+                      handleDropdownItemClicked(SORT_ORDER.CREATOR)
+                    }
+                  >
+                    Creator
+                    {sortArrowDisplay(sortBy, SORT_ORDER.CREATOR, sortOrderASC)}
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={() =>
+                      handleDropdownItemClicked(SORT_ORDER.DEFAULT)
+                    }
+                  >
+                    Default
+                    {sortArrowDisplay(sortBy, SORT_ORDER.DEFAULT, sortOrderASC)}
+                  </DropdownItem>
+                </>
+              )}
+              {showSubpage && (
+                <>
+                  <DropdownItem
+                    onClick={() => handleDropdownItemClicked(SORT_ORDER.ALPHA)}
+                  >
+                    Alphabetical
+                    {sortArrowDisplay(sortBy, SORT_ORDER.ALPHA, sortOrderASC)}
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={() => handleDropdownItemClicked(SORT_ORDER.ARTIST)}
+                  >
+                    Artist
+                    {sortArrowDisplay(sortBy, SORT_ORDER.ARTIST, sortOrderASC)}
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={() => handleDropdownItemClicked(SORT_ORDER.ALBUM)}
+                  >
+                    Album
+                    {sortArrowDisplay(sortBy, SORT_ORDER.ALBUM, sortOrderASC)}
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={() =>
+                      handleDropdownItemClicked(SORT_ORDER.TRACK_TIME)
+                    }
+                  >
+                    Track Time
+                    {sortArrowDisplay(
+                      sortBy,
+                      SORT_ORDER.TRACK_TIME,
+                      sortOrderASC
+                    )}
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={() =>
+                      handleDropdownItemClicked(SORT_ORDER.DEFAULT)
+                    }
+                  >
+                    Default
+                    {sortArrowDisplay(sortBy, SORT_ORDER.DEFAULT, sortOrderASC)}
+                  </DropdownItem>
+                </>
+              )}
             </PositionedDropdown>
           )}
         </AnimatePresence>

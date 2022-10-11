@@ -8,9 +8,9 @@ const Wrapper = styled.div`
   justify-content: center;
   background: var(--page-gradient);
   margin-bottom: var(--spacing-sm);
-  margin-top: -12px;
+  width: calc(100% + 24px);
   margin-left: -12px;
-  margin-right: -12px;
+  margin-top: -12px;
 `;
 
 const ItemWrapper = styled.div<{ width: string }>`
@@ -51,6 +51,14 @@ const MusicHeadingItem = ({
   const openInNewTab = (url) => {
     window.open(url, "_blank", "noopener,noreferrer");
   };
+  let imageUrl = imageSrc;
+  // temperary fix for blended playlist images being broken
+  if (
+    imageUrl ===
+    "https://blend-playlist-covers.spotifycdn.com/v2/blend_LARGE-forest-seafoam-*.jpg"
+  ) {
+    imageUrl = imageUrl.replace("-*", "-en");
+  }
   return (
     <Wrapper>
       <ItemWrapper width={width}>
@@ -59,11 +67,12 @@ const MusicHeadingItem = ({
           {subtitle !== "" && <h4>{subtitle}</h4>}
         </ItemHeading>
         <StyledImage
-          src={imageSrc}
+          src={imageUrl}
           alt={title}
           isRound={isRound}
           width={width}
           handleClick={handleImageClick}
+          className=""
         />
       </ItemWrapper>
       <PositionedButton

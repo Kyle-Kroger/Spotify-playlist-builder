@@ -11,3 +11,4 @@ export { default as MusicHeadingItem } from "./MusicHeadingItem";
 export { default as MusicItemList } from "./MusicItemList";
 export { default as AllPlaylistPage } from "./PlaylistsPage";
 export { default as PlaylistFilterSort } from "./PlaylistFilterSort";
+export { default as PlaylistSubPage } from "./PlaylistSubPage";

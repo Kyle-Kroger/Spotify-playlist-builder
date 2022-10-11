@@ -6,14 +6,15 @@ const variables = css`
     --color-grey-300: #797979;
     --color-grey-600: #242424;
     --color-grey-700: #202020;
-    --color-grey-800: #1d1c1c;
+    --color-grey-800: #161616;
+    --color-grey-850: #121212;
     --color-grey-900: #0d0d0d;
     --color-black: #000000;
 
     --color-spotify-green: #1db954;
     --color-spotify-outline: #2dd468;
 
-    --color-text-subdued: #a7a7a7;
+    --color-text-subdued: #cfcfcf;
 
     /* Gradients */
     --player-gradient: linear-gradient(180deg, #202020 0%, #111111 100%);

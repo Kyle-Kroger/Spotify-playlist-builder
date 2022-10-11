@@ -5,6 +5,7 @@ import { helpers } from "../../styles";
 import MusicItemList from "./MusicItemList";
 import PlaylistFilterSort from "./PlaylistFilterSort";
 import { sortPlaylist, SORT_ORDER } from "../../lib/spotify";
+import PlaylistSubPage from "./PlaylistSubPage";
 
 const Wrapper = styled.div`
   display: flex;
@@ -54,7 +55,7 @@ const AllPlaylistPage = () => {
 
   // If the filter and sort isn't in a useEffect we get an infinite loop
   useEffect(() => {
-    if (!isLoading) {
+    if (!isLoading && !showPlaylistSubpage) {
       let filteredSorted = [...playlists];
       if (filterBy.trim() !== "") {
         filteredSorted = filteredSorted.filter((list) =>
@@ -63,11 +64,21 @@ const AllPlaylistPage = () => {
       }
       if (sortBy !== SORT_ORDER.DEFAULT) {
         memoSortPlaylist(filteredSorted);
+      } else if (!isSortingASC) {
+        filteredSorted.reverse();
       }
 
       setFilteredList(filteredSorted);
     }
-  }, [filterBy, sortBy, isLoading, playlists, memoSortPlaylist]);
+  }, [
+    filterBy,
+    sortBy,
+    isSortingASC,
+    isLoading,
+    showPlaylistSubpage,
+    playlists,
+    memoSortPlaylist,
+  ]);
 
   const handleFilterChange = (value) => {
     setFilterbarValue(value);
@@ -82,13 +93,26 @@ const AllPlaylistPage = () => {
     setSortBy(value);
   };
 
+  const handlePlaylistClicked = (id) => {
+    setPlaylistId(id);
+    setShowPlaylistSubpage(true);
+  };
+
+  const handleBackToAllPlaylists = () => {
+    setSortBy(SORT_ORDER.DEFAULT);
+    setIsSortingASC(true);
+    setShowPlaylistSubpage(false);
+  };
+
   return (
     <Wrapper>
       <PlaylistFilterSort
         filterBy={filterbarValue}
         onFilter={handleFilterChange}
+        sortBy={sortBy}
         sortOrderASC={isSortingASC}
         onSort={handleSortChange}
+        showSubpage={showPlaylistSubpage}
       />
       <PlaylistWrapper>
         {!isLoading && !showPlaylistSubpage && (
@@ -97,7 +121,16 @@ const AllPlaylistPage = () => {
             items={filteredList}
             hasSubtitle
             isPlaylist
-            onClick={() => {}}
+            onClick={handlePlaylistClicked}
+          />
+        )}
+        {!isLoading && showPlaylistSubpage && (
+          <PlaylistSubPage
+            id={playlistId}
+            filterBy={filterBy}
+            sortBy={sortBy}
+            sortASC={isSortingASC}
+            onGoBack={handleBackToAllPlaylists}
           />
         )}
       </PlaylistWrapper>

@@ -1,28 +1,34 @@
-export const fetcher = (url: string, method = "GET", data = undefined) => {
-  return fetch(`${window.location.origin}/api${url}`, {
-    // method = method in the parameters if one is not passed in the its a get request
+export const fetcher = async (
+  url: string,
+  data = undefined,
+  method = "GET"
+) => {
+  const response = await fetch(`${window.location.origin}/api${url}`, {
     method,
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
-  }).then((res) => {
-    if (res.status > 399 && res.status < 200) {
-      throw new Error();
-    }
-    return res.json();
   });
+
+  if (!response.ok) {
+    const message = `An error has occured: ${response.status} ${response.statusText}`;
+    throw new Error(message);
+  }
+
+  const responseData = await response.json();
+
+  return responseData;
 };
 
 export const spotifyFetcher = async (
   endpoint: string,
   token: string,
-  method: string = "GET",
+  method = "GET",
   data = undefined
 ) => {
   const response = await fetch(`https://api.spotify.com/v1${endpoint}`, {
-    // method = method in the parameters if one is not passed in the its a get request
     method,
     headers: {
       Accept: "application/json",
