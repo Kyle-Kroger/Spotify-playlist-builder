@@ -4,11 +4,12 @@ import { useDynamicSize, usePlaylistId } from "../../lib/hooks";
 import { durationMSToStandard } from "../../lib/spotify";
 import { usePlaylistStateStore } from "../../lib/store";
 import { StyledImage } from "../ui";
+import DeletePlaylist from "./DeletePlaylist";
 
 const Wrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  background: #106b30;
+  background: #0a5022;
   padding: var(--spacing-lg);
   justify-content: center;
   align-items: center;
@@ -29,7 +30,7 @@ const TextWrapper = styled.div<{
   }
 
   p {
-    margin-bottom: var(--spacing-xs);
+    margin-bottom: var(--spacing-md);
   }
 `;
 
@@ -96,6 +97,7 @@ const PlaylistHeader = () => {
               {playlistData.tracks.length === 1 ? "song" : "songs"} -{" "}
               {displayTime}
             </p>
+            <DeletePlaylist playlistId={playlistId} />
           </TextWrapper>
           <StyledImage
             src={image.url}
