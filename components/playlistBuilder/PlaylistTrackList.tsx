@@ -14,7 +14,8 @@ const ListItem = styled.li``;
 
 const PlaylistTrackList = () => {
   const playlistId = usePlaylistStateStore((state) => state.currentPlaylistId);
-  const { playlistData, isLoading, isError } = usePlaylistId(playlistId);
+  const { playlistData, isLoading, isError, mutatePlaylist } =
+    usePlaylistId(playlistId);
   const [displayedPlaylist, setDisplayedPlaylist] = useState([]);
   const [snapshotId, setSnapshotId] = useState("");
 
@@ -26,9 +27,26 @@ const PlaylistTrackList = () => {
   }, [isLoading, isError, playlistData]);
 
   const reorderSpotify = async (trackStartIndex, trackEndIndex, snapshotId) => {
+    // optimistic update
+    await mutatePlaylist((data) => {
+      // reorder the item to its new location
+      const newTracks = [...data.tracks];
+      const [reorderedItem] = newTracks.splice(trackStartIndex, 1);
+      newTracks.splice(trackEndIndex, 0, reorderedItem);
+
+      return {
+        ...data,
+        tracks: newTracks,
+      };
+    }, false);
+
+    // Need to adjust end index because spotify doesn't replace it adds before
+    const spotifyEndIndex =
+      trackEndIndex > trackStartIndex ? trackEndIndex + 1 : trackEndIndex;
+
     const bodyData = {
       trackStartIndex,
-      trackEndIndex,
+      trackEndIndex: spotifyEndIndex,
       snapshotId,
     };
     const response = await fetcher(
@@ -37,10 +55,25 @@ const PlaylistTrackList = () => {
       "PUT"
     );
 
+    // tell swr to revalidate to make sure they match up
+    await mutatePlaylist();
+
     setSnapshotId(response.snapshot_id);
   };
 
   const removeSpotify = async (trackUri, index, snapshotId) => {
+    // optimistic update
+    await mutatePlaylist((data) => {
+      // remove the item from playlist
+      const newTracks = [...data.tracks];
+      newTracks.splice(index, 1);
+      return {
+        ...data,
+        tracks: newTracks,
+      };
+    }, false);
+
+    // Update serverside
     const bodyData = {
       trackUri,
       index,
@@ -52,33 +85,28 @@ const PlaylistTrackList = () => {
       "DELETE"
     );
 
+    // tell swr to revalidate to make sure they match up
+    await mutatePlaylist();
+
     setSnapshotId(response.snapshot_id);
   };
 
   const handleDragEnd = (result) => {
     if (!result.destination) return;
 
+    // Without updating here as well a quick flicker happens when moving tracks
     const items = Array.from(displayedPlaylist);
-    // start and end index = result.source.index, result.destination.index
+
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
-    // update spotify with the moved song
-    const startIndex = result.source.index;
-    const endIndex =
-      result.destination.index > result.source.index
-        ? result.destination.index + 1
-        : result.destination.index;
-    reorderSpotify(startIndex, endIndex, snapshotId);
+
+    // start and end index = result.source.index, result.destination.index
+    reorderSpotify(result.source.index, result.destination.index, snapshotId);
     setDisplayedPlaylist(items);
   };
 
   const handleRemoveTrack = (index, trackUri) => {
-    // create a new array from displayedPlaylist and remove the item at 'index' from it
-    const items = Array.from(displayedPlaylist);
-    items.splice(index, 1);
-
     removeSpotify(trackUri, index, snapshotId);
-    setDisplayedPlaylist(items);
   };
 
   return (
@@ -110,7 +138,7 @@ const PlaylistTrackList = () => {
               );
             })}
             {provided.placeholder}
-            <div id="playlistBottom"></div>
+            <div id="playlistBottom" />
           </Wrapper>
         )}
       </Droppable>
