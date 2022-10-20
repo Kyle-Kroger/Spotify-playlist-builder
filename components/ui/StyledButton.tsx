@@ -15,7 +15,9 @@ const StandardButton = styled.a<ButtonProps>`
 `;
 
 const OutlineButton = styled(StandardButton)`
-  border: 2px solid ${(p) => (p.isDisabled ? "var(--color-grey-300)" : "white")};
+  border: 2px solid
+    ${(p) =>
+      p.isDisabled ? "var(--color-grey-300)" : "var(--color-text-subdued)"};
   background-color: transparent;
 `;
 

@@ -109,6 +109,17 @@ const PlaylistTrackList = () => {
     removeSpotify(trackUri, index, snapshotId);
   };
 
+  const handleReorderModal = (startIndex, newIndex) => {
+    // Without updating here as well a quick flicker happens when moving tracks
+    const items = Array.from(displayedPlaylist);
+
+    const [reorderedItem] = items.splice(startIndex, 1);
+    items.splice(newIndex, 0, reorderedItem);
+
+    reorderSpotify(startIndex, newIndex, snapshotId);
+    setDisplayedPlaylist(items);
+  };
+
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <Droppable droppableId="Tracklist">
@@ -130,6 +141,8 @@ const PlaylistTrackList = () => {
                       <PlaylistTrack
                         track={track}
                         index={i}
+                        playlistLength={displayedPlaylist.length}
+                        handleReorderModal={handleReorderModal}
                         handleRemoveTrack={handleRemoveTrack}
                       />
                     </ListItem>

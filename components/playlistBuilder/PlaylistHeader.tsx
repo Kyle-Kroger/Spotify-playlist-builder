@@ -9,7 +9,10 @@ import DeletePlaylist from "./DeletePlaylist";
 const Wrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  background: #0a5022;
+  background: linear-gradient(
+    var(--color-primary-500),
+    var(--color-primary-900)
+  );
   padding: var(--spacing-lg);
   justify-content: center;
   align-items: center;

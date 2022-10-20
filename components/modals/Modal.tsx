@@ -20,6 +20,7 @@ const Wrapper = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: var(--color-grey-800);
+  border: 2px solid var(--color-grey-600);
   border-radius: var(--radius-small);
   min-width: 400px;
   z-index: 1000;
