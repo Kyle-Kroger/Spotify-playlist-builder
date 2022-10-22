@@ -10,6 +10,7 @@ import {
 } from "../../lib/store";
 import { useUser } from "../../lib/hooks";
 import CreatePlaylistNav from "./CreatePlaylistNav";
+import NavPlaylist from "./NavPlaylist";
 
 const Wrapper = styled.div`
   display: flex;
@@ -118,14 +119,12 @@ const DesktopNav = (props) => {
       </StyledNav>
       <PlaylistWrapper>
         {playlists.map((playlist) => (
-          <Playlist
+          <NavPlaylist
             id={playlist.id}
-            key={playlist.id}
-            onClick={() => setPlaylistId(playlist.id)}
+            name={playlist.name}
             isDisabled={playlist.owner.id !== currentUserId}
-          >
-            {playlist.name}
-          </Playlist>
+            setPlaylistId={setPlaylistId}
+          />
         ))}
       </PlaylistWrapper>
     </Wrapper>
