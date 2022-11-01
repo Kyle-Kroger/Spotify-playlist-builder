@@ -41,4 +41,24 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       res.status(400).json({ success: false });
     }
   }
+
+  if (req.method === "GET") {
+    try {
+      // get tags of a the playlist
+      await dbConnect();
+
+      const playlistTags = await Tag.find({ playlistId });
+
+      if (playlistTags.length < 1) {
+        throw new Error("playlist with that id was not found");
+      }
+      return res.status(200).json(playlistTags);
+    } catch (err) {
+      console.warn(err);
+      res.status(400).json({
+        success: false,
+        message: "playlist with that id was not found",
+      });
+    }
+  }
 };
