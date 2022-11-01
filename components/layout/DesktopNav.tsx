@@ -108,7 +108,7 @@ const DesktopNav = (props) => {
           </NavLink>
           <NavLink onClick={() => setCurrentPage(SIDEBAR_PAGE.TAGGING)}>
             <BsTag size="28px" />
-            <NavText>Edit Tags</NavText>
+            <NavText>Manage Tags</NavText>
           </NavLink>
         </NavLinkList>
         <Divider />

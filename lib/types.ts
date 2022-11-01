@@ -14,3 +14,14 @@ export interface TrackType {
   albumId: string;
   albumName: string;
 }
+
+export interface TagType {
+  name: string;
+  textColor: string;
+  bgColor: string;
+  tracks?: string[];
+  playlistId: string | string[];
+  userId: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
