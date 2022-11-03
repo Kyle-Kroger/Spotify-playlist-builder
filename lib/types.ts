@@ -1,9 +1,11 @@
+import { Types } from "mongoose";
+
 interface Artists {
   name: string;
   href: string;
 }
 
-export interface TrackType {
+export interface ITrack {
   id: string;
   uri: string;
   name: string;
@@ -15,7 +17,7 @@ export interface TrackType {
   albumName: string;
 }
 
-export interface TagType {
+export interface ITag {
   name: string;
   textColor: string;
   bgColor: string;
@@ -24,4 +26,11 @@ export interface TagType {
   userId: string;
   createdAt?: Date;
   updatedAt?: Date;
+}
+
+export interface ITrackTag {
+  id: Types.ObjectId;
+  name: string;
+  textColor: string;
+  bgColor: string;
 }

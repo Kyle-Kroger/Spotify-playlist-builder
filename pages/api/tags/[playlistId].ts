@@ -1,15 +1,15 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import dbConnect from "../../../lib/mongodb";
-import { TagType } from "../../../lib/types";
+import { ITag } from "../../../lib/types";
 import Tag from "../../../models/Tag";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { playlistId } = req.query;
-  const { name, textColor, bgColor, userId, trackUri } = req.body;
   if (req.method === "POST") {
+    const { name, textColor, bgColor, userId, trackUri } = req.body;
     try {
       await dbConnect();
-      const newTag: TagType = {
+      const newTag: ITag = {
         name,
         textColor,
         bgColor,
@@ -37,8 +37,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       }
       res.status(200).json(currentTag);
     } catch (err) {
-      console.warn(err);
-      res.status(400).json({ success: false });
+      res.status(400).json({ success: false, message: err.message });
     }
   }
 
@@ -54,10 +53,55 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       }
       return res.status(200).json(playlistTags);
     } catch (err) {
-      console.warn(err);
       res.status(400).json({
         success: false,
-        message: "playlist with that id was not found",
+        message: err.message,
+      });
+    }
+  }
+
+  if (req.method === "DELETE") {
+    const { id, trackUri, deleteAll = false } = req.body;
+    let message = "";
+    try {
+      await dbConnect();
+
+      const deleteTag = await Tag.findById(id);
+
+      if (!deleteTag) {
+        throw new Error("Tag with that id could not be found");
+      }
+
+      // delete the tag on a song (remove from song arr)
+      if (!deleteAll && trackUri !== undefined) {
+        // find song and delete it
+        const deleteIndex = deleteTag.tracks.findIndex(
+          (uri) => uri === trackUri
+        );
+
+        if (deleteIndex === -1) {
+          throw new Error(
+            `The track uri of ${trackUri} could not be found on tag with id of ${id}`
+          );
+        }
+
+        deleteTag.tracks.splice(deleteIndex, 1);
+        await deleteTag.save();
+        message = `The trackUri of ${trackUri} has been deleted from the tag with an idea of ${id}`;
+      }
+
+      if (deleteAll) {
+        // delete the entire tag document
+        // eslint-disable-next-line no-underscore-dangle
+        await Tag.deleteOne({ _id: deleteTag._id });
+        message = `The tag with id ${id} has been deleted from the collection`;
+      }
+
+      return res.status(200).json({ success: true, message });
+    } catch (err) {
+      res.status(400).json({
+        success: false,
+        message: err.message,
       });
     }
   }

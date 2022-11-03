@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import { TagType } from "../lib/types";
+import { ITag } from "../lib/types";
 
-const tagSchema = new mongoose.Schema<TagType>({
+const tagSchema = new mongoose.Schema<ITag>({
   name: {
     type: String,
     required: true,
@@ -41,5 +41,5 @@ tagSchema.pre("save", function (next) {
   next();
 });
 
-export default (mongoose.models.Tag as mongoose.Model<TagType>) ||
+export default (mongoose.models.Tag as mongoose.Model<ITag>) ||
   mongoose.model("Tag", tagSchema);
