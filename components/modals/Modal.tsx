@@ -1,3 +1,4 @@
+import FocusLock from "react-focus-lock";
 import styled from "styled-components";
 import { StyledButton } from "../ui";
 import ClientOnlyPortal from "./ClientOnlyPortal";
@@ -20,9 +21,10 @@ const Wrapper = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: var(--color-grey-800);
-  border: 2px solid var(--color-grey-600);
+  border: 1px solid var(--color-grey-600);
   border-radius: var(--radius-small);
-  min-width: 400px;
+  min-width: 350px;
+  max-width: 550px;
   z-index: 1000;
   // needed for the top borders to have radius
   overflow: hidden;
@@ -52,20 +54,22 @@ const Modal = ({ children, onClose, title, onConfirm, buttonText }) => {
   return (
     <ClientOnlyPortal selector="#portal">
       <Backdrop onClick={onClose} />
-      <Wrapper>
-        <Heading>
-          <h2>{title}</h2>
-        </Heading>
-        <Content>{children}</Content>
-        <ButtonWrapper>
-          <StyledButton state="outline" onClick={onClose}>
-            Cancel
-          </StyledButton>
-          <StyledButton state="filled" onClick={onConfirm}>
-            {buttonText}
-          </StyledButton>
-        </ButtonWrapper>
-      </Wrapper>
+      <FocusLock>
+        <Wrapper>
+          <Heading>
+            <h2>{title}</h2>
+          </Heading>
+          <Content>{children}</Content>
+          <ButtonWrapper>
+            <StyledButton state="outline" onClick={onClose}>
+              Cancel
+            </StyledButton>
+            <StyledButton state="filled" onClick={onConfirm}>
+              {buttonText}
+            </StyledButton>
+          </ButtonWrapper>
+        </Wrapper>
+      </FocusLock>
     </ClientOnlyPortal>
   );
 };

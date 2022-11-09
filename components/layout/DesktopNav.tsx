@@ -7,6 +7,7 @@ import {
   usePageStateStore,
   SIDEBAR_PAGE,
   usePlaylistStateStore,
+  useUserStateStore,
 } from "../../lib/store";
 import { useUser } from "../../lib/hooks";
 import CreatePlaylistNav from "./CreatePlaylistNav";
@@ -84,7 +85,6 @@ const DesktopNav = (props) => {
 
   useEffect(() => {
     if (!isLoading && !isError) {
-      console.log(`current user is ${user.id}`);
       setCurrentUserId(user.id);
     }
   }, [isLoading, isError, user]);
@@ -120,6 +120,7 @@ const DesktopNav = (props) => {
       <PlaylistWrapper>
         {playlists.map((playlist) => (
           <NavPlaylist
+            key={playlist.id}
             id={playlist.id}
             name={playlist.name}
             isDisabled={playlist.owner.id !== currentUserId}

@@ -1,5 +1,3 @@
-import { Types } from "mongoose";
-
 interface Artists {
   name: string;
   href: string;
@@ -29,7 +27,7 @@ export interface ITag {
 }
 
 export interface ITrackTag {
-  id: Types.ObjectId;
+  id: string;
   name: string;
   textColor: string;
   bgColor: string;

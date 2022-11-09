@@ -4,7 +4,7 @@ interface ButtonProps {
   isDisabled?: boolean;
 }
 
-const StandardButton = styled.a<ButtonProps>`
+const StandardButton = styled.button<ButtonProps>`
   display: inline-block;
   border-radius: var(--radius-pill);
   font-size: var(--fz-sm);

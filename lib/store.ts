@@ -26,3 +26,13 @@ export const usePlaylistStateStore = create<PlaylistState>()((set) => ({
   currentPlaylistId: "",
   setPlaylistId: (playlistId) => set({ currentPlaylistId: playlistId }),
 }));
+
+interface UserState {
+  currentUserId: string;
+  setCurrentUserId: (newId: string) => void;
+}
+
+export const useUserStateStore = create<UserState>()((set) => ({
+  currentUserId: "",
+  setCurrentUserId: (id) => set({ currentUserId: id }),
+}));
