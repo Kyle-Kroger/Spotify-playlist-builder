@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled from "styled-components";
 import { ITrackTag } from "../../lib/types";
 import { TagList } from "../tagging";
@@ -62,27 +61,32 @@ const AddTagContent = ({
   tagText,
   tagBgColor,
   tagTextColor,
+  isNewTag,
+  setIsNewTag,
+  handleNewTagClicked,
+  selectedTag,
   onTextChanged,
   onBgColorChanged,
   onTextColorChanged,
 }) => {
-  const [showCreateTag, setshowCreateTag] = useState(false);
   return (
     <Wrapper>
-      <h3>-- Existing Tags --</h3>
-      <TagListWrapper>
-        <TagList tagArray={dummyTags} />
-      </TagListWrapper>
+      {!isNewTag && (
+        <>
+          <h3>-- Existing Tags --</h3>
+          <TagListWrapper>
+            <TagList
+              tagArray={dummyTags}
+              onClick={handleNewTagClicked}
+              selectedTagId={
+                typeof selectedTag !== "undefined" ? selectedTag.id : ""
+              }
+            />
+          </TagListWrapper>
+        </>
+      )}
 
-      <StyledButton
-        state="filled"
-        onClick={() => {
-          setshowCreateTag((state) => !state);
-        }}
-      >
-        Create a New Tag
-      </StyledButton>
-      {showCreateTag && (
+      {isNewTag && (
         <CreateTagContent
           tagText={tagText}
           tagBgColor={tagBgColor}
@@ -92,6 +96,15 @@ const AddTagContent = ({
           onTextColorChanged={onTextColorChanged}
         />
       )}
+
+      <StyledButton
+        state="filled"
+        onClick={() => {
+          setIsNewTag((state) => !state);
+        }}
+      >
+        {!isNewTag ? "Create a New Tag" : "Use an Existing Tag"}
+      </StyledButton>
     </Wrapper>
   );
 };

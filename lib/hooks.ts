@@ -35,7 +35,7 @@ export const usePlaylistId = (id) => {
     error,
     mutate: mutatePlaylist,
   } = useSWR(`/playlists/${id}`, fetcher, {
-    refreshInterval: 500,
+    refreshInterval: 1000,
   });
 
   return {

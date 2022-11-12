@@ -91,6 +91,7 @@ const CreateTagContent = ({
           name={tagText}
           bgColor={tagBgColor}
           textColor={tagTextColor}
+          onClick={() => {}}
         />
       </InputWrapper>
     </StyledForm>

@@ -25,16 +25,29 @@ const PlaylistTrackTaglist = ({ tagArray, trackUri }) => {
   const [newTagBgColor, setNewTagBgColor] = useState("#0d2e63");
   const [newTagTextColor, setNewTagTextColor] = useState("#ffffff");
 
-  const [isNewTag, setIsNewTag] = useState(true);
+  const [isNewTag, setIsNewTag] = useState(false);
+
+  const handleNewTagClicked = (tag: ITrackTag) => {
+    const newTag: ITrackTag = {
+      id: tag.id,
+      name: tag.name,
+      bgColor: tag.bgColor,
+      textColor: tag.textColor,
+    };
+    setSelectedTag(newTag);
+    console.log(selectedTag);
+  };
+
+  const handleTagClicked = (tag: ITrackTag) => {
+    console.log("tag clicked!");
+  };
 
   const handleCreateTag = async () => {
     try {
+      const { id: userId } = await fetcher(`/user`);
+
       // if a brand new tag
       if (isNewTag) {
-        const { id: userId } = await fetcher(`/user`);
-
-        console.log(`${userId} from playlistTrackTaglist`);
-
         await fetcher(
           `/tags/${playlistId}`,
           {
@@ -47,12 +60,27 @@ const PlaylistTrackTaglist = ({ tagArray, trackUri }) => {
           "POST"
         );
       }
+
       // if existing tag
+      if (!isNewTag && typeof selectedTag !== "undefined") {
+        await fetcher(
+          `/tags/${playlistId}`,
+          {
+            name: selectedTag.name,
+            textColor: selectedTag.textColor,
+            bgColor: selectedTag.bgColor,
+            userId,
+            trackUri,
+          },
+          "POST"
+        );
+      }
     } catch (e) {
       console.log(e.message);
     }
 
     setShowAddTag(false);
+    setNewTagText("");
   };
 
   return (
@@ -71,6 +99,10 @@ const PlaylistTrackTaglist = ({ tagArray, trackUri }) => {
             tagText={newTagText}
             tagBgColor={newTagBgColor}
             tagTextColor={newTagTextColor}
+            isNewTag={isNewTag}
+            setIsNewTag={setIsNewTag}
+            handleNewTagClicked={handleNewTagClicked}
+            selectedTag={selectedTag}
             onTextChanged={(e) => setNewTagText(e.target.value)}
             // is there a way to make this only fire every half second with a timer?
             // Dragging the color around in the picker causes so many state changes
@@ -82,7 +114,9 @@ const PlaylistTrackTaglist = ({ tagArray, trackUri }) => {
       {tagArray.length < 1 && (
         <PlaceholderText>Click to add a Tag</PlaceholderText>
       )}
-      {tagArray.length > 1 && <TagList tagArray={tagArray} />}
+      {tagArray.length > 1 && (
+        <TagList tagArray={tagArray} onClick={handleTagClicked} />
+      )}
     </>
   );
 };

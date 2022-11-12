@@ -7,15 +7,14 @@ const Wrapper = styled.div`
   display: flex;
   gap: var(--spacing-md);
   flex-wrap: wrap;
-  // scroll for tags
-  overflow: auto;
   ${helpers.spotifySearchBar}
 `;
 
-const TagList = ({ tagArray }) => {
+const TagList = ({ tagArray, onClick, selectedTagId = "" }) => {
   return (
     <Wrapper>
       {tagArray.map((tag: ITrackTag) => {
+        const isSelected = selectedTagId === tag.id;
         return (
           <Tag
             key={tag.id}
@@ -23,6 +22,8 @@ const TagList = ({ tagArray }) => {
             name={tag.name}
             bgColor={tag.bgColor}
             textColor={tag.textColor}
+            onClick={onClick}
+            selected={isSelected}
           />
         );
       })}
