@@ -3,7 +3,7 @@ import { NextApiResponse, NextApiRequest } from "next";
 import { URLSearchParams } from "url";
 import cookie from "cookie";
 
-const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI } = process.env;
+const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, MAIN_PAGE } = process.env;
 const auth = `Basic ${Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString(
   "base64"
 )}`;
@@ -70,7 +70,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     res.setHeader("Set-Cookie", tokenCookieArr);
-    res.send(data);
+    res.redirect("/");
   } catch (err) {
     console.warn(err);
   }
