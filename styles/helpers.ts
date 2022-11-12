@@ -20,6 +20,7 @@ const helpers = {
     /* width */
     ::-webkit-scrollbar {
       width: 10px;
+      height: 12px;
     }
 
     /* Track */

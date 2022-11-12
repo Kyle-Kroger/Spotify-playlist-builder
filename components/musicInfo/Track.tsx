@@ -5,7 +5,7 @@ import { durationMSToStandard } from "../../lib/spotify";
 import { usePlaylistStateStore } from "../../lib/store";
 import { fetcher } from "../../lib/fetcher";
 import { usePlaylistId } from "../../lib/hooks";
-import { TrackType } from "../../lib/types";
+import { ITrack } from "../../lib/types";
 
 const Wrapper = styled.div`
   display: flex;
@@ -81,7 +81,7 @@ const Track = (props) => {
   const standardTime = durationMSToStandard(durationMS);
 
   // track to add
-  const addTrack: TrackType = {
+  const addTrack: ITrack = {
     id,
     uri,
     name,

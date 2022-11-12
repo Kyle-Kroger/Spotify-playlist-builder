@@ -3,7 +3,7 @@ interface Artists {
   href: string;
 }
 
-export interface TrackType {
+export interface ITrack {
   id: string;
   uri: string;
   name: string;
@@ -13,4 +13,22 @@ export interface TrackType {
   firstArtist: string;
   albumId: string;
   albumName: string;
+}
+
+export interface ITag {
+  name: string;
+  textColor: string;
+  bgColor: string;
+  tracks?: string[];
+  playlistId: string | string[];
+  userId: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface ITrackTag {
+  id: string;
+  name: string;
+  textColor: string;
+  bgColor: string;
 }
