@@ -6,6 +6,12 @@ const GlobalStyle = createGlobalStyle`
   ${reset}
   ${variables}
 
+  html,
+  body,
+  #__next {
+    height: 100%;
+  }
+
   html {
     *,
     *:before,
