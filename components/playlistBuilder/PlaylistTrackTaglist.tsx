@@ -11,6 +11,7 @@ const PlaceholderText = styled.p`
   justify-content: center;
   align-items: center;
   color: var(--color-text-subdued);
+  padding-left: var(--spacing-sm);
 `;
 
 const PlaylistTrackTaglist = ({ tagArray, trackUri }) => {
@@ -85,7 +86,12 @@ const PlaylistTrackTaglist = ({ tagArray, trackUri }) => {
 
   return (
     <>
-      <NewTagButton onClick={() => setShowAddTag(true)} />
+      <NewTagButton
+        onClick={() => {
+          console.log(tagArray);
+          setShowAddTag(true);
+        }}
+      />
       {showAddTag && (
         <Modal
           title="Add a Tag"
@@ -114,7 +120,7 @@ const PlaylistTrackTaglist = ({ tagArray, trackUri }) => {
       {tagArray.length < 1 && (
         <PlaceholderText>Click to add a Tag</PlaceholderText>
       )}
-      {tagArray.length > 1 && (
+      {tagArray.length > 0 && (
         <TagList tagArray={tagArray} onClick={handleTagClicked} />
       )}
     </>

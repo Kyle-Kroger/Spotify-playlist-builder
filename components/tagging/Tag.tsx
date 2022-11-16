@@ -13,7 +13,7 @@ const Wrapper = styled.div<{
   margin-bottom: 8px;
   cursor: pointer;
 
-  ${(p) => (p.selected ? "outline: 4px solid white" : "")}
+  ${(p) => (p.selected ? "outline: 2px solid white" : "")}
 `;
 
 const Tag = ({ id, name, bgColor, textColor, onClick, selected = false }) => {

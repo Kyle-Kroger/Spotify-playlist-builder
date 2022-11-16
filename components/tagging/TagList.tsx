@@ -7,6 +7,7 @@ const Wrapper = styled.div`
   display: flex;
   gap: var(--spacing-md);
   flex-wrap: wrap;
+  padding: 0 var(--spacing-sm);
   ${helpers.spotifySearchBar}
 `;
 

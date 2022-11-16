@@ -13,7 +13,7 @@ const variables = css`
     --color-black: #000000;
 
     --color-spotify-green: #1db954;
-    --color-spotify-outline: #2dd468;
+    --color-spotify-outline: #1f8a44;
 
     --color-primary-300: #71bb84;
     --color-primary-500: #329f53;

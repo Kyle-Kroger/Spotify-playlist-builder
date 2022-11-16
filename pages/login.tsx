@@ -18,15 +18,17 @@ const Wrapper = styled.div`
 const LoginButton = styled.a`
   display: inline-block;
   background-color: var(--color-spotify-green);
-  border: 2px solid var(--color-spotify-outline);
+  border: 3px solid var(--color-spotify-outline);
   border-radius: var(--radius-pill);
-  padding: var(--spacing-md);
-  min-width: 178px;
+  padding: var(--spacing-sm);
+  min-width: 168px;
   text-align: center;
+  font-size: var(--fz-lg);
+  font-weight: 900;
 `;
 
 const ImageWrapper = styled.div`
-  width: 300px;
+  width: 250px;
   margin: 0 auto;
 `;
 

@@ -5,7 +5,7 @@ import { usePlaylistId, useUser } from "../../lib/hooks";
 import { sortPlaylist, SORT_ORDER } from "../../lib/spotify";
 import MusicHeadingItem from "./MusicHeadingItem";
 import TrackList from "./TrackList";
-import { StyledButton } from "../ui";
+import { Loader, StyledButton } from "../ui";
 import { usePlaylistStateStore } from "../../lib/store";
 
 const Wrapper = styled.div`
@@ -114,6 +114,7 @@ const PlaylistSubPage = ({ id, filterBy, sortBy, sortASC, onGoBack }) => {
           />
         </>
       )}
+      {isLoading && <Loader />}
     </Wrapper>
   );
 };

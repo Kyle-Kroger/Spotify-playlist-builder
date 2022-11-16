@@ -92,7 +92,9 @@ const PlaylistHeader = () => {
         <Wrapper ref={observedDiv}>
           <TextWrapper
             ref={observedText}
-            isWrapped={width && textWidth === width - 48 /* padding */}
+            isWrapped={
+              textWidth && width && textWidth >= width - 48 /* padding */
+            }
           >
             <h1>{playlistData.name}</h1>
             <p>

@@ -13,6 +13,7 @@ export interface ITrack {
   firstArtist: string;
   albumId: string;
   albumName: string;
+  tagArray: string[];
 }
 
 export interface ITag {

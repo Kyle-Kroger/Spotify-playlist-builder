@@ -91,6 +91,7 @@ const Track = (props) => {
     firstArtist: artists[0].name,
     albumId,
     albumName,
+    tagArray: [],
   };
 
   const spotifyAdd = async (trackUri) => {

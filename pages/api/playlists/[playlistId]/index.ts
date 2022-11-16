@@ -1,9 +1,13 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-await-in-loop */
 import { NextApiRequest, NextApiResponse } from "next";
 
 import { spotifyFetcher } from "../../../../lib/fetcher";
+import dbConnect from "../../../../lib/mongodb";
 import { sliceBaseUrl } from "../../../../lib/spotify";
+import { ITrackTag } from "../../../../lib/types";
 import { refreshAccessToken } from "../../../../lib/utils";
+import Tag from "../../../../models/Tag";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { playlistId } = req.query;
@@ -26,6 +30,36 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const playlistDetails = await spotifyFetcher(detailEndpoint, token);
     playlistData = { ...playlistData, ...playlistDetails };
+
+    // get tag data from mongo
+    await dbConnect();
+
+    const playlistTags = await Tag.find({ playlistId });
+    const trackTagMap = new Map();
+
+    // tags exist on playlist
+    if (playlistTags.length > 0) {
+      playlistTags.forEach((tag) => {
+        // create a tag object
+        const tagObj: ITrackTag = {
+          name: tag.name,
+          id: tag._id.toString(),
+          textColor: tag.textColor,
+          bgColor: tag.bgColor,
+        };
+        tag.tracks.forEach((uri) => {
+          // if tag doesn't exists in map add it
+          if (!trackTagMap.has(uri)) {
+            trackTagMap.set(uri, [tagObj]);
+          } else {
+            // key already exists
+            const tagArr = trackTagMap.get(uri);
+            trackTagMap.set(uri, [...tagArr, tagObj]);
+          }
+        });
+      });
+    }
+
     while (moreData) {
       const playlistTracks = await spotifyFetcher(tracksEndpoint, token);
 
@@ -37,6 +71,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           item.track.linked_from !== undefined
             ? item.track.linked_from.uri
             : item.track.uri;
+        const tagArray =
+          typeof trackTagMap.get(uri) !== "undefined"
+            ? trackTagMap.get(uri)
+            : [];
         return {
           id: item.track.id,
           uri,
@@ -47,6 +85,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           firstArtist: item.track.artists[0].name,
           albumId: item.track.album.id,
           albumName: item.track.album.name,
+          tagArray,
         };
       });
 
