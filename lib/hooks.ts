@@ -14,6 +14,23 @@ export const useUser = () => {
   };
 };
 
+export const useUserPlaybackState = () => {
+  const {
+    data,
+    error,
+    mutate: mutateUserPlaybackState,
+  } = useSWR("/user/player", fetcher, {
+    refreshInterval: 1000,
+  });
+
+  return {
+    playbackState: data || {},
+    isLoading: !data && !error,
+    isError: error,
+    mutateUserPlaybackState,
+  };
+};
+
 export const useUserPlaylists = () => {
   const {
     data,

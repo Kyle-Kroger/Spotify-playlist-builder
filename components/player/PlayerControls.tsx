@@ -41,7 +41,7 @@ const ActiveBar = styled.div`
   position: absolute;
   top: 0;
   width: 20%;
-  background-color: red;
+  background-color: var(--color-spotify-green);
   border-radius: 4px;
   height: 4px;
 `;
@@ -54,11 +54,7 @@ const PlayerControls = () => {
   return (
     <Wrapper>
       <ControlsWrapper>
-        <BiShuffle fontSize="24px" />
-        <BiSkipPrevious fontSize="42px" />
         <FaPauseCircle fontSize="40px" />
-        <BiSkipNext fontSize="42px" />
-        <BiRepeat fontSize="24px" />
       </ControlsWrapper>
 
       <PlayerBarWrapper>
