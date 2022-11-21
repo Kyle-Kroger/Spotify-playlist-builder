@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { ITrackTag } from "../../lib/types";
 
 const Wrapper = styled.div<{
   bgColor: string;
@@ -13,12 +14,18 @@ const Wrapper = styled.div<{
   margin-bottom: 8px;
   cursor: pointer;
 
-  ${(p) => (p.selected ? "outline: 4px solid white" : "")}
+  ${(p) => (p.selected ? "outline: 2px solid white" : "")}
 `;
 
 const Tag = ({ id, name, bgColor, textColor, onClick, selected = false }) => {
   const handleClick = () => {
-    onClick({ id, name, bgColor, textColor });
+    const tag: ITrackTag = {
+      id,
+      name,
+      bgColor,
+      textColor,
+    };
+    onClick(tag);
   };
   return (
     <Wrapper

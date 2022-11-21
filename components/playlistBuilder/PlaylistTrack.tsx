@@ -210,7 +210,7 @@ const PlaylistTrack = ({
         </TrackRemove>
       </TrackWrapper>
       <TagWrapper>
-        <PlaylistTrackTaglist tagArray={dummyTags} trackUri={track.uri} />
+        <PlaylistTrackTaglist tagArray={track.tagArray} trackUri={track.uri} />
       </TagWrapper>
     </Wrapper>
   );

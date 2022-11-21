@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState, useEffect, useRef } from "react";
 import { AiOutlineClose } from "react-icons/ai";
-import { StyledButton } from "../ui";
+import { Loader, StyledButton } from "../ui";
 import { AlbumPage, ArtistPage, MusicItemList, TrackList } from "../musicInfo";
 import { useSearch } from "../../lib/hooks";
 import { helpers } from "../../styles";
@@ -75,7 +75,7 @@ const PositionedMusicList = styled(MusicItemList)`
   flex: 1;
 `;
 
-const Loading = styled.div`
+const LoaderWrapper = styled.div`
   flex: 1;
 `;
 
@@ -224,7 +224,11 @@ const Search = () => {
         {currSearchType === SEARCH_TYPE.ALBUM && !isLoading && showSubPage && (
           <PositionedAlbumPage className="" id={albumId} />
         )}
-        {isLoading && <Loading>Loading...</Loading>}
+        {isLoading && (
+          <LoaderWrapper>
+            <Loader />
+          </LoaderWrapper>
+        )}
         <FooterWrapper>
           <StyledButton
             state={searchData.prev && !showSubPage ? "filled" : "outline"}

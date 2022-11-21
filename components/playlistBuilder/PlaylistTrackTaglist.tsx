@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { AddTagContent, Modal } from "../modals";
-import { NewTagButton, TagList } from "../tagging";
+import { NewTagButton, Tag, TagList } from "../tagging";
 import { ITrackTag } from "../../lib/types";
 import { fetcher } from "../../lib/fetcher";
 import { usePlaylistStateStore } from "../../lib/store";
@@ -11,11 +11,24 @@ const PlaceholderText = styled.p`
   justify-content: center;
   align-items: center;
   color: var(--color-text-subdued);
+  padding-left: var(--spacing-sm);
+`;
+
+const RemoveTagWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-lg);
 `;
 
 const PlaylistTrackTaglist = ({ tagArray, trackUri }) => {
   const playlistId = usePlaylistStateStore((state) => state.currentPlaylistId);
   const [showAddTag, setShowAddTag] = useState(false);
+  const [showRemoveTag, setShowRemoveTag] = useState(false);
+  const [tagToRemove, setTagToRemove] = useState<ITrackTag | undefined>(
+    undefined
+  );
 
   const [selectedTag, setSelectedTag] = useState<ITrackTag | undefined>(
     undefined
@@ -39,7 +52,25 @@ const PlaylistTrackTaglist = ({ tagArray, trackUri }) => {
   };
 
   const handleTagClicked = (tag: ITrackTag) => {
-    console.log("tag clicked!");
+    setTagToRemove(tag);
+    setShowRemoveTag(true);
+  };
+
+  const handleRemoveTag = async () => {
+    try {
+      if (typeof tagToRemove !== "undefined") {
+        await fetcher(
+          `/tags/${playlistId}`,
+          { id: tagToRemove.id, trackUri },
+          "DELETE"
+        );
+      }
+    } catch (e) {
+      console.log(e.message);
+    }
+
+    setShowRemoveTag(false);
+    setTagToRemove(undefined);
   };
 
   const handleCreateTag = async () => {
@@ -85,7 +116,11 @@ const PlaylistTrackTaglist = ({ tagArray, trackUri }) => {
 
   return (
     <>
-      <NewTagButton onClick={() => setShowAddTag(true)} />
+      <NewTagButton
+        onClick={() => {
+          setShowAddTag(true);
+        }}
+      />
       {showAddTag && (
         <Modal
           title="Add a Tag"
@@ -111,10 +146,33 @@ const PlaylistTrackTaglist = ({ tagArray, trackUri }) => {
           />
         </Modal>
       )}
+      {showRemoveTag && (
+        <Modal
+          title="Remove a Tag"
+          buttonText="Remove"
+          onClose={() => {
+            setShowRemoveTag(false);
+          }}
+          onConfirm={handleRemoveTag}
+        >
+          <RemoveTagWrapper>
+            <p>Remove the following tag?</p>
+            {typeof tagToRemove !== "undefined" && (
+              <Tag
+                id={tagToRemove.id}
+                name={tagToRemove.name}
+                bgColor={tagToRemove.bgColor}
+                textColor={tagToRemove.textColor}
+                onClick={() => {}}
+              />
+            )}
+          </RemoveTagWrapper>
+        </Modal>
+      )}
       {tagArray.length < 1 && (
         <PlaceholderText>Click to add a Tag</PlaceholderText>
       )}
-      {tagArray.length > 1 && (
+      {tagArray.length > 0 && (
         <TagList tagArray={tagArray} onClick={handleTagClicked} />
       )}
     </>
