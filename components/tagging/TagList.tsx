@@ -14,20 +14,22 @@ const Wrapper = styled.div`
 const TagList = ({ tagArray, onClick, selectedTagId = "" }) => {
   return (
     <Wrapper>
-      {tagArray.map((tag: ITrackTag) => {
-        const isSelected = selectedTagId === tag.id;
-        return (
-          <Tag
-            key={tag.id}
-            id={tag.id}
-            name={tag.name}
-            bgColor={tag.bgColor}
-            textColor={tag.textColor}
-            onClick={onClick}
-            selected={isSelected}
-          />
-        );
-      })}
+      {tagArray
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map((tag: ITrackTag) => {
+          const isSelected = selectedTagId === tag.id;
+          return (
+            <Tag
+              key={tag.id}
+              id={tag.id}
+              name={tag.name}
+              bgColor={tag.bgColor}
+              textColor={tag.textColor}
+              onClick={onClick}
+              selected={isSelected}
+            />
+          );
+        })}
     </Wrapper>
   );
 };
