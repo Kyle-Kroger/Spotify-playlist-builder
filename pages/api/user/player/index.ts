@@ -15,7 +15,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     res.send({ ...playbackState, success: true });
   } catch (err) {
-    console.warn(err);
     res.send({ success: false, error: err.message });
   }
 };
