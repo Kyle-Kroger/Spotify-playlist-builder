@@ -131,6 +131,7 @@ const PlaylistTrackTaglist = ({ tagArray, trackUri }) => {
           onConfirm={handleCreateTag}
         >
           <AddTagContent
+            playlistId={playlistId}
             tagText={newTagText}
             tagBgColor={newTagBgColor}
             tagTextColor={newTagTextColor}

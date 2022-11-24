@@ -14,7 +14,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Scope for authorization
   const scope =
-    "user-read-private user-read-email playlist-read-private playlist-modify-public playlist-modify-private user-read-playback-state";
+    "user-read-private user-read-email playlist-read-private playlist-modify-public playlist-modify-private user-read-playback-state user-modify-playback-state";
 
   const paramsObject = {
     client_id: CLIENT_ID,

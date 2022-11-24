@@ -97,6 +97,7 @@ const AllPlaylistPage = () => {
   const handlePlaylistClicked = (id) => {
     setPlaylistId(id);
     setShowPlaylistSubpage(true);
+    setFilterbarValue("");
   };
 
   const handleBackToAllPlaylists = () => {

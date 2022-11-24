@@ -77,6 +77,7 @@ const PositionedMusicList = styled(MusicItemList)`
 
 const LoaderWrapper = styled.div`
   flex: 1;
+  padding-top: var(--spacing-xl);
 `;
 
 const FooterWrapper = styled.footer`
