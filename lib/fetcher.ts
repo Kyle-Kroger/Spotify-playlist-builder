@@ -45,7 +45,7 @@ export const spotifyFetcher = async (
 
   // no json returned
   if (response.status === 204) {
-    return { message: "no response from spotify server" };
+    return;
   }
 
   const spotifyData = await response.json();

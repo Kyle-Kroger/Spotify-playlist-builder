@@ -13,7 +13,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const playbackState = await spotifyFetcher("/me/player", token);
 
-    res.send({ ...playbackState, success: true });
+    if (typeof playbackState === "undefined") {
+      throw new Error("playback state is unavalible");
+    } else {
+      res.send({ ...playbackState, success: true });
+    }
   } catch (err) {
     res.send({ success: false, error: err.message });
   }
