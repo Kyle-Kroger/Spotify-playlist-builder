@@ -1,9 +1,8 @@
 import styled from "styled-components";
-import { useState } from "react";
-import { IconContext } from "react-icons";
 import { FaPlayCircle, FaPauseCircle } from "react-icons/fa";
 import { helpers } from "../../styles";
 import { durationMSToStandard } from "../../lib/spotify";
+import { fetcher } from "../../lib/fetcher";
 
 const Wrapper = styled.div`
   height: 100%;
@@ -44,10 +43,22 @@ const ActiveBar = styled.div<{ width: string }>`
 
 const PauseButton = styled(FaPauseCircle)`
   cursor: pointer;
+  transition: color 200ms ease-in-out, transform 200ms ease-in-out;
+
+  :hover {
+    transform: scale(1.05);
+    color: var(--color-spotify-green);
+  }
 `;
 
 const PlayButton = styled(FaPlayCircle)`
   cursor: pointer;
+  transition: color 200ms ease-in-out, transform 200ms ease-in-out;
+
+  :hover {
+    transform: scale(1.05);
+    color: var(--color-spotify-green);
+  }
 `;
 
 const CurrentTime = styled.div`
@@ -62,17 +73,31 @@ const PlayerControls = ({ playbackState }) => {
     const percent = Math.floor((currentTime / totalTime) * 100);
     return `${percent}%`;
   };
+
+  const handleTrackPaused = async () => {
+    try {
+      await fetcher("/user/player/pause", {}, "PUT");
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  const handleTrackPlayed = async () => {
+    try {
+      await fetcher("/user/player/play", {}, "PUT");
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
   return (
     <Wrapper>
       <ControlsWrapper>
-        {playbackState.is_playing && <PauseButton fontSize="50px" />}
+        {playbackState.is_playing && (
+          <PauseButton fontSize="50px" onClick={handleTrackPaused} />
+        )}
         {!playbackState.is_playing && (
-          <PlayButton
-            fontSize="50px"
-            onClick={() => {
-              console.log(playbackState);
-            }}
-          />
+          <PlayButton fontSize="50px" onClick={handleTrackPlayed} />
         )}
       </ControlsWrapper>
 
