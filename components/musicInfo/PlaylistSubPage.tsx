@@ -28,6 +28,10 @@ const BackButton = styled(FiArrowLeftCircle)`
   cursor: pointer;
 `;
 
+const LoaderWrapper = styled.div`
+  padding: var(--spacing-xl);
+`;
+
 const PlaylistSubPage = ({ id, filterBy, sortBy, sortASC, onGoBack }) => {
   const [filteredList, setFilteredList] = useState([]);
   const { user, isLoading: isLoadingUser, isError: isErrorUser } = useUser();
@@ -114,7 +118,11 @@ const PlaylistSubPage = ({ id, filterBy, sortBy, sortASC, onGoBack }) => {
           />
         </>
       )}
-      {isLoading && <Loader />}
+      {isLoading && (
+        <LoaderWrapper>
+          <Loader />
+        </LoaderWrapper>
+      )}
     </Wrapper>
   );
 };

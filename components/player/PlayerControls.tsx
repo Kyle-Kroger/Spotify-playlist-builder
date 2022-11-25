@@ -1,13 +1,8 @@
 import styled from "styled-components";
-import { IconContext } from "react-icons";
 import { FaPlayCircle, FaPauseCircle } from "react-icons/fa";
-import {
-  BiShuffle,
-  BiRepeat,
-  BiSkipNext,
-  BiSkipPrevious,
-} from "react-icons/bi";
 import { helpers } from "../../styles";
+import { durationMSToStandard } from "../../lib/spotify";
+import { fetcher } from "../../lib/fetcher";
 
 const Wrapper = styled.div`
   height: 100%;
@@ -37,36 +32,90 @@ const PlayerBarTrack = styled.div`
   margin: 8px;
 `;
 
-const ActiveBar = styled.div`
+const ActiveBar = styled.div<{ width: string }>`
   position: absolute;
   top: 0;
-  width: 20%;
-  background-color: red;
+  width: ${(p) => p.width};
+  background-color: var(--color-spotify-green);
   border-radius: 4px;
   height: 4px;
 `;
 
-const CurrentTime = styled.div``;
+const PauseButton = styled(FaPauseCircle)`
+  cursor: pointer;
+  transition: color 200ms ease-in-out, transform 200ms ease-in-out;
+
+  :hover {
+    transform: scale(1.05);
+    color: var(--color-spotify-green);
+  }
+`;
+
+const PlayButton = styled(FaPlayCircle)`
+  cursor: pointer;
+  transition: color 200ms ease-in-out, transform 200ms ease-in-out;
+
+  :hover {
+    transform: scale(1.05);
+    color: var(--color-spotify-green);
+  }
+`;
+
+const CurrentTime = styled.div`
+  min-width: 45px;
+  text-align: right;
+`;
 
 const TotalTime = styled.div``;
 
-const PlayerControls = () => {
+const PlayerControls = ({ playbackState }) => {
+  const convertPercent = (currentTime, totalTime) => {
+    const percent = Math.floor((currentTime / totalTime) * 100);
+    return `${percent}%`;
+  };
+
+  const handleTrackPaused = async () => {
+    try {
+      await fetcher("/user/player/pause", {}, "PUT");
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  const handleTrackPlayed = async () => {
+    try {
+      await fetcher("/user/player/play", {}, "PUT");
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
   return (
     <Wrapper>
       <ControlsWrapper>
-        <BiShuffle fontSize="24px" />
-        <BiSkipPrevious fontSize="42px" />
-        <FaPauseCircle fontSize="40px" />
-        <BiSkipNext fontSize="42px" />
-        <BiRepeat fontSize="24px" />
+        {playbackState.is_playing && (
+          <PauseButton fontSize="50px" onClick={handleTrackPaused} />
+        )}
+        {!playbackState.is_playing && (
+          <PlayButton fontSize="50px" onClick={handleTrackPlayed} />
+        )}
       </ControlsWrapper>
 
       <PlayerBarWrapper>
-        <CurrentTime>0:45</CurrentTime>
+        <CurrentTime>
+          {durationMSToStandard(playbackState.progress_ms)}
+        </CurrentTime>
         <PlayerBarTrack>
-          <ActiveBar />
+          <ActiveBar
+            width={convertPercent(
+              playbackState.progress_ms,
+              playbackState.item.duration_ms
+            )}
+          />
         </PlayerBarTrack>
-        <TotalTime>3:21</TotalTime>
+        <TotalTime>
+          {durationMSToStandard(playbackState.item.duration_ms)}
+        </TotalTime>
       </PlayerBarWrapper>
     </Wrapper>
   );

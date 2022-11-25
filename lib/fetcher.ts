@@ -43,6 +43,11 @@ export const spotifyFetcher = async (
     throw new Error(message);
   }
 
+  // no json returned
+  if (response.status === 204) {
+    return;
+  }
+
   const spotifyData = await response.json();
 
   return spotifyData;

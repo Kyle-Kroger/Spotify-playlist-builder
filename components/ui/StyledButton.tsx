@@ -12,6 +12,7 @@ const StandardButton = styled.button<ButtonProps>`
   padding: 6px var(--spacing-md);
   cursor: ${(p) => (p.isDisabled ? "auto" : "pointer")};
   pointer-events: ${(p) => (p.isDisabled ? "none" : "auto")};
+  transition: all 200ms ease-in-out;
 `;
 
 const OutlineButton = styled(StandardButton)`
@@ -28,6 +29,12 @@ const FilledButton = styled(StandardButton)`
       p.isDisabled ? "var(--color-grey-300)" : "var(--color-spotify-outline)"};
   background-color: ${(p) =>
     p.isDisabled ? "transparent" : "var(--color-spotify-green)"};
+
+  :hover {
+    transform: scale(1.05);
+    background-color: var(--color-spotify-outline);
+    color: black;
+  }
 `;
 
 interface Props {

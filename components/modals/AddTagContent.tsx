@@ -1,47 +1,10 @@
+/* eslint-disable no-underscore-dangle */
 import styled from "styled-components";
+import { usePlaylistTags } from "../../lib/hooks";
 import { ITrackTag } from "../../lib/types";
 import { TagList } from "../tagging";
-import { StyledButton } from "../ui";
+import { Loader, StyledButton } from "../ui";
 import CreateTagContent from "./CreateTagContent";
-
-const dummyTags: ITrackTag[] = [
-  {
-    id: "1",
-    name: "1999",
-    bgColor: "red",
-    textColor: "white",
-  },
-  {
-    id: "3",
-    name: "soundtrack",
-    bgColor: "green",
-    textColor: "white",
-  },
-  {
-    id: "5",
-    name: "soft",
-    bgColor: "blue",
-    textColor: "white",
-  },
-  {
-    id: "7",
-    name: "1999",
-    bgColor: "red",
-    textColor: "white",
-  },
-  {
-    id: "9",
-    name: "soundtrack",
-    bgColor: "green",
-    textColor: "white",
-  },
-  {
-    id: "11",
-    name: "soft",
-    bgColor: "blue",
-    textColor: "white",
-  },
-];
 
 const Wrapper = styled.div`
   display: flex;
@@ -58,6 +21,7 @@ const TagListWrapper = styled.div`
 `;
 
 const AddTagContent = ({
+  playlistId,
   tagText,
   tagBgColor,
   tagTextColor,
@@ -69,19 +33,30 @@ const AddTagContent = ({
   onBgColorChanged,
   onTextColorChanged,
 }) => {
+  const { playlistTags, isLoading, isError } = usePlaylistTags(playlistId);
   return (
     <Wrapper>
       {!isNewTag && (
         <>
           <h3>-- Existing Tags --</h3>
           <TagListWrapper>
-            <TagList
-              tagArray={dummyTags}
-              onClick={handleNewTagClicked}
-              selectedTagId={
-                typeof selectedTag !== "undefined" ? selectedTag.id : ""
-              }
-            />
+            {!isLoading && !isError && (
+              <TagList
+                tagArray={playlistTags.map((tag): ITrackTag => {
+                  return {
+                    id: tag._id,
+                    name: tag.name,
+                    bgColor: tag.bgColor,
+                    textColor: tag.textColor,
+                  };
+                })}
+                onClick={handleNewTagClicked}
+                selectedTagId={
+                  typeof selectedTag !== "undefined" ? selectedTag.id : ""
+                }
+              />
+            )}
+            {isLoading && <Loader />}
           </TagListWrapper>
         </>
       )}
