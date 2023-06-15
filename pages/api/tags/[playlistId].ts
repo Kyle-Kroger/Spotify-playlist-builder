@@ -87,6 +87,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         deleteTag.tracks.splice(deleteIndex, 1);
         await deleteTag.save();
+
+        if (deleteTag.tracks.length === 0) {
+          // eslint-disable-next-line no-underscore-dangle
+          await Tag.deleteOne({ _id: deleteTag._id });
+          message = `The tag with id ${id} has been deleted from the collection`;
+        }
         message = `The trackUri of ${trackUri} has been deleted from the tag with an idea of ${id}`;
       }
 
