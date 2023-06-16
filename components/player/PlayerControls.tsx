@@ -85,6 +85,7 @@ const PlayerControls = ({ playbackState }) => {
   const handleTrackPlayed = async () => {
     try {
       await fetcher("/user/player/play", {}, "PUT");
+      console.log(playbackState);
     } catch (err) {
       console.log(err.message);
     }

@@ -11,12 +11,25 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   token = await refreshAccessToken(token, refreshToken, res);
 
   if (req.method === "PUT") {
-    const { uri } = req.body;
+    const { playlistUri, uri } = req.body;
     try {
+      // No uri, just play existing song
+      // No playlist uri just play the uri (playlist uri can be an album uri)
+      // Both playlist uri and song uri then play play song in playlist
       if (typeof uri === "undefined") {
         await spotifyFetcher("/me/player/play", token, "PUT");
+      } else if (typeof playlistUri === "undefined") {
+        const bodyData = {
+          uris: [uri],
+          position_ms: 0,
+        };
+        await spotifyFetcher("/me/player/play", token, "PUT", bodyData);
       } else {
-        const bodyData = { uris: [uri], position_ms: 0 };
+        const bodyData = {
+          context_uri: playlistUri,
+          offset: { uri },
+          position_ms: 0,
+        };
         await spotifyFetcher("/me/player/play", token, "PUT", bodyData);
       }
 
