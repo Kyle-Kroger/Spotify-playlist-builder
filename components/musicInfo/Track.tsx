@@ -25,6 +25,12 @@ const TrackTitle = styled.h3`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  transition: color 200ms ease-in-out;
+
+  :hover {
+    color: var(--color-spotify-green);
+    cursor: pointer;
+  }
 `;
 
 const ArtistName = styled.p`
@@ -39,6 +45,8 @@ const AddIcon = styled(BsPlusCircle)`
   font-size: 30px;
   cursor: pointer;
 `;
+
+const ImageWrapper = styled.div``;
 
 const IndexWrapper = styled.div`
   display: flex;
@@ -124,6 +132,15 @@ const Track = (props) => {
     await mutatePlaylist();
   };
 
+  const handleTitleClicked = async () => {
+    try {
+      await fetcher("/user/player/play", { uri }, "PUT");
+      console.log("title was clicked", uri);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
   const handleAddClicked = () => {
     if (currentPlaylistId !== "") {
       spotifyAdd(uri);
@@ -151,7 +168,7 @@ const Track = (props) => {
         </IndexWrapper>
       )}
       <TextWrapper>
-        <TrackTitle>{name}</TrackTitle>
+        <TrackTitle onClick={handleTitleClicked}>{name}</TrackTitle>
         <ArtistName>{artists}</ArtistName>
       </TextWrapper>
       <Duration>{standardTime}</Duration>
