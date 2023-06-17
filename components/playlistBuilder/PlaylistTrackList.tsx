@@ -144,6 +144,7 @@ const PlaylistTrackList = () => {
                         playlistLength={displayedPlaylist.length}
                         handleReorderModal={handleReorderModal}
                         handleRemoveTrack={handleRemoveTrack}
+                        playlistUri={playlistData.uri}
                       />
                     </ListItem>
                   )}

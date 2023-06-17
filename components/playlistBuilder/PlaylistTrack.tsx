@@ -4,48 +4,8 @@ import { BsDashCircle } from "react-icons/bs";
 import { combineArtists, durationMSToStandard } from "../../lib/spotify";
 import { StyledImage } from "../ui";
 import { Modal, ReorderPlaylistTrack } from "../modals";
-import { NewTagButton, TagList } from "../tagging";
-import { ITrackTag } from "../../lib/types";
 import PlaylistTrackTaglist from "./PlaylistTrackTaglist";
-
-const dummyTags: ITrackTag[] = [
-  {
-    id: "1",
-    name: "1999",
-    bgColor: "red",
-    textColor: "white",
-  },
-  {
-    id: "3",
-    name: "soundtrack",
-    bgColor: "green",
-    textColor: "white",
-  },
-  {
-    id: "5",
-    name: "soft",
-    bgColor: "blue",
-    textColor: "white",
-  },
-  {
-    id: "7",
-    name: "1999",
-    bgColor: "red",
-    textColor: "white",
-  },
-  {
-    id: "9",
-    name: "soundtrack",
-    bgColor: "green",
-    textColor: "white",
-  },
-  {
-    id: "11",
-    name: "soft",
-    bgColor: "blue",
-    textColor: "white",
-  },
-];
+import { fetcher } from "../../lib/fetcher";
 
 const Wrapper = styled.div`
   margin-bottom: 4px;
@@ -87,11 +47,6 @@ const TrackText = styled.div`
   line-height: normal;
 
   h3 {
-    margin-bottom: 6px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    cursor: default;
   }
 
   h5 {
@@ -99,6 +54,19 @@ const TrackText = styled.div`
     overflow: hidden;
     text-overflow: ellipsis;
     color: var(--color-text-subdued);
+  }
+`;
+
+const Title = styled.h3`
+  margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition: color 200ms ease-in-out;
+
+  :hover {
+    color: var(--color-spotify-green);
   }
 `;
 
@@ -133,6 +101,7 @@ const PlaylistTrack = ({
   playlistLength,
   handleReorderModal,
   handleRemoveTrack,
+  playlistUri = "",
 }) => {
   const [showReorderModal, setShowReorderModal] = useState(false);
   const [newIndex, setNewIndex] = useState(index);
@@ -154,12 +123,27 @@ const PlaylistTrack = ({
     setNewIndex(inputIndex);
   };
 
+  const handleTitleClicked = async () => {
+    console.log(track.uri, playlistUri);
+    try {
+      const bodyData = { uri: track.uri };
+      if (playlistUri !== "") {
+        // eslint-disable-next-line dot-notation
+        bodyData["playlistUri"] = playlistUri;
+      }
+      await fetcher("/user/player/play", bodyData, "PUT");
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
   const handleTrackReordered = () => {
     // Arrays are at zero, but we display starting at 1
     // therefore the index that is displayed is 1 off from the actual index
     handleReorderModal(index, newIndex - 1);
     setShowReorderModal(false);
   };
+
   return (
     <Wrapper>
       <TrackWrapper>
@@ -198,7 +182,9 @@ const PlaylistTrack = ({
             className=""
           />
           <TrackText>
-            <h3 title={track.name}>{track.name}</h3>
+            <Title title={track.name} onClick={handleTitleClicked}>
+              {track.name}
+            </Title>
             <h5>
               {artists} / {track.albumName}
             </h5>
