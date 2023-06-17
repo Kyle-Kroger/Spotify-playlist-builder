@@ -20,7 +20,7 @@ const PlaylistWrapper = styled.div`
   flex-direction: column;
   overflow: auto;
   flex: 1;
-  padding: 0 var(--spacing-sm);
+  /* padding: 0 var(--spacing-sm); */
 
   ${helpers.spotifySearchBar}
 `;

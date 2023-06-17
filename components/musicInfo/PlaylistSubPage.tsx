@@ -17,7 +17,6 @@ const ButtonWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   padding: var(--spacing-md);
-  margin: 0 -12px;
   align-items: center;
   background-color: var(--color-black);
 `;
