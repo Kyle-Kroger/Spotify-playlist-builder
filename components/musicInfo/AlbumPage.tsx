@@ -41,6 +41,7 @@ const AlbumPage = ({ id, className }) => {
               return newTrack;
             })}
             onClick={handleTrackedClicked}
+            playlistUri={album.uri}
           />
         </>
       )}

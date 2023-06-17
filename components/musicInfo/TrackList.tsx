@@ -4,7 +4,13 @@ import Track from "./Track";
 
 const Wrapper = styled.div``;
 
-const TrackList = ({ className, items, showImage = false, onClick }) => {
+const TrackList = ({
+  className,
+  items,
+  showImage = false,
+  playlistUri = "",
+  onClick,
+}) => {
   if (!items) {
     items = [];
   }
@@ -16,6 +22,7 @@ const TrackList = ({ className, items, showImage = false, onClick }) => {
           <Track
             key={item.id}
             index={i}
+            playlistUri={playlistUri}
             id={item.albumId}
             uri={item.uri}
             name={item.name}

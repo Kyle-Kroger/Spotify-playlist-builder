@@ -54,7 +54,6 @@ const SearchListWrapper = styled.div`
   flex-direction: column;
   overflow: auto;
   flex: 1;
-  padding: 0 var(--spacing-sm);
 
   ${helpers.spotifySearchBar}
 `;
@@ -87,8 +86,6 @@ const FooterWrapper = styled.footer`
   min-height: 80px;
   // border-top: 1px solid white;
   background-color: var(--color-grey-800);
-  margin-left: -12px;
-  margin-right: -12px;
   padding: var(--spacing-lg);
 `;
 
@@ -188,7 +185,7 @@ const Search = () => {
         </StyledButton>
       </HeaderButtonWrapper>
       <SearchListWrapper>
-        <div ref={searchListTopRef} style={{ paddingBottom: "12px" }} />
+        <div ref={searchListTopRef} />
         {currSearchType === SEARCH_TYPE.SONG && !isLoading && (
           <PositionedTrackList
             className=""

@@ -5,6 +5,7 @@ const variables = css`
     /* Colors */
     --color-grey-300: #797979;
     --color-grey-500: #646464;
+    --color-grey-550: #414141;
     --color-grey-600: #242424;
     --color-grey-700: #202020;
     --color-grey-800: #161616;

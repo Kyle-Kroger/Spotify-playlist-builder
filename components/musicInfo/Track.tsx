@@ -10,7 +10,12 @@ import { ITrack } from "../../lib/types";
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: var(--spacing-sm);
+  padding: var(--spacing-xs);
+  transition: background-color 150ms ease-in-out;
+
+  :hover {
+    background-color: var(--color-grey-550);
+  }
 `;
 
 const TextWrapper = styled.div`
@@ -67,6 +72,7 @@ const Duration = styled.p`
 const Track = (props) => {
   const {
     index,
+    playlistUri,
     id,
     uri,
     name,
@@ -134,8 +140,12 @@ const Track = (props) => {
 
   const handleTitleClicked = async () => {
     try {
-      await fetcher("/user/player/play", { uri }, "PUT");
-      console.log("title was clicked", uri);
+      const bodyData = { uri };
+      if (playlistUri !== "") {
+        // eslint-disable-next-line dot-notation
+        bodyData["playlistUri"] = playlistUri;
+      }
+      await fetcher("/user/player/play", bodyData, "PUT");
     } catch (err) {
       console.log(err.message);
     }

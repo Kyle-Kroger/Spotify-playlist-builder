@@ -8,9 +8,6 @@ const Wrapper = styled.div`
   justify-content: center;
   background: var(--page-gradient);
   margin-bottom: var(--spacing-sm);
-  width: calc(100% + 24px);
-  margin-left: -12px;
-  margin-top: -12px;
 `;
 
 const ItemWrapper = styled.div<{ width: string }>`

@@ -115,6 +115,7 @@ const PlaylistSubPage = ({ id, filterBy, sortBy, sortASC, onGoBack }) => {
             items={filteredList}
             showImage
             onClick={() => {}}
+            playlistUri={playlistData.uri}
           />
         </>
       )}
