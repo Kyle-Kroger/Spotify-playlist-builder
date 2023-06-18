@@ -1,4 +1,5 @@
 import { css } from "styled-components";
+import { QUERIES } from "./constants";
 
 const variables = css`
   :root {
@@ -26,49 +27,9 @@ const variables = css`
     --player-gradient: linear-gradient(180deg, #202020 0%, #111111 100%);
     --page-gradient: linear-gradient(180deg, #000000 0%, #242424 100%);
 
-    /* --color-primary-100: hsl(226, 47%, 80%);
-    --color-primary-200: hsl(225, 40%, 67%);
-    --color-primary-300: hsl(224, 35%, 55%);
-    --color-primary-400: hsl(225, 32%, 46%);
-    --color-primary-500: hsl(226, 41%, 37%);
-    --color-primary-600: hsl(226, 43%, 34%);
-    --color-primary-700: hsl(227, 46%, 31%);
-    --color-primary-A700: hsl(233, 33%, 26%);
-    --color-primary-800: hsl(227, 49%, 27%);
-    --color-primary-A800: hsl(227, 32%, 24%);
-    --color-primary-A800T: hsl(227 32% 24% / 0.9);
-    --color-primary-900: hsl(230, 53%, 20%);
-    --color-primary-A900: hsl(230, 35%, 19%);
-    --color-primary-A900T: hsl(230 35% 19% / 0.9);
-    --color-primary-A1000: hsl(230, 35%, 15%);
-
-    --color-secondary-100: hsl(243, 60%, 81%);
-    --color-secondary-200: hsl(243, 40%, 69%);
-    --color-secondary-300: hsl(245, 20%, 56%);
-    --color-secondary-400: hsl(248, 21%, 47%);
-    --color-secondary-500: hsl(252, 32%, 39%);
-    --color-secondary-600: hsl(252, 34%, 36%);
-    --color-secondary-A600: hsl(308, 23%, 34%);
-    --color-secondary-700: hsl(253, 30%, 29%);
-    --color-secondary-800: hsl(255, 30%, 26%);
-    --color-secondary-A800: hsl(296, 25%, 23%);
-    --color-secondary-900: hsl(260, 30%, 18%);
-
-    --color-tertiary-100: hsl(201, 80%, 81%);
-    --color-tertiary-200: hsl(203, 60%, 70%);
-    --color-tertiary-300: hsl(203, 27%, 58%);
-    --color-tertiary-400: hsl(201, 26%, 48%);
-    --color-tertiary-500: hsl(201, 37%, 40%);
-    --color-tertiary-600: hsl(200, 40%, 34%);
-    --color-tertiary-700: hsl(199, 46%, 27%);
-    --color-tertiary-800: hsl(200, 53%, 20%);
-    --color-tertiary-900: hsl(198, 83%, 12%); */
-
     --sidebar-color: var(--color-grey-900);
     --sidebar-text-color: hsl(0, 0%, 84%);
     --side-bar-text-faded: hsl(230, 15%, 52%);
-    --main-color: var(--color-primary-A900);
-    --button-color: hsl(226, 50%, 69%);
 
     /* Font-size */
     --fz-xs: 0.875rem;
@@ -135,9 +96,17 @@ const variables = css`
 
     /* Sizing */
     --player-height: 100px;
+    --mobile-nav-height: 70px;
     --content-height: calc(100vh - var(--player-height));
     --desktop-nav-width: 240px;
     --sidebar-width: 460px;
+
+    @media ${QUERIES.phone} {
+      --player-height: 80px;
+      --content-height: calc(
+        100vh - var(--player-height) - var(--mobile-nav-height)
+      );
+    }
   }
 `;
 

@@ -20,7 +20,7 @@ export const useUserPlaybackState = () => {
     error,
     mutate: mutateUserPlaybackState,
   } = useSWR("/user/player", fetcher, {
-    refreshInterval: 1000,
+    refreshInterval: 5000,
   });
 
   return {
@@ -52,7 +52,7 @@ export const usePlaylistId = (id) => {
     error,
     mutate: mutatePlaylist,
   } = useSWR(`/playlists/${id}`, fetcher, {
-    refreshInterval: 1000,
+    refreshInterval: 10000,
   });
 
   return {

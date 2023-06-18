@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { BsSearch, BsTag } from "react-icons/bs";
 import { CgPlayListAdd } from "react-icons/cg";
-import { helpers } from "../../styles";
+import { QUERIES, helpers } from "../../styles";
 import {
   usePageStateStore,
   SIDEBAR_PAGE,
@@ -20,6 +20,10 @@ const Wrapper = styled.div`
   background-color: var(--color-black);
   width: var(--desktop-nav-width);
   height: 100%;
+
+  @media ${QUERIES.phone} {
+    display: none;
+  }
 `;
 
 const StyledNav = styled.nav`

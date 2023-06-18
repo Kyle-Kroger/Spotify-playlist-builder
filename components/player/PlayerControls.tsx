@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { FaPlayCircle, FaPauseCircle } from "react-icons/fa";
-import { helpers } from "../../styles";
+import { QUERIES, helpers } from "../../styles";
 import { durationMSToStandard } from "../../lib/spotify";
 import { fetcher } from "../../lib/fetcher";
 
@@ -17,10 +17,18 @@ const ControlsWrapper = styled.div`
   * {
     margin: 0 var(--spacing-xs);
   }
+
+  @media ${QUERIES.phone} {
+    padding-right: 16px;
+  }
 `;
 
 const PlayerBarWrapper = styled.div`
   ${helpers.flexCenter}
+
+  @media ${QUERIES.phone} {
+    display: none;
+  }
 `;
 
 const PlayerBarTrack = styled.div`
@@ -68,7 +76,7 @@ const CurrentTime = styled.div`
 
 const TotalTime = styled.div``;
 
-const PlayerControls = ({ playbackState }) => {
+const PlayerControls = ({ playbackState, mutateUserPlaybackState }) => {
   const convertPercent = (currentTime, totalTime) => {
     const percent = Math.floor((currentTime / totalTime) * 100);
     return `${percent}%`;
@@ -76,6 +84,14 @@ const PlayerControls = ({ playbackState }) => {
 
   const handleTrackPaused = async () => {
     try {
+      // optimistic updating
+      await mutateUserPlaybackState((data) => {
+        return {
+          ...data,
+          is_playing: false,
+        };
+      }, false);
+
       await fetcher("/user/player/pause", {}, "PUT");
     } catch (err) {
       console.log(err.message);
@@ -84,8 +100,15 @@ const PlayerControls = ({ playbackState }) => {
 
   const handleTrackPlayed = async () => {
     try {
+      // optimistic updating
+      await mutateUserPlaybackState((data) => {
+        return {
+          ...data,
+          is_playing: true,
+        };
+      }, false);
+
       await fetcher("/user/player/play", {}, "PUT");
-      console.log(playbackState);
     } catch (err) {
       console.log(err.message);
     }
