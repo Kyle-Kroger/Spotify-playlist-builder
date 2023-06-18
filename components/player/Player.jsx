@@ -15,6 +15,13 @@ const Wrapper = styled.div`
   height: var(--player-height);
   width: 100%;
   background: var(--player-gradient);
+
+  /* Keep wrapper for spacing, but not display it's children on mobile */
+  * {
+    @media ${QUERIES.phone} {
+      display: none;
+    }
+  }
 `;
 
 const PlayerImage = styled(StyledImage)`

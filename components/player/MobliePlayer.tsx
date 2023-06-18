@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
+import { QUERIES } from "../../styles";
 
 const slideIn = keyframes`
   0% {
@@ -36,7 +37,7 @@ const Container = styled.div<ContainerProps>`
   animation: ${(props) => (props.isOpen ? slideIn : slideOut)} 0.5s ease-in-out;
   z-index: 9999;
 
-  @media (max-width: 600px) {
+  @media ${QUERIES.phone} {
     display: flex;
   }
 `;
