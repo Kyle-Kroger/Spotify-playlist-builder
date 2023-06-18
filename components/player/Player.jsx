@@ -1,5 +1,9 @@
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable camelcase */
+/* eslint no-unused-expressions: ["error", { "allowTernary": true }] */
+
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useUserPlaybackState } from "../../lib/hooks";
 import { StyledImage } from "../ui";
 import PlayerControls from "./PlayerControls";
 import { QUERIES } from "../../styles";
@@ -45,12 +49,65 @@ const TrackPlaceholder = styled.div`
   }
 `;
 
-const Player = () => {
-  const { playbackState, isLoading, isError, mutateUserPlaybackState } =
-    useUserPlaybackState();
+const track = {
+  name: "",
+  album: {
+    images: [{ url: "" }],
+  },
+  artists: [{ name: "" }],
+};
+
+const Player = ({ token }) => {
+  const [is_paused, setPaused] = useState(false);
+  const [is_active, setActive] = useState(false);
+  const [player, setPlayer] = useState(undefined);
+  const [current_track, setTrack] = useState(track);
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://sdk.scdn.co/spotify-player.js";
+    script.async = true;
+
+    document.body.appendChild(script);
+
+    window.onSpotifyWebPlaybackSDKReady = () => {
+      const player = new window.Spotify.Player({
+        name: "Web Playback SDK",
+        getOAuthToken: (cb) => {
+          cb(token);
+        },
+        volume: 0.5,
+      });
+
+      setPlayer(player);
+
+      player.addListener("ready", ({ device_id }) => {
+        console.log("Ready with Device ID", device_id);
+      });
+
+      player.addListener("not_ready", ({ device_id }) => {
+        console.log("Device ID has gone offline", device_id);
+      });
+
+      player.addListener("player_state_changed", (state) => {
+        if (!state) {
+          return;
+        }
+
+        setTrack(state.track_window.current_track);
+        setPaused(state.paused);
+
+        player.getCurrentState().then((pState) => {
+          !pState ? setActive(false) : setActive(true);
+        });
+      });
+
+      player.connect();
+    };
+  }, [token]);
   return (
     <Wrapper>
-      {!isLoading && !isError && playbackState.success && (
+      {/* {!isLoading && !isError && playbackState.success && (
         <>
           <TrackInfo>
             <PlayerImage
@@ -75,7 +132,7 @@ const Player = () => {
           />
         </>
       )}
-      <TrackPlaceholder />
+      <TrackPlaceholder /> */}
     </Wrapper>
   );
 };

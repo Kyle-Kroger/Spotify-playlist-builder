@@ -22,7 +22,8 @@
     "**/*.tsx",
     "styles/variables.globals.ts",
     "pages/_document.js",
-    "components/ui/DropdownMenu.tsx"
+    "components/ui/DropdownMenu.tsx",
+    "components/player/Player.jsx"
   ],
   "exclude": ["node_modules"]
 }

@@ -1,10 +1,12 @@
 import styled from "styled-components";
+import { useEffect, useState } from "react";
 import { DesktopNav, MobileNav, Sidebar } from "../components/layout";
 import { Player } from "../components/player";
 import { PlaylistBuilder } from "../components/playlistBuilder";
 import { useUserPlaylists } from "../lib/hooks";
 import { SIDEBAR_PAGE, usePageStateStore } from "../lib/store";
 import { QUERIES } from "../styles";
+import { fetcher } from "../lib/fetcher";
 
 const StyledMain = styled.div`
   background: var(--player-gradient);
@@ -34,6 +36,18 @@ const PositionedSidebar = styled(Sidebar)`
 const Home = () => {
   const { playlists, isLoading, isError } = useUserPlaylists();
   const currentPage = usePageStateStore((state) => state.currentPage);
+  const [token, setToken] = useState("");
+
+  useEffect(() => {
+    async function getToken() {
+      const response = await fetcher("/token");
+      console.log(response);
+      setToken(response.token);
+    }
+
+    getToken();
+  }, []);
+
   return (
     <Wrapper>
       <StyledMain>
@@ -47,7 +61,7 @@ const Home = () => {
         )}
       </StyledMain>
       <MobileNav />
-      <Player />
+      {token && <Player token={token} />}
     </Wrapper>
   );
 };
