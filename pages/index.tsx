@@ -33,6 +33,14 @@ const PositionedSidebar = styled(Sidebar)`
   height: 100%;
 `;
 
+const PlaceholderPlayer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  height: var(--player-height);
+  width: 100%;
+  background: var(--player-gradient);
+`;
+
 const Home = () => {
   const { playlists, isLoading, isError } = useUserPlaylists();
   const currentPage = usePageStateStore((state) => state.currentPage);
@@ -62,6 +70,7 @@ const Home = () => {
       </StyledMain>
       <MobileNav />
       {token && <Player token={token} />}
+      {!token && <PlaceholderPlayer />}
     </Wrapper>
   );
 };

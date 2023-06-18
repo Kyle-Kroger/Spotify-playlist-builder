@@ -4,6 +4,7 @@
 
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { FaPlayCircle, FaPauseCircle } from "react-icons/fa";
 import { StyledImage } from "../ui";
 import PlayerControls from "./PlayerControls";
 import { QUERIES } from "../../styles";
@@ -49,6 +50,26 @@ const TrackPlaceholder = styled.div`
   }
 `;
 
+const PauseButton = styled(FaPauseCircle)`
+  cursor: pointer;
+  transition: color 200ms ease-in-out, transform 200ms ease-in-out;
+
+  :hover {
+    transform: scale(1.05);
+    color: var(--color-spotify-green);
+  }
+`;
+
+const PlayButton = styled(FaPlayCircle)`
+  cursor: pointer;
+  transition: color 200ms ease-in-out, transform 200ms ease-in-out;
+
+  :hover {
+    transform: scale(1.05);
+    color: var(--color-spotify-green);
+  }
+`;
+
 const track = {
   name: "",
   album: {
@@ -62,6 +83,7 @@ const Player = ({ token }) => {
   const [is_active, setActive] = useState(false);
   const [player, setPlayer] = useState(undefined);
   const [current_track, setTrack] = useState(track);
+  const [position, setPosition] = useState(0);
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -96,43 +118,56 @@ const Player = ({ token }) => {
 
         setTrack(state.track_window.current_track);
         setPaused(state.paused);
+        setPosition(state.position);
+        console.log(state.paused, "paused");
 
         player.getCurrentState().then((pState) => {
           !pState ? setActive(false) : setActive(true);
+          console.log(pState);
         });
       });
 
       player.connect();
     };
   }, [token]);
+
+  // needs to be in its own useEffect so it doesn't cause an infinite loop
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setPosition((prev) => (is_active && !is_paused ? prev + 500 : prev + 0));
+      console.log(is_active, is_paused, "counting");
+    }, 500);
+    return () => clearInterval(intervalId);
+  }, [is_active, is_paused]);
+
   return (
     <Wrapper>
-      {/* {!isLoading && !isError && playbackState.success && (
-        <>
-          <TrackInfo>
-            <PlayerImage
-              src={playbackState.item.album.images[0].url}
-              alt={playbackState.item.album.name}
-              width="74px"
-              height="74px"
-              className=""
-            />
-            <TitleArtistWrapper>
-              <h3>{playbackState.item.name}</h3>
-              <h5>
-                {playbackState.item.artists
-                  .map((artist) => artist.name)
-                  .join(", ")}
-              </h5>
-            </TitleArtistWrapper>
-          </TrackInfo>
-          <PlayerControls
-            playbackState={playbackState}
-            mutateUserPlaybackState={mutateUserPlaybackState}
+      {current_track && (
+        <TrackInfo>
+          <PlayerImage
+            src={current_track.album.images[0].url}
+            alt="currently playing image"
+            width="74px"
+            height="74px"
+            className=""
           />
-        </>
+          <TitleArtistWrapper>
+            <h3>{current_track.name}</h3>
+            <h5>
+              {current_track.artists.map((artist) => artist.name).join(", ")}
+            </h5>
+          </TitleArtistWrapper>
+        </TrackInfo>
       )}
-      <TrackPlaceholder /> */}
+
+      <div>{position}</div>
+
+      {/* <PlayerControls
+        playbackState={playbackState}
+        mutateUserPlaybackState={mutateUserPlaybackState}
+      /> */}
+
+      <TrackPlaceholder />
     </Wrapper>
   );
 };
