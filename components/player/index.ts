@@ -1,2 +1,2 @@
 export { default as PlayerControls } from "./PlayerControls";
-export { default as DesktopPlayer } from "./DesktopPlayer";
+export { default as Player } from "./Player";

@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import { FaPlayCircle, FaPauseCircle } from "react-icons/fa";
 import { useUserPlaybackState } from "../../lib/hooks";
 import { StyledImage } from "../ui";
 import PlayerControls from "./PlayerControls";
+import { QUERIES } from "../../styles";
 
 const Wrapper = styled.div`
   display: flex;
@@ -10,6 +10,13 @@ const Wrapper = styled.div`
   height: var(--player-height);
   width: 100%;
   background: var(--player-gradient);
+`;
+
+const PlayerImage = styled(StyledImage)`
+  @media ${QUERIES.phone} {
+    width: 54px;
+    height: 54px;
+  }
 `;
 
 const TrackInfo = styled.div`
@@ -26,22 +33,19 @@ const TitleArtistWrapper = styled.div`
   gap: var(--spacing-xs);
 `;
 
-const AlbumCover = styled.img`
-  width: 74px;
-  height: 74px;
-  margin: 0 16px;
-  background-color: blue;
-`;
-
-const PausePlayWrapper = styled.div`
+const TrackPlaceholder = styled.div`
+  min-width: 250px;
   display: flex;
-  justify-content: right;
   align-items: center;
-  margin: 0 var(--spacing-xl);
-  min-width: 15vw;
+  gap: var(--spacing-md);
+  margin: 0 var(--spacing-md);
+
+  @media ${QUERIES.phone} {
+    display: none;
+  }
 `;
 
-const DesktopPlayer = () => {
+const Player = () => {
   const { playbackState, isLoading, isError, mutateUserPlaybackState } =
     useUserPlaybackState();
   return (
@@ -49,7 +53,7 @@ const DesktopPlayer = () => {
       {!isLoading && !isError && playbackState.success && (
         <>
           <TrackInfo>
-            <StyledImage
+            <PlayerImage
               src={playbackState.item.album.images[0].url}
               alt={playbackState.item.album.name}
               width="74px"
@@ -65,12 +69,15 @@ const DesktopPlayer = () => {
               </h5>
             </TitleArtistWrapper>
           </TrackInfo>
-          <PlayerControls playbackState={playbackState} />
+          <PlayerControls
+            playbackState={playbackState}
+            mutateUserPlaybackState={mutateUserPlaybackState}
+          />
         </>
       )}
-      <TrackInfo />
+      <TrackPlaceholder />
     </Wrapper>
   );
 };
 
-export default DesktopPlayer;
+export default Player;

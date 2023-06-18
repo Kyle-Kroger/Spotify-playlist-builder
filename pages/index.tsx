@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { DesktopNav, Sidebar } from "../components/layout";
-import { DesktopPlayer } from "../components/player";
+import { DesktopNav, MobileNav, Sidebar } from "../components/layout";
+import { Player } from "../components/player";
 import { PlaylistBuilder } from "../components/playlistBuilder";
 import { useUserPlaylists } from "../lib/hooks";
 import { SIDEBAR_PAGE, usePageStateStore } from "../lib/store";
@@ -46,7 +46,8 @@ const Home = () => {
           </>
         )}
       </StyledMain>
-      <DesktopPlayer />
+      <MobileNav />
+      <Player />
     </Wrapper>
   );
 };
