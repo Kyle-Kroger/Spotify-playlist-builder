@@ -71,7 +71,6 @@ const Home = () => {
       <MobileNav />
       {token && <Player token={token} />}
       {!token && <PlaceholderPlayer />}
-      <MobilePlayer />
     </Wrapper>
   );
 };

@@ -32,7 +32,7 @@ const Container = styled.div<ContainerProps>`
   height: ${(props) => (props.isOpen ? "40%" : "80px")};
   background: var(--player-gradient);
   display: none;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   animation: ${(props) => (props.isOpen ? slideIn : slideOut)} 0.5s ease-in-out;
   z-index: 9999;

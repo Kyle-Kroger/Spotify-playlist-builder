@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import styled from "styled-components";
 import { FaPlayCircle, FaPauseCircle } from "react-icons/fa";
 import { QUERIES, helpers } from "../../styles";
@@ -76,43 +77,15 @@ const CurrentTime = styled.div`
 
 const TotalTime = styled.div``;
 
-const PlayerControls = ({ playbackState, mutateUserPlaybackState }) => {
+const PlayerControls = ({ duration_ms, togglePlay }) => {
   const convertPercent = (currentTime, totalTime) => {
     const percent = Math.floor((currentTime / totalTime) * 100);
     return `${percent}%`;
   };
 
-  const handleTrackPaused = async () => {
-    try {
-      // optimistic updating
-      await mutateUserPlaybackState((data) => {
-        return {
-          ...data,
-          is_playing: false,
-        };
-      }, false);
+  const handleTrackPaused = async () => {};
 
-      await fetcher("/user/player/pause", {}, "PUT");
-    } catch (err) {
-      console.log(err.message);
-    }
-  };
-
-  const handleTrackPlayed = async () => {
-    try {
-      // optimistic updating
-      await mutateUserPlaybackState((data) => {
-        return {
-          ...data,
-          is_playing: true,
-        };
-      }, false);
-
-      await fetcher("/user/player/play", {}, "PUT");
-    } catch (err) {
-      console.log(err.message);
-    }
-  };
+  const handleTrackPlayed = async () => {};
 
   return (
     <Wrapper>
