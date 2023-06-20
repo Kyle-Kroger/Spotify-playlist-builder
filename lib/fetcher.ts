@@ -43,9 +43,10 @@ export const spotifyFetcher = async (
     const { headers } = response;
 
     // Loop through the headers
-    headers.forEach((value, name) => {
-      console.log(`${name}: ${value}`);
-    });
+    // headers.forEach((value, name) => {
+    //   console.log(`${name}: ${value}`);
+    // });
+
     const message = `An error has occured: ${response.status} ${response.statusText}`;
     throw new Error(message);
   }

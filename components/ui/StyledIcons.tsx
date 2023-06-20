@@ -48,9 +48,14 @@ export const BackIcon = styled(FaStepBackward)`
   }
 `;
 
+interface IconProps {
+  active?: boolean;
+}
+
 export const Repeat1Icon = styled(BsRepeat1)`
   cursor: pointer;
   transition: color 200ms ease-in-out, transform 200ms ease-in-out;
+  color: var(--color-spotify-green);
 
   :hover {
     transform: scale(1.15);
@@ -58,21 +63,23 @@ export const Repeat1Icon = styled(BsRepeat1)`
   }
 `;
 
-export const RepeatIcon = styled(BsRepeat)`
+export const RepeatIcon = styled(BsRepeat)<IconProps>`
   cursor: pointer;
   transition: color 200ms ease-in-out, transform 200ms ease-in-out;
 
+  ${(p) =>
+    p.active &&
+    css`
+      color: var(--color-spotify-green);
+    `}
+
   :hover {
     transform: scale(1.15);
     color: var(--color-spotify-green);
   }
 `;
 
-interface ShuffleProps {
-  active?: string;
-}
-
-export const ShuffleIcon = styled(BsShuffle)<ShuffleProps>`
+export const ShuffleIcon = styled(BsShuffle)<IconProps>`
   cursor: pointer;
   transition: color 200ms ease-in-out, transform 200ms ease-in-out;
 

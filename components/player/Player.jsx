@@ -34,11 +34,10 @@ const PlayerImage = styled(StyledImage)`
 `;
 
 const TrackInfo = styled.div`
-  min-width: 250px;
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
-  margin: 0 var(--spacing-md);
+  margin-left: var(--spacing-md);
 `;
 
 const TitleArtistWrapper = styled.div`
@@ -54,28 +53,8 @@ const TrackPlaceholder = styled.div`
   gap: var(--spacing-md);
   margin: 0 var(--spacing-md);
 
-  @media ${QUERIES.phone} {
+  @media ${QUERIES.tabetAndDown} {
     display: none;
-  }
-`;
-
-const PauseButton = styled(FaPauseCircle)`
-  cursor: pointer;
-  transition: color 200ms ease-in-out, transform 200ms ease-in-out;
-
-  :hover {
-    transform: scale(1.05);
-    color: var(--color-spotify-green);
-  }
-`;
-
-const PlayButton = styled(FaPlayCircle)`
-  cursor: pointer;
-  transition: color 200ms ease-in-out, transform 200ms ease-in-out;
-
-  :hover {
-    transform: scale(1.05);
-    color: var(--color-spotify-green);
   }
 `;
 
@@ -162,6 +141,18 @@ const Player = ({ token }) => {
     }
   };
 
+  const handleRepeat = async () => {
+    // optimstic update
+    const currentRepeat = repeatMode;
+    setRepeatMode((prev) => (prev < 2 ? prev + 1 : 0));
+    try {
+      const bodyData = { state: currentRepeat };
+      await fetcher("/user/player/repeat", bodyData, "PUT");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <>
       <Wrapper>
@@ -190,6 +181,7 @@ const Player = ({ token }) => {
           <PlayerControls
             is_paused={is_paused}
             repeatMode={repeatMode}
+            handleRepeat={handleRepeat}
             shuffle={is_Shuffle}
             handleShuffle={handleShuffle}
             duration_ms={current_track.duration_ms}

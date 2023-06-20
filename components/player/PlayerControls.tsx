@@ -16,6 +16,10 @@ const Wrapper = styled.div`
   height: 100%;
   ${helpers.flexCenter}
   flex-direction: column;
+
+  @media ${QUERIES.tabetAndDown} {
+    padding-right: var(--spacing-md);
+  }
 `;
 
 const ControlsWrapper = styled.div`
@@ -59,6 +63,7 @@ const TotalTime = styled.div``;
 const PlayerControls = ({
   is_paused,
   repeatMode,
+  handleRepeat,
   shuffle,
   handleShuffle,
   duration_ms,
@@ -82,8 +87,16 @@ const PlayerControls = ({
           <PlayIcon fontSize="50px" onClick={() => player.togglePlay()} />
         )}
         <ForwardIcon fontSize="32px" onClick={() => player.nextTrack()} />
-        {repeatMode !== 2 && <RepeatIcon fontSize="28px" />}
-        {repeatMode === 2 && <Repeat1Icon fontSize="28px" />}
+        {repeatMode !== 2 && (
+          <RepeatIcon
+            fontSize="28px"
+            active={repeatMode === 1}
+            onClick={handleRepeat}
+          />
+        )}
+        {repeatMode === 2 && (
+          <Repeat1Icon fontSize="28px" onClick={handleRepeat} />
+        )}
       </ControlsWrapper>
 
       <PlayerBarWrapper>

@@ -14,6 +14,7 @@ const slideIn = keyframes`
 const slideOut = keyframes`
   0% {
     height: 40%;
+    
   }
   100% {
     height: 80px;
@@ -35,6 +36,7 @@ const Container = styled.div<ContainerProps>`
   align-items: flex-start;
   justify-content: center;
   animation: ${(props) => (props.isOpen ? slideIn : slideOut)} 0.5s ease-in-out;
+  animation-fill-mode: both;
   z-index: 9999;
 
   @media ${QUERIES.phone} {
