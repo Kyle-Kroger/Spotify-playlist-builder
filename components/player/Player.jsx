@@ -90,6 +90,8 @@ const track = {
 const Player = ({ token }) => {
   const [is_paused, setPaused] = useState(false);
   const [is_active, setActive] = useState(false);
+  const [is_Shuffle, setShuffle] = useState(false);
+  const [repeatMode, setRepeatMode] = useState(0);
   const [player, setPlayer] = useState(undefined);
   const [current_track, setTrack] = useState(track);
   const [position, setPosition] = useState(0);
@@ -128,6 +130,8 @@ const Player = ({ token }) => {
         setTrack(state.track_window.current_track);
         setPaused(state.paused);
         setPosition(state.position);
+        setShuffle(state.shuffle);
+        setRepeatMode(state.repeat_mode);
 
         player.getCurrentState().then((pState) => {
           !pState ? setActive(false) : setActive(true);
@@ -152,7 +156,7 @@ const Player = ({ token }) => {
         {current_track && (
           <TrackInfo
             onClick={() => {
-              console.log(current_track);
+              console.log(is_Shuffle, repeatMode);
             }}
           >
             <PlayerImage
@@ -173,6 +177,8 @@ const Player = ({ token }) => {
         {player && (
           <PlayerControls
             is_paused={is_paused}
+            repeatMode={repeatMode}
+            shuffle={is_Shuffle}
             duration_ms={current_track.duration_ms}
             position={position}
             player={player}

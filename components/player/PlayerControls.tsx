@@ -1,9 +1,16 @@
 /* eslint-disable camelcase */
 import styled from "styled-components";
-import { FaPlayCircle, FaPauseCircle } from "react-icons/fa";
 import { QUERIES, helpers } from "../../styles";
 import { durationMSToStandard } from "../../lib/spotify";
-import { fetcher } from "../../lib/fetcher";
+import {
+  PauseIcon,
+  PlayIcon,
+  ForwardIcon,
+  BackIcon,
+  RepeatIcon,
+  Repeat1Icon,
+  ShuffleIcon,
+} from "../ui/StyledIcons";
 
 const Wrapper = styled.div`
   height: 100%;
@@ -42,26 +49,6 @@ const ActiveBar = styled.div<{ width: string }>`
   height: 4px;
 `;
 
-const PauseButton = styled(FaPauseCircle)`
-  cursor: pointer;
-  transition: color 200ms ease-in-out, transform 200ms ease-in-out;
-
-  :hover {
-    transform: scale(1.05);
-    color: var(--color-spotify-green);
-  }
-`;
-
-const PlayButton = styled(FaPlayCircle)`
-  cursor: pointer;
-  transition: color 200ms ease-in-out, transform 200ms ease-in-out;
-
-  :hover {
-    transform: scale(1.05);
-    color: var(--color-spotify-green);
-  }
-`;
-
 const CurrentTime = styled.div`
   min-width: 45px;
   text-align: right;
@@ -69,7 +56,14 @@ const CurrentTime = styled.div`
 
 const TotalTime = styled.div``;
 
-const PlayerControls = ({ is_paused, duration_ms, position, player }) => {
+const PlayerControls = ({
+  is_paused,
+  repeatMode,
+  shuffle,
+  duration_ms,
+  position,
+  player,
+}) => {
   const convertPercent = (currentTime, totalTime) => {
     const percent = Math.floor((currentTime / totalTime) * 100);
     return `${percent <= 100 ? percent : 100}%`;
@@ -78,12 +72,17 @@ const PlayerControls = ({ is_paused, duration_ms, position, player }) => {
   return (
     <Wrapper>
       <ControlsWrapper>
+        <ShuffleIcon fontSize="28px" />
+        <BackIcon fontSize="32px" onClick={() => player.previousTrack()} />
         {!is_paused && (
-          <PauseButton fontSize="50px" onClick={() => player.togglePlay()} />
+          <PauseIcon fontSize="50px" onClick={() => player.togglePlay()} />
         )}
         {is_paused && (
-          <PlayButton fontSize="50px" onClick={() => player.togglePlay()} />
+          <PlayIcon fontSize="50px" onClick={() => player.togglePlqy()} />
         )}
+        <ForwardIcon fontSize="32px" onClick={() => player.nextTrack()} />
+        {repeatMode !== 2 && <RepeatIcon fontSize="28px" />}
+        {repeatMode === 2 && <Repeat1Icon fontSize="28px" />}
       </ControlsWrapper>
 
       <PlayerBarWrapper>

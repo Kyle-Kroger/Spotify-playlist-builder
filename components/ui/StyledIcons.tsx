@@ -1,0 +1,78 @@
+import {
+  FaPlayCircle,
+  FaPauseCircle,
+  FaStepForward,
+  FaStepBackward,
+} from "react-icons/fa";
+import { BsShuffle, BsRepeat, BsRepeat1 } from "react-icons/bs";
+import styled from "styled-components";
+
+export const PauseIcon = styled(FaPauseCircle)`
+  cursor: pointer;
+  transition: color 200ms ease-in-out, transform 200ms ease-in-out;
+
+  :hover {
+    transform: scale(1.05);
+    color: var(--color-spotify-green);
+  }
+`;
+
+export const PlayIcon = styled(FaPlayCircle)`
+  cursor: pointer;
+  transition: color 200ms ease-in-out, transform 200ms ease-in-out;
+
+  :hover {
+    transform: scale(1.05);
+    color: var(--color-spotify-green);
+  }
+`;
+
+export const ForwardIcon = styled(FaStepForward)`
+  cursor: pointer;
+  transition: color 200ms ease-in-out, transform 200ms ease-in-out;
+
+  :hover {
+    transform: scale(1.15);
+    color: var(--color-spotify-green);
+  }
+`;
+
+export const BackIcon = styled(FaStepBackward)`
+  cursor: pointer;
+  transition: color 200ms ease-in-out, transform 200ms ease-in-out;
+
+  :hover {
+    transform: scale(1.15);
+    color: var(--color-spotify-green);
+  }
+`;
+
+export const Repeat1Icon = styled(BsRepeat1)`
+  cursor: pointer;
+  transition: color 200ms ease-in-out, transform 200ms ease-in-out;
+
+  :hover {
+    transform: scale(1.15);
+    color: var(--color-spotify-green);
+  }
+`;
+
+export const RepeatIcon = styled(BsRepeat)`
+  cursor: pointer;
+  transition: color 200ms ease-in-out, transform 200ms ease-in-out;
+
+  :hover {
+    transform: scale(1.15);
+    color: var(--color-spotify-green);
+  }
+`;
+
+export const ShuffleIcon = styled(BsShuffle)`
+  cursor: pointer;
+  transition: color 200ms ease-in-out, transform 200ms ease-in-out;
+
+  :hover {
+    transform: scale(1.15);
+    color: var(--color-spotify-green);
+  }
+`;
