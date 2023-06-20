@@ -9,6 +9,7 @@ import { StyledImage } from "../ui";
 import PlayerControls from "./PlayerControls";
 import { QUERIES } from "../../styles";
 import MobilePlayer from "./MobliePlayer";
+import { fetcher } from "../../lib/fetcher";
 
 const Wrapper = styled.div`
   display: flex;
@@ -150,6 +151,17 @@ const Player = ({ token }) => {
     return () => clearInterval(intervalId);
   }, [is_active, is_paused]);
 
+  const handleShuffle = async () => {
+    // optimstic update
+    setShuffle((prev) => !prev);
+    try {
+      const bodyData = { state: is_Shuffle };
+      await fetcher("/user/player/shuffle", bodyData, "PUT");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <>
       <Wrapper>
@@ -179,6 +191,7 @@ const Player = ({ token }) => {
             is_paused={is_paused}
             repeatMode={repeatMode}
             shuffle={is_Shuffle}
+            handleShuffle={handleShuffle}
             duration_ms={current_track.duration_ms}
             position={position}
             player={player}

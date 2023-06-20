@@ -5,7 +5,8 @@ import {
   FaStepBackward,
 } from "react-icons/fa";
 import { BsShuffle, BsRepeat, BsRepeat1 } from "react-icons/bs";
-import styled from "styled-components";
+import { HiChevronDoubleUp } from "react-icons/hi";
+import styled, { css } from "styled-components";
 
 export const PauseIcon = styled(FaPauseCircle)`
   cursor: pointer;
@@ -67,7 +68,27 @@ export const RepeatIcon = styled(BsRepeat)`
   }
 `;
 
-export const ShuffleIcon = styled(BsShuffle)`
+interface ShuffleProps {
+  active?: string;
+}
+
+export const ShuffleIcon = styled(BsShuffle)<ShuffleProps>`
+  cursor: pointer;
+  transition: color 200ms ease-in-out, transform 200ms ease-in-out;
+
+  ${(p) =>
+    p.active &&
+    css`
+      color: var(--color-spotify-green);
+    `}
+
+  :hover {
+    transform: scale(1.15);
+    color: var(--color-spotify-green);
+  }
+`;
+
+export const ExpandUpIcon = styled(HiChevronDoubleUp)`
   cursor: pointer;
   transition: color 200ms ease-in-out, transform 200ms ease-in-out;
 

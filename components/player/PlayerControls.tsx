@@ -60,6 +60,7 @@ const PlayerControls = ({
   is_paused,
   repeatMode,
   shuffle,
+  handleShuffle,
   duration_ms,
   position,
   player,
@@ -72,13 +73,13 @@ const PlayerControls = ({
   return (
     <Wrapper>
       <ControlsWrapper>
-        <ShuffleIcon fontSize="28px" />
+        <ShuffleIcon fontSize="28px" active={shuffle} onClick={handleShuffle} />
         <BackIcon fontSize="32px" onClick={() => player.previousTrack()} />
         {!is_paused && (
           <PauseIcon fontSize="50px" onClick={() => player.togglePlay()} />
         )}
         {is_paused && (
-          <PlayIcon fontSize="50px" onClick={() => player.togglePlqy()} />
+          <PlayIcon fontSize="50px" onClick={() => player.togglePlay()} />
         )}
         <ForwardIcon fontSize="32px" onClick={() => player.nextTrack()} />
         {repeatMode !== 2 && <RepeatIcon fontSize="28px" />}
