@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { QUERIES } from "../../styles";
@@ -47,7 +48,7 @@ const Container = styled.div<ContainerProps>`
   }
 `;
 
-const MobilePlayer = () => {
+const MobilePlayer = ({ current_track }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [playAnimation, setPlayAnimation] = useState(false);
 
