@@ -170,13 +170,14 @@ const Player = ({ token }) => {
             </TitleArtistWrapper>
           </TrackInfo>
         )}
-
-        <div>{position}</div>
-
-        {/* <PlayerControls
-        playbackState={playbackState}
-        mutateUserPlaybackState={mutateUserPlaybackState}
-      /> */}
+        {player && (
+          <PlayerControls
+            is_paused={is_paused}
+            duration_ms={current_track.duration_ms}
+            position={position}
+            player={player}
+          />
+        )}
 
         <TrackPlaceholder />
       </Wrapper>

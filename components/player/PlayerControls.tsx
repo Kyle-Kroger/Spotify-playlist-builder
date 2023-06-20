@@ -18,18 +18,10 @@ const ControlsWrapper = styled.div`
   * {
     margin: 0 var(--spacing-xs);
   }
-
-  @media ${QUERIES.phone} {
-    padding-right: 16px;
-  }
 `;
 
 const PlayerBarWrapper = styled.div`
   ${helpers.flexCenter}
-
-  @media ${QUERIES.phone} {
-    display: none;
-  }
 `;
 
 const PlayerBarTrack = styled.div`
@@ -77,42 +69,29 @@ const CurrentTime = styled.div`
 
 const TotalTime = styled.div``;
 
-const PlayerControls = ({ duration_ms, togglePlay }) => {
+const PlayerControls = ({ is_paused, duration_ms, position, player }) => {
   const convertPercent = (currentTime, totalTime) => {
     const percent = Math.floor((currentTime / totalTime) * 100);
-    return `${percent}%`;
+    return `${percent <= 100 ? percent : 100}%`;
   };
-
-  const handleTrackPaused = async () => {};
-
-  const handleTrackPlayed = async () => {};
 
   return (
     <Wrapper>
       <ControlsWrapper>
-        {playbackState.is_playing && (
-          <PauseButton fontSize="50px" onClick={handleTrackPaused} />
+        {!is_paused && (
+          <PauseButton fontSize="50px" onClick={() => player.togglePlay()} />
         )}
-        {!playbackState.is_playing && (
-          <PlayButton fontSize="50px" onClick={handleTrackPlayed} />
+        {is_paused && (
+          <PlayButton fontSize="50px" onClick={() => player.togglePlay()} />
         )}
       </ControlsWrapper>
 
       <PlayerBarWrapper>
-        <CurrentTime>
-          {durationMSToStandard(playbackState.progress_ms)}
-        </CurrentTime>
+        <CurrentTime>{durationMSToStandard(position)}</CurrentTime>
         <PlayerBarTrack>
-          <ActiveBar
-            width={convertPercent(
-              playbackState.progress_ms,
-              playbackState.item.duration_ms
-            )}
-          />
+          <ActiveBar width={convertPercent(position, duration_ms)} />
         </PlayerBarTrack>
-        <TotalTime>
-          {durationMSToStandard(playbackState.item.duration_ms)}
-        </TotalTime>
+        <TotalTime>{durationMSToStandard(duration_ms)}</TotalTime>
       </PlayerBarWrapper>
     </Wrapper>
   );
