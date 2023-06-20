@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 import cookie from "cookie";
 /* eslint-disable camelcase */
 /* eslint-disable no-plusplus */
@@ -14,6 +15,17 @@ export const generateRandomString = (length) => {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
   }
   return text;
+};
+
+// get a new object that only has the passed in keys
+// Useful for spreading when passing props
+export const pick = (obj, keys) => {
+  return keys.reduce((pickedObj, key) => {
+    if (obj.hasOwnProperty(key)) {
+      pickedObj[key] = obj[key];
+    }
+    return pickedObj;
+  }, {});
 };
 
 const { CLIENT_ID, CLIENT_SECRET } = process.env;

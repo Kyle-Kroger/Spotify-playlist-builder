@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import styled from "styled-components";
 import { FaPlayCircle, FaPauseCircle } from "react-icons/fa";
 import { QUERIES, helpers } from "../../styles";
@@ -17,18 +18,10 @@ const ControlsWrapper = styled.div`
   * {
     margin: 0 var(--spacing-xs);
   }
-
-  @media ${QUERIES.phone} {
-    padding-right: 16px;
-  }
 `;
 
 const PlayerBarWrapper = styled.div`
   ${helpers.flexCenter}
-
-  @media ${QUERIES.phone} {
-    display: none;
-  }
 `;
 
 const PlayerBarTrack = styled.div`
@@ -76,70 +69,29 @@ const CurrentTime = styled.div`
 
 const TotalTime = styled.div``;
 
-const PlayerControls = ({ playbackState, mutateUserPlaybackState }) => {
+const PlayerControls = ({ is_paused, duration_ms, position, player }) => {
   const convertPercent = (currentTime, totalTime) => {
     const percent = Math.floor((currentTime / totalTime) * 100);
-    return `${percent}%`;
-  };
-
-  const handleTrackPaused = async () => {
-    try {
-      // optimistic updating
-      await mutateUserPlaybackState((data) => {
-        return {
-          ...data,
-          is_playing: false,
-        };
-      }, false);
-
-      await fetcher("/user/player/pause", {}, "PUT");
-    } catch (err) {
-      console.log(err.message);
-    }
-  };
-
-  const handleTrackPlayed = async () => {
-    try {
-      // optimistic updating
-      await mutateUserPlaybackState((data) => {
-        return {
-          ...data,
-          is_playing: true,
-        };
-      }, false);
-
-      await fetcher("/user/player/play", {}, "PUT");
-    } catch (err) {
-      console.log(err.message);
-    }
+    return `${percent <= 100 ? percent : 100}%`;
   };
 
   return (
     <Wrapper>
       <ControlsWrapper>
-        {playbackState.is_playing && (
-          <PauseButton fontSize="50px" onClick={handleTrackPaused} />
+        {!is_paused && (
+          <PauseButton fontSize="50px" onClick={() => player.togglePlay()} />
         )}
-        {!playbackState.is_playing && (
-          <PlayButton fontSize="50px" onClick={handleTrackPlayed} />
+        {is_paused && (
+          <PlayButton fontSize="50px" onClick={() => player.togglePlay()} />
         )}
       </ControlsWrapper>
 
       <PlayerBarWrapper>
-        <CurrentTime>
-          {durationMSToStandard(playbackState.progress_ms)}
-        </CurrentTime>
+        <CurrentTime>{durationMSToStandard(position)}</CurrentTime>
         <PlayerBarTrack>
-          <ActiveBar
-            width={convertPercent(
-              playbackState.progress_ms,
-              playbackState.item.duration_ms
-            )}
-          />
+          <ActiveBar width={convertPercent(position, duration_ms)} />
         </PlayerBarTrack>
-        <TotalTime>
-          {durationMSToStandard(playbackState.item.duration_ms)}
-        </TotalTime>
+        <TotalTime>{durationMSToStandard(duration_ms)}</TotalTime>
       </PlayerBarWrapper>
     </Wrapper>
   );
