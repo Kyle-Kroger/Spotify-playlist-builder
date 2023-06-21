@@ -12,7 +12,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   let { SPOTIFY_ACCESS_TOKEN: token } = req.cookies;
 
   // refresh if needed
-  token = await refreshAccessToken(token, refreshToken, res);
+  if (!token) {
+    token = await refreshAccessToken(token, refreshToken, res);
+  }
 
   res.send({ token });
 };

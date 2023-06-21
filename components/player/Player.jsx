@@ -108,7 +108,8 @@ const track = {
   duration_ms: "",
 };
 
-const Player = ({ token }) => {
+const Player = () => {
+  const [token, setToken] = useState("");
   const [is_paused, setPaused] = useState(false);
   const [is_active, setActive] = useState(false);
   const [is_Shuffle, setShuffle] = useState(false);
@@ -121,6 +122,16 @@ const Player = ({ token }) => {
   const [playAnimation, setPlayAnimation] = useState(false);
 
   useEffect(() => {
+    async function getToken() {
+      const response = await fetcher("/token");
+      setToken(response.token);
+    }
+
+    // refresh token if needed
+    if (!token) {
+      setToken(getToken());
+    }
+
     const script = document.createElement("script");
     script.src = "https://sdk.scdn.co/spotify-player.js";
     script.async = true;
@@ -152,6 +163,8 @@ const Player = ({ token }) => {
           return;
         }
 
+        // refresh token if needed
+        setToken(getToken());
         setTrack(state.track_window.current_track);
         setPaused(state.paused);
         setPosition(state.position);
