@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { QUERIES } from "../../styles";
@@ -14,6 +15,7 @@ const slideIn = keyframes`
 const slideOut = keyframes`
   0% {
     height: 40%;
+    
   }
   100% {
     height: 80px;
@@ -22,6 +24,7 @@ const slideOut = keyframes`
 
 interface ContainerProps {
   isOpen?: boolean;
+  playAnimation?: boolean;
 }
 
 const Container = styled.div<ContainerProps>`
@@ -34,7 +37,10 @@ const Container = styled.div<ContainerProps>`
   display: none;
   align-items: flex-start;
   justify-content: center;
-  animation: ${(props) => (props.isOpen ? slideIn : slideOut)} 0.5s ease-in-out;
+  animation: ${(p) =>
+      p.playAnimation ? (p.isOpen ? slideIn : slideOut) : "none"}
+    0.5s ease-in-out;
+  animation-fill-mode: both;
   z-index: 9999;
 
   @media ${QUERIES.phone} {
@@ -42,15 +48,21 @@ const Container = styled.div<ContainerProps>`
   }
 `;
 
-const MobilePlayer = () => {
+const MobilePlayer = ({ current_track }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [playAnimation, setPlayAnimation] = useState(false);
 
   const handleButtonClick = () => {
     setIsOpen(!isOpen);
+    setPlayAnimation(true);
   };
 
   return (
-    <Container isOpen={isOpen}>
+    <Container
+      isOpen={isOpen}
+      playAnimation={playAnimation}
+      onAnimationEnd={() => setPlayAnimation(false)}
+    >
       <button type="button" onClick={handleButtonClick}>
         Toggle
       </button>
