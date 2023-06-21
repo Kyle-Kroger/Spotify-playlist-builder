@@ -4,12 +4,13 @@
 
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { FaPlayCircle, FaPauseCircle } from "react-icons/fa";
 import { StyledImage } from "../ui";
 import PlayerControls from "./PlayerControls";
 import { QUERIES } from "../../styles";
 import MobilePlayer from "./MobliePlayer";
 import { fetcher } from "../../lib/fetcher";
+import PlayerWrapper from "./PlayerWrapper";
+import { ExpandDownIcon, ExpandUpIcon } from "../ui/StyledIcons";
 
 const Wrapper = styled.div`
   display: flex;
@@ -17,16 +18,23 @@ const Wrapper = styled.div`
   height: var(--player-height);
   width: 100%;
   background: var(--player-gradient);
+`;
 
-  /* Keep wrapper for spacing, but not display it's children on mobile */
-  * {
-    @media ${QUERIES.phone} {
-      display: none;
-    }
+const MobileClosed = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  @media ${QUERIES.phone} {
+    width: 100%;
+    padding: 13px;
   }
 `;
 
 const PlayerImage = styled(StyledImage)`
+  width: 74px;
+  height: 74px;
+
   @media ${QUERIES.phone} {
     width: 54px;
     height: 54px;
@@ -46,6 +54,22 @@ const TitleArtistWrapper = styled.div`
   gap: var(--spacing-xs);
 `;
 
+const MobileExpandUpIcon = styled(ExpandUpIcon)`
+  display: none;
+  @media ${QUERIES.phone} {
+    display: block;
+    padding: var(--spacing-xs);
+  }
+`;
+
+const MobileExpandDownIcon = styled(ExpandDownIcon)`
+  display: none;
+  @media ${QUERIES.phone} {
+    display: block;
+    padding: var(--spacing-xs);
+  }
+`;
+
 const TrackPlaceholder = styled.div`
   min-width: 250px;
   display: flex;
@@ -54,6 +78,10 @@ const TrackPlaceholder = styled.div`
   margin: 0 var(--spacing-md);
 
   @media ${QUERIES.tabetAndDown} {
+    min-width: 1px;
+  }
+
+  @media ${QUERIES.phone} {
     display: none;
   }
 `;
@@ -75,6 +103,9 @@ const Player = ({ token }) => {
   const [player, setPlayer] = useState(undefined);
   const [current_track, setTrack] = useState(track);
   const [position, setPosition] = useState(0);
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [playAnimation, setPlayAnimation] = useState(true);
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -130,6 +161,11 @@ const Player = ({ token }) => {
     return () => clearInterval(intervalId);
   }, [is_active, is_paused]);
 
+  const handleExpand = () => {
+    setIsOpen(!isOpen);
+    setPlayAnimation(true);
+  };
+
   const handleShuffle = async () => {
     // optimstic update
     setShuffle((prev) => !prev);
@@ -154,19 +190,17 @@ const Player = ({ token }) => {
   };
 
   return (
-    <>
-      <Wrapper>
-        {current_track && (
-          <TrackInfo
-            onClick={() => {
-              console.log(is_Shuffle, repeatMode);
-            }}
-          >
+    <PlayerWrapper
+      isOpen={isOpen}
+      playAnimation={playAnimation}
+      onAnimationEnd={() => setPlayAnimation(false)}
+    >
+      {current_track && (
+        <MobileClosed>
+          <TrackInfo>
             <PlayerImage
               src={current_track.album.images[0].url}
               alt="currently playing image"
-              width="74px"
-              height="74px"
               className=""
             />
             <TitleArtistWrapper>
@@ -176,24 +210,29 @@ const Player = ({ token }) => {
               </h5>
             </TitleArtistWrapper>
           </TrackInfo>
-        )}
-        {player && (
-          <PlayerControls
-            is_paused={is_paused}
-            repeatMode={repeatMode}
-            handleRepeat={handleRepeat}
-            shuffle={is_Shuffle}
-            handleShuffle={handleShuffle}
-            duration_ms={current_track.duration_ms}
-            position={position}
-            player={player}
-          />
-        )}
+          {isOpen && (
+            <MobileExpandDownIcon fontSize="54px" onClick={handleExpand} />
+          )}
+          {!isOpen && (
+            <MobileExpandUpIcon fontSize="54px" onClick={handleExpand} />
+          )}
+        </MobileClosed>
+      )}
+      {player && (
+        <PlayerControls
+          is_paused={is_paused}
+          repeatMode={repeatMode}
+          handleRepeat={handleRepeat}
+          shuffle={is_Shuffle}
+          handleShuffle={handleShuffle}
+          duration_ms={current_track.duration_ms}
+          position={position}
+          player={player}
+        />
+      )}
 
-        <TrackPlaceholder />
-      </Wrapper>
-      <MobilePlayer />
-    </>
+      <TrackPlaceholder />
+    </PlayerWrapper>
   );
 };
 

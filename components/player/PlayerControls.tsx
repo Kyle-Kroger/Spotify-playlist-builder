@@ -17,8 +17,9 @@ const Wrapper = styled.div`
   ${helpers.flexCenter}
   flex-direction: column;
 
-  @media ${QUERIES.tabetAndDown} {
-    padding-right: var(--spacing-md);
+  @media ${QUERIES.phone} {
+    justify-content: flex-start;
+    padding-bottom: 13px;
   }
 `;
 
@@ -28,6 +29,10 @@ const ControlsWrapper = styled.div`
 
   * {
     margin: 0 var(--spacing-xs);
+  }
+
+  @media ${QUERIES.phone} {
+    padding-bottom: var(--spacing-xs);
   }
 `;
 
@@ -78,7 +83,11 @@ const PlayerControls = ({
   return (
     <Wrapper>
       <ControlsWrapper>
-        <ShuffleIcon fontSize="28px" active={shuffle} onClick={handleShuffle} />
+        <ShuffleIcon
+          fontSize="28px"
+          $active={shuffle}
+          onClick={handleShuffle}
+        />
         <BackIcon fontSize="32px" onClick={() => player.previousTrack()} />
         {!is_paused && (
           <PauseIcon fontSize="50px" onClick={() => player.togglePlay()} />
@@ -90,7 +99,7 @@ const PlayerControls = ({
         {repeatMode !== 2 && (
           <RepeatIcon
             fontSize="28px"
-            active={repeatMode === 1}
+            $active={repeatMode === 1}
             onClick={handleRepeat}
           />
         )}
