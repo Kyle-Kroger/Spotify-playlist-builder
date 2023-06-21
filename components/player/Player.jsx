@@ -86,6 +86,28 @@ const TrackPlaceholder = styled.div`
   }
 `;
 
+const NoPlayerMessage = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: fit-content;
+  height: fit-content;
+
+  p {
+    font-size: var(--fz-md);
+    text-align: center;
+    line-height: 1.8;
+
+    @media ${QUERIES.phone} {
+      font-size: var(--fz-sm);
+      padding: 0 var(--spacing-md);
+    }
+  }
+`;
+
 const track = {
   name: "",
   album: {
@@ -105,7 +127,7 @@ const Player = ({ token }) => {
   const [position, setPosition] = useState(0);
 
   const [isOpen, setIsOpen] = useState(false);
-  const [playAnimation, setPlayAnimation] = useState(true);
+  const [playAnimation, setPlayAnimation] = useState(false);
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -131,6 +153,7 @@ const Player = ({ token }) => {
 
       player.addListener("not_ready", ({ device_id }) => {
         console.log("Device ID has gone offline", device_id);
+        setActive(false);
       });
 
       player.addListener("player_state_changed", (state) => {
@@ -194,8 +217,15 @@ const Player = ({ token }) => {
       isOpen={isOpen}
       playAnimation={playAnimation}
       onAnimationEnd={() => setPlayAnimation(false)}
+      onClick={() => console.log(player, current_track, is_active)}
     >
-      {current_track && (
+      {(!current_track || !player || !is_active) && (
+        <NoPlayerMessage>
+          <p>The player is currently inactive</p>
+          <p>For more info click the help page in navigation</p>
+        </NoPlayerMessage>
+      )}
+      {current_track && is_active && (
         <MobileClosed>
           <TrackInfo>
             <PlayerImage
@@ -218,7 +248,7 @@ const Player = ({ token }) => {
           )}
         </MobileClosed>
       )}
-      {player && (
+      {player && current_track && is_active && (
         <PlayerControls
           is_paused={is_paused}
           repeatMode={repeatMode}
