@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { DesktopNav, MobileNav, Sidebar } from "../components/layout";
-import { MobilePlayer, Player } from "../components/player";
+import { Player } from "../components/player";
 import { PlaylistBuilder } from "../components/playlistBuilder";
 import { useUserPlaylists } from "../lib/hooks";
 import { SIDEBAR_PAGE, usePageStateStore } from "../lib/store";
