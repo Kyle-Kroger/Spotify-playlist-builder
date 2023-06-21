@@ -49,7 +49,6 @@ const Home = () => {
   useEffect(() => {
     async function getToken() {
       const response = await fetcher("/token");
-      console.log(response);
       setToken(response.token);
     }
 

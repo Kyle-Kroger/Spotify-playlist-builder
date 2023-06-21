@@ -7,18 +7,9 @@ import styled from "styled-components";
 import { StyledImage } from "../ui";
 import PlayerControls from "./PlayerControls";
 import { QUERIES } from "../../styles";
-import MobilePlayer from "./MobliePlayer";
 import { fetcher } from "../../lib/fetcher";
 import PlayerWrapper from "./PlayerWrapper";
 import { ExpandDownIcon, ExpandUpIcon } from "../ui/StyledIcons";
-
-const Wrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  height: var(--player-height);
-  width: 100%;
-  background: var(--player-gradient);
-`;
 
 const MobileClosed = styled.div`
   display: flex;
@@ -217,7 +208,6 @@ const Player = ({ token }) => {
       isOpen={isOpen}
       playAnimation={playAnimation}
       onAnimationEnd={() => setPlayAnimation(false)}
-      onClick={() => console.log(player, current_track, is_active)}
     >
       {(!current_track || !player || !is_active) && (
         <NoPlayerMessage>
