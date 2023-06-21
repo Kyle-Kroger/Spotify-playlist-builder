@@ -5,16 +5,21 @@ export enum SIDEBAR_PAGE {
   SEARCH,
   PLAYLIST,
   TAGGING,
+  HELP,
 }
 
 interface PageState {
   currentPage: number;
+  isHidden: boolean;
   setCurrentPage: (newPage: number) => void;
+  setIsHidden: (state) => void;
 }
 
 export const usePageStateStore = create<PageState>()((set) => ({
   currentPage: SIDEBAR_PAGE.SEARCH,
+  isHidden: false,
   setCurrentPage: (newPage) => set({ currentPage: newPage }),
+  setIsHidden: (state) => set({ isHidden: state }),
 }));
 
 interface PlaylistState {

@@ -13,24 +13,32 @@ const StyledMain = styled.div`
   height: var(--content-height);
   display: flex;
   position: relative;
+  overflow: hidden;
 `;
 
 const Wrapper = styled.div`
   width: 100%;
 `;
 
-const SidebarPlaceholder = styled.div`
-  width: var(--sidebar-width);
+interface SidebarProps {
+  isHidden: boolean;
+}
+
+const SidebarPlaceholder = styled.div<SidebarProps>`
+  min-width: ${(p) => (p.isHidden ? 0 : "var(--sidebar-width)")};
+  transition: min-width 600ms ease-in-out;
   @media ${QUERIES.tabetAndDown} {
     display: none;
   }
 `;
 
-const PositionedSidebar = styled(Sidebar)`
+const PositionedSidebar = styled(Sidebar)<SidebarProps>`
   position: absolute;
   top: 0;
-  right: 0;
+  right: ${(p) => (p.isHidden ? "calc(var(--sidebar-width) * -1)" : 0)};
   height: 100%;
+
+  transition: right 600ms ease-in-out;
 `;
 
 const PlaceholderPlayer = styled.div`
@@ -43,6 +51,7 @@ const PlaceholderPlayer = styled.div`
 
 const Home = () => {
   const { playlists, isLoading, isError } = useUserPlaylists();
+  const isHidden = usePageStateStore((state) => state.isHidden);
   const currentPage = usePageStateStore((state) => state.currentPage);
   const [token, setToken] = useState("");
 
@@ -60,12 +69,8 @@ const Home = () => {
       <StyledMain>
         <DesktopNav playlists={playlists} />
         <PlaylistBuilder />
-        {currentPage !== SIDEBAR_PAGE.NONE && (
-          <>
-            <SidebarPlaceholder />
-            <PositionedSidebar className="" />
-          </>
-        )}
+        <SidebarPlaceholder isHidden={isHidden} />
+        <PositionedSidebar className="" isHidden={isHidden} />
       </StyledMain>
       <MobileNav />
       {token && <Player token={token} />}

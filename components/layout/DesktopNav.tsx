@@ -49,7 +49,8 @@ const NavLink = styled.li`
   transition: all 300ms ease-in-out;
 
   :hover {
-    color: white;
+    color: var(--color-spotify-green);
+    transform: scale(1.02);
   }
 `;
 
@@ -70,18 +71,6 @@ const PlaylistWrapper = styled.ul`
   ${helpers.spotifySearchBar}
 `;
 
-const Playlist = styled.li<{ isDisabled: boolean }>`
-  padding: var(--spacing-xs) 0;
-  cursor: pointer;
-  pointer-events: ${(p) => (p.isDisabled ? "none" : "all")};
-  transition: color 200ms;
-  color: ${(p) => (p.isDisabled ? "#424242" : "var(--color-text-subdued)")};
-
-  :hover {
-    color: white;
-  }
-`;
-
 const Divider = styled.div`
   width: 100%;
   min-height: 1px;
@@ -98,6 +87,9 @@ const ImageWrapper = styled.div`
 const DesktopNav = (props) => {
   const { playlists } = props;
   const { user, isLoading, isError } = useUser();
+  const isHidden = usePageStateStore((state) => state.isHidden);
+  const setIsHidden = usePageStateStore((state) => state.setIsHidden);
+  const currentPage = usePageStateStore((state) => state.currentPage);
   const setCurrentPage = usePageStateStore((state) => state.setCurrentPage);
   const setPlaylistId = usePlaylistStateStore((state) => state.setPlaylistId);
   const [currentUserId, setCurrentUserId] = useState("");
@@ -108,27 +100,30 @@ const DesktopNav = (props) => {
     }
   }, [isLoading, isError, user]);
 
+  const handleSidebarChange = (page) => {
+    setIsHidden(page === currentPage && !isHidden);
+    setCurrentPage(page);
+  };
+
   return (
     <Wrapper>
       <StyledNav>
         {/* REMOVE THIS onCLICK! FOR TESTING ONLY */}
-        <LogoHeading onClick={() => setCurrentPage(SIDEBAR_PAGE.NONE)}>
-          Powered by
-        </LogoHeading>
+        <LogoHeading onClick={() => setIsHidden(true)}>Powered by</LogoHeading>
         <ImageWrapper>
           <Image src={spotifyLogo} alt="Spotify Logo" />
         </ImageWrapper>
         <Divider />
         <NavLinkList>
-          <NavLink onClick={() => setCurrentPage(SIDEBAR_PAGE.SEARCH)}>
+          <NavLink onClick={() => handleSidebarChange(SIDEBAR_PAGE.SEARCH)}>
             <BsSearch size="28px" />
             <NavText>Search</NavText>
           </NavLink>
-          <NavLink onClick={() => setCurrentPage(SIDEBAR_PAGE.PLAYLIST)}>
+          <NavLink onClick={() => handleSidebarChange(SIDEBAR_PAGE.PLAYLIST)}>
             <CgPlayListAdd size="28px" />
             <NavText>Playlists</NavText>
           </NavLink>
-          <NavLink onClick={() => setCurrentPage(SIDEBAR_PAGE.TAGGING)}>
+          <NavLink onClick={() => handleSidebarChange(SIDEBAR_PAGE.TAGGING)}>
             <BsTag size="28px" />
             <NavText>Manage Tags</NavText>
           </NavLink>
