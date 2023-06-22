@@ -50,7 +50,7 @@ const NavLink = styled.li`
 
   :hover {
     color: var(--color-spotify-green);
-    transform: scale(1.02);
+    transform: translateX(10px);
   }
 `;
 

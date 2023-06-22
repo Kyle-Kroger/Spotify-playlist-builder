@@ -41,10 +41,17 @@ const PositionedSidebar = styled(Sidebar)<SidebarProps>`
   transition: right 600ms ease-in-out;
 `;
 
+const PlaceholderPlayer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  height: var(--player-height);
+  width: 100%;
+  background: var(--player-gradient);
+`;
+
 const Home = () => {
   const { playlists, isLoading, isError } = useUserPlaylists();
   const isHidden = usePageStateStore((state) => state.isHidden);
-  const currentPage = usePageStateStore((state) => state.currentPage);
   const [token, setToken] = useState("");
 
   useEffect(() => {
@@ -65,7 +72,8 @@ const Home = () => {
         <PositionedSidebar className="" isHidden={isHidden} />
       </StyledMain>
       <MobileNav />
-      <Player />
+      {token && <Player token={token} setToken={setToken} />}
+      {!token && <PlaceholderPlayer />}
     </Wrapper>
   );
 };

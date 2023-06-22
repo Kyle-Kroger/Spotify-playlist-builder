@@ -108,8 +108,7 @@ const track = {
   duration_ms: "",
 };
 
-const Player = () => {
-  const [token, setToken] = useState("");
+const Player = ({ token, setToken }) => {
   const [is_paused, setPaused] = useState(false);
   const [is_active, setActive] = useState(false);
   const [is_Shuffle, setShuffle] = useState(false);
@@ -125,11 +124,8 @@ const Player = () => {
     async function getToken() {
       const response = await fetcher("/token");
       setToken(response.token);
-    }
 
-    // refresh token if needed
-    if (!token) {
-      setToken(getToken());
+      return response.token;
     }
 
     const script = document.createElement("script");
@@ -142,7 +138,10 @@ const Player = () => {
       const player = new window.Spotify.Player({
         name: "Web Playback SDK",
         getOAuthToken: (cb) => {
-          cb(token);
+          getToken().then((newToken) => {
+            console.log("TOKEN", token, "NEWTOKEN", newToken);
+            cb(newToken);
+          });
         },
         volume: 0.5,
       });
@@ -151,6 +150,12 @@ const Player = () => {
 
       player.addListener("ready", ({ device_id }) => {
         console.log("Ready with Device ID", device_id);
+        fetcher("/user/player/transfer", { deviceId: device_id }, "PUT").catch(
+          (error) => {
+            // Handle any errors that may occur during the async task
+            console.error(error);
+          }
+        );
       });
 
       player.addListener("not_ready", ({ device_id }) => {
@@ -163,8 +168,6 @@ const Player = () => {
           return;
         }
 
-        // refresh token if needed
-        setToken(getToken());
         setTrack(state.track_window.current_track);
         setPaused(state.paused);
         setPosition(state.position);
@@ -178,7 +181,7 @@ const Player = () => {
 
       player.connect();
     };
-  }, [token]);
+  }, [token, setToken]);
 
   // needs to be in its own useEffect so it doesn't cause an infinite loop
   useEffect(() => {
@@ -223,7 +226,11 @@ const Player = () => {
       onAnimationEnd={() => setPlayAnimation(false)}
     >
       {(!current_track || !player || !is_active) && (
-        <NoPlayerMessage>
+        <NoPlayerMessage
+          onClick={() => {
+            console.log(current_track, is_active, player);
+          }}
+        >
           <p>The player is currently inactive</p>
           <p>For more info click the help page in navigation</p>
         </NoPlayerMessage>
