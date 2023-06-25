@@ -24,7 +24,7 @@ export const usePageStateStore = create<PageState>()((set) => ({
 
 interface PlaylistState {
   currentPlaylistId: string;
-  setPlaylistId: (newPage: string) => void;
+  setPlaylistId: (newId: string) => void;
 }
 
 export const usePlaylistStateStore = create<PlaylistState>()((set) => ({

@@ -13,11 +13,21 @@ const Wrapper = styled.div`
 `;
 
 const PlaylistBuilder = () => {
+  const currentPlaylistId = usePlaylistStateStore(
+    (store) => store.currentPlaylistId
+  );
   return (
     <Wrapper>
-      <PlaylistHeader />
-      <PlaylistHeaderRow />
-      <PlaylistTrackList />
+      {currentPlaylistId && (
+        <>
+          <PlaylistHeader />
+          <PlaylistHeaderRow />
+          <PlaylistTrackList />
+        </>
+      )}
+      {!currentPlaylistId && (
+        <div>current playlist id: {currentPlaylistId}</div>
+      )}
     </Wrapper>
   );
 };

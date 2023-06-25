@@ -7,10 +7,17 @@ import { usePlaylistStateStore } from "../../lib/store";
 import { usePlaylistId } from "../../lib/hooks";
 import PlaylistTrack from "./PlaylistTrack";
 import { fetcher } from "../../lib/fetcher";
+import { Loader } from "../ui";
+import { helpers } from "../../styles";
 
 const Wrapper = styled.ul``;
 
 const ListItem = styled.li``;
+
+const LoaderWrapper = styled.div`
+  ${helpers.flexCenter};
+  padding-top: 20%;
+`;
 
 const PlaylistTrackList = () => {
   const playlistId = usePlaylistStateStore((state) => state.currentPlaylistId);
@@ -121,42 +128,51 @@ const PlaylistTrackList = () => {
   };
 
   return (
-    <DragDropContext onDragEnd={handleDragEnd}>
-      <Droppable droppableId="Tracklist">
-        {(provided) => (
-          <Wrapper {...provided.droppableProps} ref={provided.innerRef}>
-            {displayedPlaylist.map((track, i) => {
-              return (
-                <Draggable
-                  key={`${track.id}-${i}`}
-                  draggableId={`${track.id}-${i}`}
-                  index={i}
-                >
-                  {(provided) => (
-                    <ListItem
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      ref={provided.innerRef}
+    <>
+      {isLoading && (
+        <LoaderWrapper>
+          <Loader />
+        </LoaderWrapper>
+      )}
+      {!isLoading && !isError && (
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <Droppable droppableId="Tracklist">
+            {(provided) => (
+              <Wrapper {...provided.droppableProps} ref={provided.innerRef}>
+                {displayedPlaylist.map((track, i) => {
+                  return (
+                    <Draggable
+                      key={`${track.id}-${i}`}
+                      draggableId={`${track.id}-${i}`}
+                      index={i}
                     >
-                      <PlaylistTrack
-                        track={track}
-                        index={i}
-                        playlistLength={displayedPlaylist.length}
-                        handleReorderModal={handleReorderModal}
-                        handleRemoveTrack={handleRemoveTrack}
-                        playlistUri={playlistData.uri}
-                      />
-                    </ListItem>
-                  )}
-                </Draggable>
-              );
-            })}
-            {provided.placeholder}
-            <div id="playlistBottom" />
-          </Wrapper>
-        )}
-      </Droppable>
-    </DragDropContext>
+                      {(provided) => (
+                        <ListItem
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          ref={provided.innerRef}
+                        >
+                          <PlaylistTrack
+                            track={track}
+                            index={i}
+                            playlistLength={displayedPlaylist.length}
+                            handleReorderModal={handleReorderModal}
+                            handleRemoveTrack={handleRemoveTrack}
+                            playlistUri={playlistData.uri}
+                          />
+                        </ListItem>
+                      )}
+                    </Draggable>
+                  );
+                })}
+                {provided.placeholder}
+                <div id="playlistBottom" />
+              </Wrapper>
+            )}
+          </Droppable>
+        </DragDropContext>
+      )}
+    </>
   );
 };
 

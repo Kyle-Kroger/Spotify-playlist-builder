@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { BsSearch, BsTag } from "react-icons/bs";
+import { BsSearch, BsHouseDoor } from "react-icons/bs";
 import { CgPlayListAdd } from "react-icons/cg";
 import { QUERIES, helpers } from "../../styles";
 import {
@@ -105,6 +105,11 @@ const DesktopNav = (props) => {
     setCurrentPage(page);
   };
 
+  const handleHomeClicked = () => {
+    console.log("Meow??");
+    setPlaylistId("");
+  };
+
   return (
     <Wrapper>
       <StyledNav>
@@ -123,9 +128,9 @@ const DesktopNav = (props) => {
             <CgPlayListAdd size="28px" />
             <NavText>Playlists</NavText>
           </NavLink>
-          <NavLink onClick={() => handleSidebarChange(SIDEBAR_PAGE.TAGGING)}>
-            <BsTag size="28px" />
-            <NavText>Manage Tags</NavText>
+          <NavLink onClick={handleHomeClicked}>
+            <BsHouseDoor size="28px" />
+            <NavText>Home</NavText>
           </NavLink>
         </NavLinkList>
         <Divider />
