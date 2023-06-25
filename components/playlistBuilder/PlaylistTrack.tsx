@@ -64,6 +64,7 @@ const Title = styled.h3`
   text-overflow: ellipsis;
   cursor: pointer;
   transition: color 200ms ease-in-out;
+  width: fit-content;
 
   :hover {
     color: var(--color-spotify-green);
