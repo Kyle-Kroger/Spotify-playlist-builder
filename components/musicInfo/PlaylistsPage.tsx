@@ -22,7 +22,7 @@ const PlaylistWrapper = styled.div`
   flex: 1;
   /* padding: 0 var(--spacing-sm); */
 
-  ${helpers.spotifySearchBar}
+  ${helpers.spotifyScrollBar}
 `;
 
 const AllPlaylistPage = () => {

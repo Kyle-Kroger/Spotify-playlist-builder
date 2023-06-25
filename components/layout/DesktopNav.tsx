@@ -68,7 +68,7 @@ const PlaylistWrapper = styled.ul`
   font-weight: 600;
   color: var(--color-text-subdued);
 
-  ${helpers.spotifySearchBar}
+  ${helpers.spotifyScrollBar}
 `;
 
 const Divider = styled.div`

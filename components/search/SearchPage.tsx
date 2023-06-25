@@ -55,7 +55,7 @@ const SearchListWrapper = styled.div`
   overflow: auto;
   flex: 1;
 
-  ${helpers.spotifySearchBar}
+  ${helpers.spotifyScrollBar}
 `;
 
 const PositionedTrackList = styled(TrackList)`

@@ -16,7 +16,7 @@ const helpers = {
     margin: 0 auto;
   `,
 
-  spotifySearchBar: css`
+  spotifyScrollBar: css`
     /* width */
     ::-webkit-scrollbar {
       width: 10px;
