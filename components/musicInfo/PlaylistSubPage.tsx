@@ -6,7 +6,7 @@ import { sortPlaylist, SORT_ORDER } from "../../lib/spotify";
 import MusicHeadingItem from "./MusicHeadingItem";
 import TrackList from "./TrackList";
 import { Loader, StyledButton } from "../ui";
-import { usePlaylistStateStore } from "../../lib/store";
+import { usePageStateStore, usePlaylistStateStore } from "../../lib/store";
 
 const Wrapper = styled.div`
   display: flex;
@@ -35,6 +35,7 @@ const PlaylistSubPage = ({ id, filterBy, sortBy, sortASC, onGoBack }) => {
   const [filteredList, setFilteredList] = useState([]);
   const { user, isLoading: isLoadingUser, isError: isErrorUser } = useUser();
   const { playlistData, isLoading, isError } = usePlaylistId(id);
+  const setIsHidden = usePageStateStore((state) => state.setIsHidden);
   const setPlaylistId = usePlaylistStateStore((state) => state.setPlaylistId);
   const [currentUserId, setCurrentUserId] = useState("");
 
@@ -94,6 +95,7 @@ const PlaylistSubPage = ({ id, filterBy, sortBy, sortASC, onGoBack }) => {
               isDisabled={currentUserId !== playlistData.owner.id}
               onClick={() => {
                 setPlaylistId(id);
+                setIsHidden(true);
               }}
             >
               Edit Playlist

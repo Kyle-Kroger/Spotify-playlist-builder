@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { BsSearch, BsHouseDoor } from "react-icons/bs";
-import { CgPlayListAdd } from "react-icons/cg";
+import { BiSolidPlaylist } from "react-icons/bi";
 import { QUERIES, helpers } from "../../styles";
 import {
   usePageStateStore,
@@ -106,7 +106,6 @@ const DesktopNav = (props) => {
   };
 
   const handleHomeClicked = () => {
-    console.log("Meow??");
     setPlaylistId("");
   };
 
@@ -125,7 +124,7 @@ const DesktopNav = (props) => {
             <NavText>Search</NavText>
           </NavLink>
           <NavLink onClick={() => handleSidebarChange(SIDEBAR_PAGE.PLAYLIST)}>
-            <CgPlayListAdd size="28px" />
+            <BiSolidPlaylist size="28px" />
             <NavText>Playlists</NavText>
           </NavLink>
           <NavLink onClick={handleHomeClicked}>

@@ -77,7 +77,7 @@ const CreatePlaylistNav = ({ userId, setPlaylistId }) => {
           setIsOpen(true);
         }}
       >
-        Create Playlist
+        New Playlist
       </StyledButton>
       {isOpen && (
         <Modal

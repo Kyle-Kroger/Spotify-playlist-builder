@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { QUERIES } from "../../styles";
 
 interface ButtonProps {
   isDisabled?: boolean;
@@ -13,6 +14,10 @@ const StandardButton = styled.button<ButtonProps>`
   cursor: ${(p) => (p.isDisabled ? "auto" : "pointer")};
   pointer-events: ${(p) => (p.isDisabled ? "none" : "auto")};
   transition: all 200ms ease-in-out;
+
+  @media ${QUERIES.phone} {
+    font-size: var(--fz-xs);
+  }
 `;
 
 const OutlineButton = styled(StandardButton)`
