@@ -39,6 +39,10 @@ const PositionedSidebar = styled(Sidebar)<SidebarProps>`
   height: 100%;
 
   transition: right 600ms ease-in-out;
+
+  @media ${QUERIES.phone} {
+    right: ${(p) => (p.isHidden ? "-100%" : 0)};
+  }
 `;
 
 const PlaceholderPlayer = styled.div`
