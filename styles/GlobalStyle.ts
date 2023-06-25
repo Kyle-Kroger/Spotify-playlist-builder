@@ -28,7 +28,8 @@ const GlobalStyle = createGlobalStyle`
       2.4vw + 1rem,
       3.5rem
     );
-
+    
+    line-height: 1.25;
     font-weight: 800;
   }
 

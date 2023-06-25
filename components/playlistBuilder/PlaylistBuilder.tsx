@@ -4,6 +4,7 @@ import { helpers } from "../../styles";
 import PlaylistHeader from "./PlaylistHeader";
 import PlaylistHeaderRow from "./PlaylistHeaderRow";
 import PlaylistTrackList from "./PlaylistTrackList";
+import PlaylistHome from "./PlaylistHome";
 
 const Wrapper = styled.div`
   flex: 1;
@@ -25,9 +26,7 @@ const PlaylistBuilder = () => {
           <PlaylistTrackList />
         </>
       )}
-      {!currentPlaylistId && (
-        <div>current playlist id: {currentPlaylistId}</div>
-      )}
+      {!currentPlaylistId && <PlaylistHome />}
     </Wrapper>
   );
 };
