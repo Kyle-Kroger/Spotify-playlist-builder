@@ -6,6 +6,7 @@ import { StyledImage } from "../ui";
 import { Modal, ReorderPlaylistTrack } from "../modals";
 import PlaylistTrackTaglist from "./PlaylistTrackTaglist";
 import { fetcher } from "../../lib/fetcher";
+import { QUERIES } from "../../styles";
 
 const Wrapper = styled.div`
   margin-bottom: 4px;
@@ -18,8 +19,16 @@ const TrackWrapper = styled.div`
   padding-right: var(--spacing-xs);
 
   div {
-    padding: var(--spacing-sm) var(--spacing-sm);
+    padding: var(--spacing-sm);
     padding-bottom: var(--spacing-xs);
+
+    @media ${QUERIES.tabetAndDown} {
+      padding: var(--spacing-xs);
+    }
+  }
+
+  @media ${QUERIES.phone} {
+    padding: 0;
   }
 `;
 
@@ -27,6 +36,20 @@ const TrackNumber = styled.div`
   width: 55px;
   text-align: center;
   cursor: pointer;
+
+  @media ${QUERIES.tabetAndDown} {
+    width: 40px;
+  }
+`;
+
+const TrackImage = styled(StyledImage)`
+  width: 55px;
+  height: 55px;
+
+  @media ${QUERIES.tabetAndDown} {
+    width: 40px;
+    height: 40px;
+  }
 `;
 
 const TrackTitle = styled.div`
@@ -94,6 +117,11 @@ const TagWrapper = styled.div`
   gap: var(--spacing-md);
   padding: 0 var(--spacing-md);
   padding-bottom: var(--spacing-xs);
+
+  @media ${QUERIES.tabetAndDown} {
+    padding: var(--spacing-xs);
+    padding-top: 0;
+  }
 `;
 
 const PlaylistTrack = ({
@@ -175,7 +203,7 @@ const PlaylistTrack = ({
           </Modal>
         )}
         <TrackTitle>
-          <StyledImage
+          <TrackImage
             src={track.images[0].url}
             alt={track.albumName}
             width="55px"

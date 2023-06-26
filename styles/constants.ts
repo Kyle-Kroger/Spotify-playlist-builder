@@ -1,6 +1,6 @@
 export const BREAKPOINTS = {
-  phoneMax: 600,
-  tabletMax: 1100,
+  phoneMax: 700,
+  tabletMax: 1200,
   LaptopMax: 1350,
 };
 

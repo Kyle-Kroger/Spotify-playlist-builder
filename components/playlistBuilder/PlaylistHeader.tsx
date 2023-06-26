@@ -5,6 +5,7 @@ import { durationMSToStandard } from "../../lib/spotify";
 import { usePlaylistStateStore } from "../../lib/store";
 import { StyledImage } from "../ui";
 import DeletePlaylist from "./DeletePlaylist";
+import { QUERIES } from "../../styles";
 
 const Wrapper = styled.div`
   display: flex;
@@ -34,6 +35,10 @@ const TextWrapper = styled.div<{
 
   p {
     margin-bottom: var(--spacing-md);
+  }
+
+  @media ${QUERIES.tabetAndDown} {
+    min-width: 200px;
   }
 `;
 

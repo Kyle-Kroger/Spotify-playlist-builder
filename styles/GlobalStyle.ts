@@ -1,6 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 import reset from "./reset";
 import variables from "./variables.globals";
+import { QUERIES } from "./constants";
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -41,6 +42,10 @@ const GlobalStyle = createGlobalStyle`
   h3 {
     font-size: var(--fz-md);
     font-weight: 600;
+
+    @media ${QUERIES.phone} {
+      font-size: var(--fz-sm);
+    }
   }
 
   h4 {
