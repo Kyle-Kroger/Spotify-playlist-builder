@@ -13,6 +13,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { playlistId } = req.query;
   const { SPOTIFY_REFRESH_TOKEN: refreshToken } = req.cookies;
   let { SPOTIFY_ACCESS_TOKEN: token } = req.cookies;
+  const { MONGODB_URI } = process.env;
 
   // refresh if needed
   token = await refreshAccessToken(token, refreshToken, res);
@@ -32,7 +33,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     playlistData = { ...playlistData, ...playlistDetails };
 
     // get tag data from mongo
+    console.log(`Connecting to DB with ${MONGODB_URI}`);
     await dbConnect();
+    console.log("Connected to DB just fine");
 
     const playlistTags = await Tag.find({ playlistId });
     const trackTagMap = new Map();
@@ -59,10 +62,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         });
       });
     }
-
+    console.log("Getting tracks...");
     while (moreData) {
       const playlistTracks = await spotifyFetcher(tracksEndpoint, token);
-
+      console.log("still getting tracks");
       let items = playlistTracks.items.map((item) => {
         if (item.track === null) {
           return null;
