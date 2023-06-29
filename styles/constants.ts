@@ -1,7 +1,7 @@
 export const BREAKPOINTS = {
   phoneMax: 700,
   tabletMax: 1200,
-  LaptopMax: 1350,
+  LaptopMax: 1400,
 };
 
 export const QUERIES = {

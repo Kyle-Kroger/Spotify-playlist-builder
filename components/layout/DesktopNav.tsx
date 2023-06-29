@@ -64,11 +64,14 @@ const PlaylistWrapper = styled.ul`
   background: var(--color-grey-900);
   overflow: auto;
   padding: var(--spacing-md);
-  font-size: 15px;
   font-weight: 600;
   color: var(--color-text-subdued);
 
   ${helpers.spotifyScrollBar}
+
+  @media ${QUERIES.laptopAndDown} {
+    font-size: var(--fz-xs);
+  }
 `;
 
 const Divider = styled.div`

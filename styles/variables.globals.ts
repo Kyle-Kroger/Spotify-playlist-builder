@@ -102,6 +102,10 @@ const variables = css`
     --desktop-nav-width: 240px;
     --sidebar-width: 460px;
 
+    @media ${QUERIES.laptopAndDown} {
+      --desktop-nav-width: 180px;
+    }
+
     @media ${QUERIES.phone} {
       --player-height: 80px;
       --content-height: calc(

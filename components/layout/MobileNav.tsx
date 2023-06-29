@@ -1,8 +1,8 @@
 import styled, { css } from "styled-components";
 import { useEffect, useState } from "react";
 import { BsSearch, BsHouseDoor } from "react-icons/bs";
-import { BiSolidPlaylist, BiSolidEditAlt } from "react-icons/bi";
-import { QUERIES, helpers } from "../../styles";
+import { BiSolidPlaylist } from "react-icons/bi";
+import { QUERIES } from "../../styles";
 import {
   usePageStateStore,
   SIDEBAR_PAGE,
@@ -76,10 +76,6 @@ const MoblieNav = () => {
     setCurrentPage(page);
   };
 
-  const handleEditClicked = () => {
-    setIsHidden(true);
-  };
-
   const handleHomeClicked = () => {
     setPlaylistId("");
   };
@@ -99,13 +95,6 @@ const MoblieNav = () => {
         <BiSolidPlaylist size="24px" />
         <p>Playlists</p>
       </NavLink>
-      {/* <NavLink
-        onClick={handleEditClicked}
-        isActive={isHidden && playlistId !== ""}
-      >
-        <BiSolidEditAlt size="24px" />
-        <p>Edit Playlist</p>
-      </NavLink> */}
       <NavLink
         onClick={handleHomeClicked}
         isActive={isHidden && playlistId === ""}

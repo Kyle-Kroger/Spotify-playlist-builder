@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import styled from "styled-components";
+import { QUERIES } from "../../styles";
 
 const tooltipMotion = {
   rest: { opacity: 0, ease: "easeOut", duration: 0.2, type: "tween" },
@@ -37,6 +38,10 @@ const Playlist = styled.div<{ isDisabled: boolean }>`
   :hover {
     color: white;
   }
+
+  /* @media ${QUERIES.laptopAndDown} {
+    font-size: var(--fz-sm);
+  } */
 `;
 
 const NavPlaylist = ({ id, name, isDisabled, setPlaylistId }) => {
