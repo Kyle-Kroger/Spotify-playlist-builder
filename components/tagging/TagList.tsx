@@ -8,7 +8,7 @@ const Wrapper = styled.div`
   gap: var(--spacing-md);
   flex-wrap: wrap;
   padding: 0 var(--spacing-sm);
-  ${helpers.spotifySearchBar}
+  ${helpers.spotifyScrollBar}
 `;
 
 const TagList = ({ tagArray, onClick, selectedTagId = "" }) => {
