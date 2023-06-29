@@ -12,6 +12,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const cookies = new Cookies(req, res);
   cookies.set("spotify_auth_state", state);
 
+  console.log(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
+
   // Scope for authorization
   const scope =
     "user-read-private user-read-email playlist-read-private playlist-modify-public playlist-modify-private user-read-playback-state user-modify-playback-state streaming";
