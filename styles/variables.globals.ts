@@ -98,7 +98,7 @@ const variables = css`
     --player-height: 100px;
     --player-expand-height: 190px;
     --mobile-nav-height: 70px;
-    --content-height: calc(100vh - var(--player-height));
+    --content-height: calc(100% - var(--player-height));
     --desktop-nav-width: 240px;
     --sidebar-width: 460px;
 
@@ -109,7 +109,7 @@ const variables = css`
     @media ${QUERIES.phone} {
       --player-height: 80px;
       --content-height: calc(
-        100vh - var(--player-height) - var(--mobile-nav-height)
+        100% - var(--player-height) - var(--mobile-nav-height)
       );
     }
   }
