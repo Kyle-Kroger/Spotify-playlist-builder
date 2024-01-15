@@ -59,6 +59,8 @@ const Home = () => {
   const isHidden = usePageStateStore((state) => state.isHidden);
   const [token, setToken] = useState("");
 
+  console.log(playlists, isError, isLoading);
+
   useEffect(() => {
     async function getToken() {
       const response = await fetcher("/token");

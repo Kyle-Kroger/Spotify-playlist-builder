@@ -18,7 +18,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // refresh if needed
   token = await refreshAccessToken(token, refreshToken, res);
 
-  const detailQueryParams = `market=es&fields=name,uri,external_urls(spotify),images,owner(display_name, id),snapshot_id`;
+  const detailQueryParams = `market=es&fields=name,uri,external_urls(spotify),images,owner,snapshot_id`;
   const detailEndpoint = `/playlists/${playlistId}?${detailQueryParams}`;
 
   const trackQueryParams = `market=es&fields=items(track(name,id,linked_from,uri,duration_ms,href,album(name,id,href,images),artists(name,href))),next`;
