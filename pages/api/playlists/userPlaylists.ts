@@ -16,6 +16,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   let endpoint = "/me/playlists";
   let playlists = [];
 
+  console.log("meow, this is a test");
+
   try {
     while (moreData) {
       const playlistData = await spotifyFetcher(endpoint, token);
