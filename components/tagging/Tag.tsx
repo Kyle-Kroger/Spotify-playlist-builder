@@ -13,6 +13,7 @@ const Wrapper = styled.div<{
   border-radius: var(--radius-subtle);
   margin-bottom: 8px;
   cursor: pointer;
+  pointer-events: ${(p) => (p.id === "updating" ? "none" : "auto")};
 
   ${(p) => (p.selected ? "outline: 2px solid white" : "")}
 `;
@@ -32,6 +33,7 @@ const Tag = ({ id, name, bgColor, textColor, onClick, selected = false }) => {
       bgColor={bgColor}
       textColor={textColor}
       selected={selected}
+      id={id}
       onClick={handleClick}
     >
       <p>{name}</p>

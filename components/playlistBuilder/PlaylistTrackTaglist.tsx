@@ -58,11 +58,34 @@ const PlaylistTrackTaglist = ({ tagArray, trackUri }) => {
   const handleTagClicked = (tag: ITrackTag) => {
     setTagToRemove(tag);
     setShowRemoveTag(true);
+
+    console.log(tag.id);
   };
 
   const handleRemoveTag = async () => {
     try {
       if (typeof tagToRemove !== "undefined") {
+        // optimistic update
+        await mutatePlaylist((data) => {
+          const newTracks = [...data.tracks];
+
+          // track index to delete tag to
+          const index = newTracks.findIndex((track) => track.uri === trackUri);
+          console.log(newTracks[index].tagArray);
+          const tagIndex = newTracks[index].tagArray.findIndex(
+            (tag) => tag.id === tagToRemove.id
+          );
+
+          // delete tag
+
+          // return new data with edited tracks
+          return {
+            ...data,
+            tracks: newTracks,
+          };
+        }, false);
+
+        // backend update
         await fetcher(
           `/tags/${playlistId}`,
           { id: tagToRemove.id, trackUri },
@@ -87,14 +110,14 @@ const PlaylistTrackTaglist = ({ tagArray, trackUri }) => {
       let newTag: ITrackTag = { id: "", name: "", bgColor: "", textColor: "" };
       if (isNewTag) {
         newTag = {
-          id: userId,
+          id: "updating",
           name: newTagText,
           bgColor: newTagBgColor,
           textColor: newTagTextColor,
         };
       } else if (!isNewTag && typeof selectedTag !== "undefined") {
         newTag = {
-          id: userId,
+          id: selectedTag.id,
           name: selectedTag.name,
           bgColor: selectedTag.bgColor,
           textColor: selectedTag.textColor,
@@ -107,8 +130,6 @@ const PlaylistTrackTaglist = ({ tagArray, trackUri }) => {
 
         // track index to add tag to
         const index = newTracks.findIndex((track) => track.uri === trackUri);
-        console.log(`index ${index}`);
-        console.log(newTracks[index]);
 
         // add tag
         newTracks[index].tagArray.push(newTag);

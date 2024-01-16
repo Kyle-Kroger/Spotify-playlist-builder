@@ -59,7 +59,7 @@ const PlaylistHeader = () => {
 
   // Give anything that doesn't have an image a url of ""
   let image = { url: "" };
-  if (!isLoading && !isError) {
+  if (!isLoading && !isError && Array.isArray(playlistData.images)) {
     image = playlistData.images[0] ? playlistData.images[0] : { url: "" };
   }
 
