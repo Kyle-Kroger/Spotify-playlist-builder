@@ -47,7 +47,7 @@ const PlaylistSubPage = ({ id, filterBy, sortBy, sortASC, onGoBack }) => {
 
   // fix in case there is no image for the playlist
   let image = { url: "" };
-  if (!isLoading && !isError) {
+  if (!isLoading && !isError && Array.isArray(playlistData.images)) {
     image = playlistData.images[0] ? playlistData.images[0] : { url: "" };
   }
 
