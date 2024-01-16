@@ -49,6 +49,7 @@ const MusicHeadingItem = ({
     window.open(url, "_blank", "noopener,noreferrer");
   };
   let imageUrl = imageSrc;
+
   // temperary fix for blended playlist images being broken
   if (
     imageUrl ===
@@ -56,6 +57,7 @@ const MusicHeadingItem = ({
   ) {
     imageUrl = imageUrl.replace("-*", "-en");
   }
+
   return (
     <Wrapper>
       <ItemWrapper width={width}>
