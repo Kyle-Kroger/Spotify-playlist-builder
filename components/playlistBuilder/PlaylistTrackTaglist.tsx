@@ -25,8 +25,7 @@ const RemoveTagWrapper = styled.div`
 
 const PlaylistTrackTaglist = ({ tagArray, trackUri }) => {
   const playlistId = usePlaylistStateStore((state) => state.currentPlaylistId);
-  const { playlistData, isLoading, isError, mutatePlaylist } =
-    usePlaylistId(playlistId);
+  const { mutatePlaylist } = usePlaylistId(playlistId);
 
   const [showAddTag, setShowAddTag] = useState(false);
   const [showRemoveTag, setShowRemoveTag] = useState(false);
@@ -58,8 +57,6 @@ const PlaylistTrackTaglist = ({ tagArray, trackUri }) => {
   const handleTagClicked = (tag: ITrackTag) => {
     setTagToRemove(tag);
     setShowRemoveTag(true);
-
-    console.log(tag.id);
   };
 
   const handleRemoveTag = async () => {
@@ -71,12 +68,12 @@ const PlaylistTrackTaglist = ({ tagArray, trackUri }) => {
 
           // track index to delete tag to
           const index = newTracks.findIndex((track) => track.uri === trackUri);
-          console.log(newTracks[index].tagArray);
           const tagIndex = newTracks[index].tagArray.findIndex(
             (tag) => tag.id === tagToRemove.id
           );
 
           // delete tag
+          newTracks[index].tagArray.splice(tagIndex, 1);
 
           // return new data with edited tracks
           return {
