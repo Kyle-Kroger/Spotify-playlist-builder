@@ -4,6 +4,7 @@ import { AddTagContent, Modal } from "../modals";
 import { NewTagButton, Tag, TagList } from "../tagging";
 import { ITrackTag } from "../../lib/types";
 import { fetcher } from "../../lib/fetcher";
+import { usePlaylistId } from "../../lib/hooks";
 import { usePlaylistStateStore } from "../../lib/store";
 
 const PlaceholderText = styled.p`
@@ -24,8 +25,11 @@ const RemoveTagWrapper = styled.div`
 
 const PlaylistTrackTaglist = ({ tagArray, trackUri }) => {
   const playlistId = usePlaylistStateStore((state) => state.currentPlaylistId);
+  const { mutatePlaylist } = usePlaylistId(playlistId);
+
   const [showAddTag, setShowAddTag] = useState(false);
   const [showRemoveTag, setShowRemoveTag] = useState(false);
+
   const [tagToRemove, setTagToRemove] = useState<ITrackTag | undefined>(
     undefined
   );
@@ -48,7 +52,6 @@ const PlaylistTrackTaglist = ({ tagArray, trackUri }) => {
       textColor: tag.textColor,
     };
     setSelectedTag(newTag);
-    console.log(selectedTag);
   };
 
   const handleTagClicked = (tag: ITrackTag) => {
@@ -59,6 +62,27 @@ const PlaylistTrackTaglist = ({ tagArray, trackUri }) => {
   const handleRemoveTag = async () => {
     try {
       if (typeof tagToRemove !== "undefined") {
+        // optimistic update
+        await mutatePlaylist((data) => {
+          const newTracks = [...data.tracks];
+
+          // track index to delete tag to
+          const index = newTracks.findIndex((track) => track.uri === trackUri);
+          const tagIndex = newTracks[index].tagArray.findIndex(
+            (tag) => tag.id === tagToRemove.id
+          );
+
+          // delete tag
+          newTracks[index].tagArray.splice(tagIndex, 1);
+
+          // return new data with edited tracks
+          return {
+            ...data,
+            tracks: newTracks,
+          };
+        }, false);
+
+        // backend update
         await fetcher(
           `/tags/${playlistId}`,
           { id: tagToRemove.id, trackUri },
@@ -71,47 +95,69 @@ const PlaylistTrackTaglist = ({ tagArray, trackUri }) => {
 
     setShowRemoveTag(false);
     setTagToRemove(undefined);
+
+    await mutatePlaylist();
   };
 
   const handleCreateTag = async () => {
     try {
       const { id: userId } = await fetcher(`/user`);
 
-      // if a brand new tag
+      // new tag or existing tag
+      let newTag: ITrackTag = { id: "", name: "", bgColor: "", textColor: "" };
       if (isNewTag) {
-        await fetcher(
-          `/tags/${playlistId}`,
-          {
-            name: newTagText,
-            textColor: newTagTextColor,
-            bgColor: newTagBgColor,
-            userId,
-            trackUri,
-          },
-          "POST"
-        );
+        newTag = {
+          id: "updating",
+          name: newTagText,
+          bgColor: newTagBgColor,
+          textColor: newTagTextColor,
+        };
+      } else if (!isNewTag && typeof selectedTag !== "undefined") {
+        newTag = {
+          id: selectedTag.id,
+          name: selectedTag.name,
+          bgColor: selectedTag.bgColor,
+          textColor: selectedTag.textColor,
+        };
       }
 
-      // if existing tag
-      if (!isNewTag && typeof selectedTag !== "undefined") {
-        await fetcher(
-          `/tags/${playlistId}`,
-          {
-            name: selectedTag.name,
-            textColor: selectedTag.textColor,
-            bgColor: selectedTag.bgColor,
-            userId,
-            trackUri,
-          },
-          "POST"
-        );
-      }
+      // optimistic update
+      await mutatePlaylist((data) => {
+        const newTracks = [...data.tracks];
+
+        // track index to add tag to
+        const index = newTracks.findIndex((track) => track.uri === trackUri);
+
+        // add tag
+        newTracks[index].tagArray.push(newTag);
+
+        // return new data with edited tracks
+        return {
+          ...data,
+          tracks: newTracks,
+        };
+      }, false);
+
+      // backend update
+      await fetcher(
+        `/tags/${playlistId}`,
+        {
+          name: newTag.name,
+          textColor: newTag.textColor,
+          bgColor: newTag.bgColor,
+          userId,
+          trackUri,
+        },
+        "POST"
+      );
     } catch (e) {
       console.log(e.message);
     }
 
     setShowAddTag(false);
     setNewTagText("");
+
+    await mutatePlaylist();
   };
 
   return (
