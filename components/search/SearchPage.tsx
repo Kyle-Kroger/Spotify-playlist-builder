@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState, useEffect, useRef } from "react";
 import { AiOutlineClose } from "react-icons/ai";
-import { Loader, StyledButton } from "../ui";
+import { Loader, SpotifyButton, StyledButton } from "../ui";
 import { AlbumPage, ArtistPage, MusicItemList, TrackList } from "../musicInfo";
 import { useSearch } from "../../lib/hooks";
 import { helpers } from "../../styles";
@@ -60,6 +60,14 @@ const SearchListWrapper = styled.div`
 
 const PositionedTrackList = styled(TrackList)`
   flex: 1;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md);
+  border-bottom: 2px solid var(--color-grey-800);
 `;
 
 const PositionedArtistPage = styled(ArtistPage)`
@@ -187,12 +195,23 @@ const Search = () => {
       <SearchListWrapper>
         <div ref={searchListTopRef} />
         {currSearchType === SEARCH_TYPE.SONG && !isLoading && (
-          <PositionedTrackList
-            className=""
-            items={searchData.items}
-            showImage
-            onClick={handleAlbumClicked}
-          />
+          <>
+            {searchTerm !== "" && (
+              <ButtonWrapper>
+                <SpotifyButton
+                  externalUrl={`https://open.spotify.com/search/${searchTerm}`}
+                >
+                  Open on Spotify
+                </SpotifyButton>
+              </ButtonWrapper>
+            )}
+            <PositionedTrackList
+              className=""
+              items={searchData.items}
+              showImage
+              onClick={handleAlbumClicked}
+            />
+          </>
         )}
         {currSearchType === SEARCH_TYPE.ARTIST &&
           !isLoading &&

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { combineArtists } from "../../lib/spotify";
 import Track from "./Track";
+import { SpotifyButton } from "../ui";
 
 const Wrapper = styled.div``;
 
