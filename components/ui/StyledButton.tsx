@@ -15,6 +15,8 @@ const StandardButton = styled.button<ButtonProps>`
   pointer-events: ${(p) => (p.isDisabled ? "none" : "auto")};
   transition: all 200ms ease-in-out;
 
+  min-height: 40px;
+
   @media ${QUERIES.phone} {
     font-size: var(--fz-xs);
   }
@@ -38,7 +40,6 @@ const FilledButton = styled(StandardButton)`
   :hover {
     transform: scale(1.05);
     background-color: var(--color-spotify-outline);
-    color: black;
   }
 `;
 

@@ -6,6 +6,7 @@ import { usePlaylistStateStore } from "../../lib/store";
 import { StyledImage } from "../ui";
 import DeletePlaylist from "./DeletePlaylist";
 import { QUERIES } from "../../styles";
+import SpotifyButton from "../ui/SpotifyButton";
 
 const Wrapper = styled.div`
   display: flex;
@@ -40,6 +41,13 @@ const TextWrapper = styled.div<{
   @media ${QUERIES.tabetAndDown} {
     min-width: 200px;
   }
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing-xs);
+  align-items: center;
 `;
 
 const PlaylistHeader = () => {
@@ -107,7 +115,12 @@ const PlaylistHeader = () => {
               {playlistData.tracks.length === 1 ? "song" : "songs"} -{" "}
               {displayTime}
             </p>
-            <DeletePlaylist playlistId={playlistId} />
+            <ButtonWrapper>
+              <DeletePlaylist playlistId={playlistId} />
+              <SpotifyButton externalUrl={playlistData.external_urls.spotify}>
+                Play on Spotify
+              </SpotifyButton>
+            </ButtonWrapper>
           </TextWrapper>
           <StyledImage
             src={image.url}

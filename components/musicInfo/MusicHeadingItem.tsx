@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { StyledButton, StyledImage } from "../ui";
+import { SpotifyButton, StyledImage } from "../ui";
 
 const Wrapper = styled.div`
   display: flex;
@@ -28,7 +28,7 @@ const ItemHeading = styled.div`
   }
 `;
 
-const PositionedButton = styled(StyledButton)`
+const PositionedButton = styled(SpotifyButton)`
   margin: var(--spacing-lg) 0;
 `;
 
@@ -74,11 +74,7 @@ const MusicHeadingItem = ({
           className=""
         />
       </ItemWrapper>
-      <PositionedButton
-        state="filled"
-        onClick={() => openInNewTab(externalUrl)}
-        className=""
-      >
+      <PositionedButton externalUrl={externalUrl} className="">
         Open on Spotify
       </PositionedButton>
     </Wrapper>

@@ -3,3 +3,4 @@ export { default as StyledImage } from "./StyledImage";
 export { default as Loader } from "./Loader";
 export { default as DropdownMenu } from "./DropdownMenu";
 export { default as DropdownItem } from "./DropdownItem";
+export { default as SpotifyButton } from "./SpotifyButton";

@@ -2,6 +2,7 @@ import FocusLock from "react-focus-lock";
 import styled from "styled-components";
 import { StyledButton } from "../ui";
 import ClientOnlyPortal from "./ClientOnlyPortal";
+import { helpers } from "../../styles";
 
 const Backdrop = styled.div`
   position: fixed;
@@ -17,7 +18,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   position: fixed;
-  top: 40%;
+  top: 43%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: var(--color-grey-800);
@@ -25,6 +26,7 @@ const Wrapper = styled.div`
   border-radius: var(--radius-small);
   min-width: 350px;
   max-width: 550px;
+  max-height: var(--content-height);
   z-index: 1000;
   // needed for the top borders to have radius
   overflow: hidden;
@@ -38,16 +40,22 @@ const Heading = styled.div`
 
 const Content = styled.section`
   width: 100%;
-  padding: var(--spacing-lg) var(--spacing-xl);
+  max-height: 550px;
+  overflow-y: auto;
+  padding: var(--spacing-md) var(--spacing-xl);
   flex: 1;
+  ${helpers.spotifyScrollBar}
+  ::-webkit-scrollbar-track {
+    background: var(--color-grey-800);
+  }
 `;
 
 const ButtonWrapper = styled.div`
   display: flex;
   gap: 24px;
   padding: var(--spacing-lg) var(--spacing-xl);
-  padding-top: 0;
   justify-content: flex-end;
+  border-top: 3px solid var(--color-grey-600);
 `;
 
 const Modal = ({ children, onClose, title, onConfirm, buttonText }) => {
